@@ -1,36 +1,54 @@
 <!--index.wxml-->
 <view class="container">
 
+  <!-- 0. 无变化部分的视图渲染，直接写死 -->
   <view class="title">快速了解云开发</view>
 
   <view class="top_tip">免鉴权接口调用 免部署后台 高并发</view>
 
+  <!-- 1. 列表渲染：
+            wx:for：传入遍历的源数据
+            wx:for-item：默认wx:for用{{item}}表示此轮遍历元素，这个元素可以自定义遍历元素名
+            wx:key：列表中的每一项都需要提供一个唯一的key（item中某个属性），以便高效的更新列表（源数据某一元素变化之后，仅会更新对应的元素视图）
+  -->
   <view class="power" wx:key="title" wx:for="{{powerList}}" wx:for-item="power">
-    <view class="power_info" data-index="{{index}}" bindtap="onClickPowerInfo">
+    <!--1.1 将数据列表项渲染成视图列表元素 -->
+    <view class="power_info" data-index="{{index}}" bindtap="onClickPowerInfo">   <!--index是wx:for对item自动生成的属性，data-index是向事件响应传入参数的自定义属性，此处绑定了点击事件-->
+      <!-- 1.1.1 标题部分的渲染 -->
       <view class="power_info_text">
         <view class="power_info_text_title">
           {{power.title}}
-          <view class="power_info_text_tag" wx:if="{{power.tag}}">{{power.tag}}</view>
+          <view class="power_info_text_tag" wx:if="{{power.tag}}">{{power.tag}}</view>      <!-- power.tag对应视图列表项标题边上的new红字 -->
         </view>
-        <view class="power_info_text_tip">{{power.tip}}</view>
+        <view class="power_info_text_tip">{{power.tip}}</view>  <!-- power.tip对应视图列表项标题下的小字提示 -->
       </view>
-      <image wx:if="{{!power.showItem && power.item.length}}" class="power_info_more" src="../../images/arrow.svg"></image>
-      <image wx:if="{{power.showItem && power.item.length}}" class="power_info_less" src="../../images/arrow.svg"></image>
-      <image wx:if="{{!power.item.length}}" class="power_item_icon" src="../../images/arrow.svg"></image>
+
+      <!-- 1.1.2 右边箭头部分的渲染： 
+              1.有无子列表项：power.item数组是否为空
+              2.是否展开子列表项：power.showItem是False还是True
+      -->
+      <image wx:if="{{!power.showItem && power.item.length}}" class="power_info_more" src="../../images/arrow.svg"></image>     <!--向下的箭头，表示存在子列表项，但是此时不展示-->
+      <image wx:if="{{power.showItem && power.item.length}}" class="power_info_less" src="../../images/arrow.svg"></image>      <!--向上的箭头，表示存在子列表项，同时此时展示-->
+      <image wx:if="{{!power.item.length}}" class="power_item_icon" src="../../images/arrow.svg"></image>                 <!--向右的箭头，表示不存在子列表项-->
     </view>
+
+
+    <!--1.2 根据power.showItem的值来决定是否展示子列表项（showItem的布尔值属性）-->
     <view wx:if="{{power.showItem}}">
+      <!-- 1.2.1 遍历子列表数组，进行渲染 -->
       <view wx:key="title" wx:for="{{power.item}}">
-        <view class="line"></view>
-        <view class="power_item" bindtap="jumpPage" data-page="{{item.page}}">
-          <view class="power_item_title">{{item.title}}</view>
-          <image class="power_item_icon" src="../../images/arrow.svg"></image>
+        <view class="line"></view>      <!--分割线-->
+        <view class="power_item" bindtap="jumpPage" data-page="{{item.page}}">    <!--子列表项绑定点击事件，传入参数item.page，表示跳转的界面名-->  
+          <view class="power_item_title">{{item.title}}</view>    <!--子列表项标题-->
+          <image class="power_item_icon" src="../../images/arrow.svg"></image>    <!--子列表项向右的箭头，代表可以直接链接到另一个页面-->
         </view>
       </view>
     </view>
   </view>
 
-  <view class="environment" bindtap="onChangeShowEnvChoose">当前环境 {{ selectedEnv.alias }}</view>
-
+  <!-- 2. 底部“环境切换“按钮 -->
+  <view class="environment" bindtap="onChangeShowEnvChoose">当前环境 {{ selectedEnv.alias }}</view>   <!--此处绑定了当前选择的云环境的alias-->
+  <!-- 3. “脚本执行”提示框，json文件中有引入语句！！！ -->
   <cloud-tip-modal showUploadTipProps="{{showUploadTip}}"></cloud-tip-modal>
 
 </view>

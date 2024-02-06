@@ -1,1 +1,1 @@
-${installPath} cloud functions deploy --e ${envId} --n quickstartFunctions --r --project ${projectPath}
+"/Applications/wechatwebdevtools.app/Contents/MacOS/cli" cloud functions deploy --e "dev-3g5cl9ca65d64f4b" --n quickstartFunctions --r --project "/Users/wangyingcan/0 note-back/note_backup/健身房小程序/项目代码/Gym-djy"
