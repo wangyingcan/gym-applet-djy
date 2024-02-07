@@ -4,6 +4,15 @@
 // 1. 引入环境列表，此处使用JS的导入导出语法，环境作为全局变量
 const { envList } = require('../../envList.js');
 
+// // 0.1 创建实例环境
+// const a = new wx.cloud.Cloud({
+//     resourceEnv:"dev-3g5cl9ca65d64f4b",
+//     traceUser:true
+// });
+
+// // 0.2 初始化环境变量
+// a.init();
+
 Page({
   // 2. 设置页面的初始数据
   data: {

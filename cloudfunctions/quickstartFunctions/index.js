@@ -1,3 +1,4 @@
+// 1.引入子云函数
 const getOpenId = require('./getOpenId/index');
 const getMiniProgramCode = require('./getMiniProgramCode/index');
 const createCollection = require('./createCollection/index');
@@ -6,7 +7,7 @@ const updateRecord = require('./updateRecord/index');
 const sumRecord = require('./sumRecord/index');
 
 
-// 云函数入口函数
+// 2.云函数入口函数
 exports.main = async (event, context) => {
   switch (event.type) {
     case 'getOpenId':
