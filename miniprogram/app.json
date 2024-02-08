@@ -14,16 +14,45 @@
     "pages/sumRecordResult/index",
     "pages/cloudBackend/index",
     "pages/singleTemplate/index",
-    "pages/web/index"
+    "pages/web/index",
+    "pages/gymIndex/index",
+    "pages/gymAppointment/index",
+    "pages/gymMyCardPack/index"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
-    "backgroundTextStyle": "light",
+    "backgroundTextStyle": "dark",
+    "enablePullDownRefresh": true,
     "navigationBarBackgroundColor": "#F6F6F6",
     "navigationBarTitleText": "云开发 QuickStart",
     "navigationBarTextStyle": "black"
   },
+  "tabBar": {
+    "color": "#fff",
+    "selectedColor": "#444",
+    "backgroundColor": "#BFBFBF",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/Home_Unchecked.png",
+        "selectedIconPath": "images/Home_Checked.png"
+      },
+      {
+        "pagePath": "pages/gymAppointment/index",
+        "text": "约课",
+        "iconPath": "images/Appointment_Unchecked.png",
+        "selectedIconPath": "images/Appointment_Checked.png"
+      },
+      {
+        "pagePath": "pages/gymMyCardPack/index",
+        "text": "我的卡包",
+        "iconPath": "images/My_Card_Pack_Unchecked.png",
+        "selectedIconPath": "images/My_Card_Pack_Checked.png"
+      }
+    ]
+  },
   "sitemapLocation": "sitemap.json",
   "style": "v2",
   "lazyCodeLoading": "requiredComponents"
-}
+}q
