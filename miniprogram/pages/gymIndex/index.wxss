@@ -1,1 +1,235 @@
-/* pages/gymIndex/index.wxss */
+/* 0.页面全局样式 */
+Page {
+    background-color: #BDC3C7;
+}
+
+/* 1.最外层父容器的样式 */
+.main_body {
+    display: flex;
+    flex-direction: column;
+    width: 750rpx;
+}
+
+/* 2.1.flex父容器直接子元素的设置 */
+.images-swiper-area {
+    margin-top: 25rpx;
+    width: 100%;
+    height: 340.38rpx;
+    opacity: 1;
+}
+
+/* 2.1.1.swiper样式 */
+.swiper {
+    width: 100%;
+    height: 340rpx;
+}
+
+/* 2.1.1.1.swiper-item样式 */
+.swiper-item {
+    width: 80%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 0 10rpx;
+}
+
+/* 2.1.1.1.1.swiper-item image样式 */
+.swiper-item image {
+    width: 100%;
+    height: 100%;
+    border-radius: 50rpx;
+}
+
+/* 2.2.flex父容器直接子元素的设置 */
+.shopping-area {
+    margin-top: 25rpx;
+    width: 100%;
+    height: 340.38rpx;
+    opacity: 1;
+}
+
+/* 2.2.1.统一标题区 */
+.index-tilte-view {
+    padding-left: 32rpx;
+    left: 32rpx;
+    display: flex;
+}
+
+/* 2.2.2.统一图标样式 */
+.index-icon {
+    width: 30rpx;
+    height: 30rpx;
+}
+
+/* 2.2.3.统一标题文本样式 */
+.index-title {
+    margin-left: 20rpx;
+    font-family: YouSheBiaoTiHei;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: normal;
+    letter-spacing: 0em;
+}
+
+/* 2.2.4.购买区最外层view */
+.shopping-view {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 20rpx
+}
+
+/* 2.2.4.1.左边周卡最外层view */
+.left-week-card-view {
+    border: 0px solid #000000;
+    box-shadow: 0px 19px 10px 0px rgba(0, 0, 0, 0.3);
+    width: 300rpx;
+    height: 290rpx;
+    border-radius: 40rpx 0 0 40rpx;
+    opacity: 1;
+    background: rgba(53, 51, 51, 0.65);
+}
+
+/* 2.2.4.1.1.上部分周卡文本显示最外层view */
+.week-card-title-view {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding-top: 20rpx
+}
+
+/* 2.2.4.1.1.1.周卡文本样式 */
+.week-card-title {
+    font-family: YouSheBiaoTiHei;
+    font-weight: bolder;
+    font-size: 30px;
+    line-height: normal;
+    letter-spacing: 0em;
+    color: #FFFFFF;
+}
+
+/* 2.2.4.1.1.2.周卡文本下方矩形条样式 */
+.week-card-rect {
+    position: absolute;
+    bottom: 10rpx;
+    right: 18rpx;
+    width: 143.42rpx;
+    height: 23.9rpx;
+    border-radius: 5px;
+    opacity: 1;
+    background: rgba(56, 239, 125, 1);
+    z-index: -1;
+}
+
+/* 2.2.4.1.2.周卡价格文本样式 */
+.week-card-price {
+    margin: 44rpx 0 64rpx 52rpx;
+    width: 100%;
+    height: 26.97%;
+    opacity: 1;
+    font-family: YouSheBiaoTiHei;
+    font-size: 30px;
+    font-weight: bolder;
+    line-height: bolder;
+    letter-spacing: 0em;
+    color: rgba(56, 239, 125, 0.65);
+}
+
+/* 2.2.4.2.中间分割线样式 */
+.middle-line {
+    position: absolute;
+    left: 245rpx;
+    top: 295px;
+    width: 32.5%;
+    height: 0%;
+    transform: rotate(90deg);
+    opacity: 1;
+    border: 2px solid #D8D8D8;
+    border-radius: 5rpx;
+}
+
+/* 2.2.4.3.右边月卡最外层view */
+.right-month-card-view {
+    border: 0px solid #000000;
+    box-shadow: 0px 19px 10px 0px rgba(0, 0, 0, 0.3);
+    width: 300rpx;
+    height: 290rpx;
+    border-radius: 0 40rpx 40rpx 0;
+    opacity: 1;
+    background: rgba(53, 51, 51, 0.65);
+}
+
+/* 2.2.4.3.1.上部分月卡文本显示最外层view */
+.month-card-title-view {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding-top: 20rpx;
+}
+
+/* 2.2.4.3.1.1.上部分月卡标题文本 */
+.month-card-title {
+    font-family: YouSheBiaoTiHei;
+    font-size: 30px;
+    font-weight: bolder;
+    line-height: normal;
+    letter-spacing: 0em;
+    color: #FFFFFF;
+}
+
+/* 2.2.4.3.1.2.月卡文本下方矩形条样式 */
+.month-card-rect {
+    position: absolute;
+    bottom: 10rpx;
+    right: 18rpx;
+    width: 143.42rpx;
+    height: 23.9rpx;
+    border-radius: 5px;
+    opacity: 1;
+    background: rgba(253, 48, 48, 1);
+    z-index: -1;
+}
+
+/* 2.2.4.3.2.月卡价格文本样式 */
+.month-card-price {
+    margin: 44rpx 0 64rpx 52rpx;
+    width: 100%;
+    height: 26.97%;
+    opacity: 1;
+    font-family: YouSheBiaoTiHei;
+    font-size: 30px;
+    font-weight: bolder;
+    line-height: normal;
+    letter-spacing: 0em;
+    color: rgba(253, 48, 48, 0.7);
+}
+
+
+
+
+
+
+
+
+/* 2.3.flex父容器直接子元素的设置 */
+.notice-area {
+    margin-top: 50rpx;
+    width: 100%;
+    height: 340.38rpx;
+    opacity: 1;
+}
+
+/* 2.4.flex父容器直接子元素的设置 */
+.surprise-area {
+    margin-top: 25rpx;
+    width: 100%;
+    height: 340.38rpx;
+    opacity: 1;
+}
+
+/* 2.5.flex父容器直接子元素的设置 */
+.extend-area {
+    margin-top: 25rpx;
+    width: 100%;
+    height: 340.38rpx;
+    opacity: 1;
+}
