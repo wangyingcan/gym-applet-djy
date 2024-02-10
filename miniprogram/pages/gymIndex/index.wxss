@@ -10,7 +10,7 @@ Page {
     width: 750rpx;
 }
 
-/* 2.1.flex父容器直接子元素的设置 */
+/* 2.1.轮播图区 */
 .images-swiper-area {
     margin-top: 25rpx;
     width: 100%;
@@ -89,12 +89,30 @@ Page {
     background: rgba(53, 51, 51, 0.65);
 }
 
+.view-hover {
+    opacity: 0.9;
+    transform: scale(0.95, 0.95);
+    position: relative;
+    top: 3rpx;
+    left: 3rpx;
+    box-shadow: 0px 0px 8px rgba(94, 153, 187, 0.192) inset;
+}
+
 /* 2.2.4.1.1.上部分周卡文本显示最外层view */
 .week-card-title-view {
     position: relative;
     display: flex;
     justify-content: center;
     padding-top: 20rpx
+}
+
+.shopping-area-btn {
+    position: relative;
+    width: 300rpx!important;
+    height: 290rpx;
+    background-color: transparent;
+    padding: 0;
+    outline: none;
 }
 
 /* 2.2.4.1.1.1.周卡文本样式 */
@@ -122,7 +140,7 @@ Page {
 
 /* 2.2.4.1.2.周卡价格文本样式 */
 .week-card-price {
-    margin: 44rpx 0 64rpx 52rpx;
+    margin: 44rpx 0 64rpx 0rpx;
     width: 100%;
     height: 26.97%;
     opacity: 1;
@@ -191,7 +209,7 @@ Page {
 
 /* 2.2.4.3.2.月卡价格文本样式 */
 .month-card-price {
-    margin: 44rpx 0 64rpx 52rpx;
+    margin: 44rpx 0 64rpx 0rpx;
     width: 100%;
     height: 26.97%;
     opacity: 1;
@@ -203,22 +221,39 @@ Page {
     color: rgba(253, 48, 48, 0.7);
 }
 
-
-
-
-
-
-
-
-/* 2.3.flex父容器直接子元素的设置 */
+/* 2.3.公告区 */
 .notice-area {
     margin-top: 50rpx;
     width: 100%;
-    height: 340.38rpx;
+    height: 114rpx;
     opacity: 1;
 }
 
-/* 2.4.flex父容器直接子元素的设置 */
+/* 2.3.1.公告文本外框样式 */
+.notice-text-view {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 14rpx;
+    margin-left: 32rpx;
+    width: 700rpx;
+    height: 60rpx;
+    border-radius: 20rpx;
+    opacity: 1;
+    background: linear-gradient(180deg, #D8D8D8 0%, rgba(216, 216, 216, 0) 100%);
+}
+
+/* 2.3.1.1.公告文本样式 */
+.notice-text {
+    font-family: Alibaba PuHuiTi 2.0;
+    font-size: 25rpx;
+    font-weight: normal;
+    line-height: normal;
+    letter-spacing: 0em;
+    color: #3D3D3D;
+}
+
+/* 2.4.惊喜区 */
 .surprise-area {
     margin-top: 25rpx;
     width: 100%;
@@ -226,7 +261,122 @@ Page {
     opacity: 1;
 }
 
-/* 2.5.flex父容器直接子元素的设置 */
+/* 2.4.1.惊喜内容区外层view */
+.surprise-content-view {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 14rpx
+}
+
+/* 2.4.1.1.惊喜区左边区域外层view */
+.left-surprise-view {
+    display: flex;
+    flex-direction: column;
+    width: 300rpx;
+    height: 300rpx;
+    border-radius: 40rpx;
+    opacity: 1;
+    background: #E7E3BD;
+    margin-right: 18rpx;
+}
+
+/* 2.4.1.1.1.惊喜区左边区域顶部标题 */
+.left-surprise-title {
+    margin-left: 30rpx;
+    margin-top: 32.64rpx;
+    font-family: YouSheBiaoTiHei;
+    font-size: 40rpx;
+    font-weight: bolder;
+    line-height: normal;
+    letter-spacing: 0em;
+    color: #3D3D3D;
+}
+
+/* 2.4.1.2.惊喜区左边区域中部tip外层view */
+.left-surprise-tip-view {
+    display: flex;
+    margin-left: 28rpx;
+    margin-top: 30.44rpx;
+}
+
+/* 2.4.1.2.1.惊喜区左边区域中部tip标题 */
+.left-surprise-tip-title {
+    color: #3D3D3D;
+    font-family: Yozai;
+    font-size: 24rpx;
+    opacity: 1;
+}
+
+/* 2.4.1.2.2.惊喜区左边区域中部tip右箭头 */
+.left-surprise-tip-arrow {
+    width: 30rpx;
+    height: 34rpx
+}
+
+/* 2.4.1.3.惊喜区左边区域底部图像 */
+.left-surprise-image {
+    width: 100rpx;
+    height: 114.5rpx;
+    margin-left: 178rpx;
+    margin-top: 18.32rpx;
+}
+
+/* 2.4.1.2.惊喜区右边区域外层view  */
+.right-surprise-view {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 18rpx
+}
+
+/* 2.4.1.2.1.右边区域上半部分最外层view */
+.right-surprise-top-view {
+    width: 300rpx;
+    height: 140rpx;
+    border-radius: 40rpx;
+    opacity: 1;
+    background: #DDE7DC;
+}
+
+
+/* 2.4.1.2.2.右边区域下半部分最外层view */
+.right-surprise-bottom-view {
+    width: 300rpx;
+    height: 140rpx;
+    border-radius: 40rpx;
+    opacity: 1;
+    background: #F2DDCA;
+}
+
+/* 2.4.1.2.2.1.右边区域顶部标题 */
+.right-surprise-title {
+    margin-left: 30rpx;
+    margin-top: 22rpx;
+    font-family: YouSheBiaoTiHei;
+    font-size: 40rpx;
+    font-weight: bolder;
+    line-height: normal;
+    letter-spacing: 0em;
+    color: #3D3D3D;
+}
+
+/* 2.4.1.2.2.2.右边区域底部tip最外层view */
+.right-surprise-tip-view {
+    display: flex;
+    margin-left: 28rpx;
+    margin-top: 20rpx;
+}
+
+/* 2.4.1.2.2.3.右边区域底部tip字体 */
+.right-surprise-tip-title {
+    color: #3D3D3D;
+    font-family: Yozai;
+    font-size: 12px;
+    opacity: 1;
+}
+
+/* 2.5.扩展功能区 */
 .extend-area {
     margin-top: 25rpx;
     width: 100%;

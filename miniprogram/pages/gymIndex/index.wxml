@@ -26,33 +26,37 @@
         <!-- 1.2.2.购买区内容 -->
         <view class="shopping-view">
             <!-- 1.2.2.1.左边“周卡”部分 -->
-            <view class="left-week-card-view">
-                <!-- 1.2.2.1.1.上面“周卡文本”显示 -->
-                <view class="week-card-title-view">
-                    <text class="week-card-title">周卡</text>
-                    <view class="week-card-rect"></view>
-                </view>
-                <!-- 1.2.2.1.2.下面“周卡价格”显示 -->
-                <view class="week-card-price">300元</view>
+            <view class="left-week-card-view" hover-class="view-hover" >
+                <button class="shopping-area-btn" bind:tap="onWeekCardClick">
+                    <!-- 1.2.2.1.1.上面“周卡文本”显示 -->
+                    <view class="week-card-title-view">
+                        <text class="week-card-title">周卡</text>
+                        <view class="week-card-rect"></view>
+                    </view>
+                    <!-- 1.2.2.1.2.下面“周卡价格”显示 -->
+                    <view class="week-card-price">300元</view>
+                </button>
             </view>
 
             <!-- 1.2.2.3.中间白色分界线 -->
-            <view class="middle-line"></view>
+            <!-- <view class="middle-line"></view> -->
 
             <!-- 1.2.2.2.右边“月卡”部分 -->
-            <view class="right-month-card-view">
-                <!-- 1.2.2.2.1.上面“月卡文本”显示 -->
-                <view class="month-card-title-view">
-                    <text class="month-card-title">月卡</text>
-                    <view class="month-card-rect"></view>
-                </view>
-                <!-- 1.2.2.2.2.下面“月卡价格”显示 -->
-                <view class="month-card-price">700元</view>
+            <view class="right-month-card-view" hover-class="view-hover">
+                <button class="shopping-area-btn" bind:tap="onMonthCardClick">
+                    <!-- 1.2.2.2.1.上面“月卡文本”显示 -->
+                    <view class="month-card-title-view">
+                        <text class="month-card-title">月卡</text>
+                        <view class="month-card-rect"></view>
+                    </view>
+                    <!-- 1.2.2.2.2.下面“月卡价格”显示 -->
+                    <view class="month-card-price">700元</view>
+                </button>
             </view>
         </view>
     </view>
 
-    
+
     <!-- 1.3.公告区 -->
     <view class="notice-area">
         <!-- 1.3.1.公告区标题 -->
@@ -61,7 +65,10 @@
             <text class="index-title">公告区</text>
         </view>
         <!-- 1.3.2.公告区内容 -->
-        <view></view>
+        <view class="notice-text-view" bind:tap="onNoticeClick">
+            <!-- 1.3.2.1.公告区文本内容 -->
+            <text class="notice-text">2024新年快乐，祝学员们身体健康，本馆放假详情...</text>
+        </view>
     </view>
     <!-- 1.4.惊喜区 -->
     <view class="surprise-area">
@@ -71,7 +78,45 @@
             <text class="index-title">惊喜区</text>
         </view>
         <!-- 1.4.2.惊喜区内容 -->
-        <view></view>
+        <view class="surprise-content-view">
+            <!-- 1.4.2.1.左边区域 -->
+            <view class="left-surprise-view" hover-class="view-hover" bind:tap="onBossWXClick">
+                <!-- 1.4.2.1.1.顶部标题 -->
+                <view class="left-surprise-title">店长微信</view>
+                <!-- 1.4.2.1.2.中部tip -->
+                <view class="left-surprise-tip-view">
+                    <text class="left-surprise-tip-title">加群更多优惠好礼</text>
+                    <image class="left-surprise-tip-arrow" src="../../images/right_arrow.png" />
+                </view>
+                <!-- 1.4.2.1.3.底部图案 -->
+                <view>
+                    <image class="left-surprise-image" src="../../images/money_god.png" />
+                </view>
+            </view>
+            <!-- 1.4.2.2.右边区域 -->
+            <view class="right-surprise-view">
+                <!-- 1.4.2.2.1.右边区域上半部分 -->
+                <view class="right-surprise-top-view" hover-class="view-hover" bind:tap="onInviteNewUserClick">
+                    <!-- 1.4.2.2.1.1.顶部标题 -->
+                    <view class="right-surprise-title">邀请新用户</view>
+                    <!-- 1.4.2.2.1.2.底部tip -->
+                    <view class="right-surprise-tip-view">
+                        <text class="right-surprise-tip-title">新用户超多优惠券</text>
+                        <image class="left-surprise-tip-arrow" src="../../images/right_arrow.png" />
+                    </view>
+                </view>
+                <!-- 1.4.2.2.2.右边区域下半部分 -->
+                <view class="right-surprise-bottom-view" hover-class="view-hover" bind:tap="onDoubleGroupClick">
+                    <!-- 1.4.2.2.2.1.顶部标题 -->
+                    <view class="right-surprise-title">两人成团</view>
+                    <!-- 1.4.2.2.2.2.底部tip -->
+                    <view class="right-surprise-tip-view">
+                        <text class="right-surprise-tip-title">两人团购，优惠满满</text>
+                        <image class="left-surprise-tip-arrow" src="../../images/right_arrow.png" />
+                    </view>
+                </view>
+            </view>
+        </view>
     </view>
     <!-- 1.5.扩展功能区（公众号推文） -->
     <view class="extend-area">

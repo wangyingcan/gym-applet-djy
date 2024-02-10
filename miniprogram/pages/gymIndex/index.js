@@ -1,6 +1,50 @@
 // pages/gymIndex/index.js
 Page({
 
+
+  // 1.首页事件响应函数
+  // 1.1.周卡按钮点击
+  onWeekCardClick(e){
+    wx.navigateTo({
+      url: '/pages/index/index',
+    })
+  },
+
+  // 1.2.月卡按钮点击
+  onMonthCardClick(e){
+    wx.navigateTo({
+      url:"/pages/index/index",
+    })
+  },
+
+  // 1.3.公告栏view点击
+  onNoticeClick(e){
+    wx.navigateTo({
+      url:"/pages/index/index",
+    })
+  },
+
+  // 1.4.店长微信view点击
+  onBossWXClick(e){
+    wx.navigateTo({
+      url:"/pages/index/index",
+    })
+  },
+
+  // 1.5.邀请新用户view点击
+  onInviteNewUserClick(e){
+    wx.navigateTo({
+      url:"/pages/index/index",
+    })
+  },
+
+  // 1.6.双人成团view点击
+  onDoubleGroupClick(e){
+    wx.navigateTo({
+      url:"/pages/index/index",
+    })
+  },
+
   /**
    * 页面的初始数据
    */
@@ -62,5 +106,5 @@ Page({
    */
   onShareAppMessage() {
 
-  }
+  },
 })
