@@ -1,2 +1,33 @@
-<!--pages/gymAppointment/index.wxml-->
-<text>pages/gymAppointment/index.wxml</text>
+<!-- 1.自定义导航栏（isBack控制左侧返回按钮） -->
+<cu-custom isBack="{{false}}" bgColor="bg-white">
+  <!-- 1.1.左侧返回样式 -->
+  <view slot="backText"></view>
+
+  <!-- 1.2.中部标题 -->
+  <view slot="content">
+    <view class="nav-title">约课</view>
+  </view>
+  <!-- 1.3.右侧样式 -->
+  <view slot="right"></view>
+
+</cu-custom>
+
+<!-- 2.年份、起始日期、切换下一周  显示区域 -->
+<view class="flex justify-around padding" style="align-items: center;">
+  <!-- 2.1.左侧年份 -->
+  <view class="year-view">
+    <text class="year-text">2024</text>
+  </view>
+
+  <!-- 2.2.中部始终日期 -->
+  <view class="date-view">
+    <text class="date-text">5.29 - 6.04</text>
+  </view>
+
+  <!-- 2.3.右侧切换按钮 -->
+  <view>
+    <!-- 2.3.1.根据data中的showNextWeek属性判断展示按钮类型 -->
+    <button wx:if="{{showNextWeek}}" class="cu-btn line-gray round sm shadow able_button" hover-class="button-hover">切换下一周</button> <!-- 可用 -->
+    <button wx:else class="cu-btn line-gray round sm shadow" disabled >切换下一周</button> <!-- 不可用 -->
+  </view>
+</view>

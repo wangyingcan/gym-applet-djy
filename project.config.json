@@ -33,7 +33,6 @@
     "userConfirmedUseCompilerModuleSwitch": false,
     "userConfirmedBundleSwitch": false,
     "packNpmManually": false,
-    "packNpmRelationList": [],
     "minifyWXSS": true
   },
   "appid": "wx56ef27b9604d3826",

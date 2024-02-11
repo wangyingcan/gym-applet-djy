@@ -1,6 +1,6 @@
 /* 0.页面全局样式 */
 Page {
-    background-color: #BDC3C7;
+    background-image: #BDC3C7;
 }
 
 /* 1.最外层父容器的样式 */
@@ -147,7 +147,7 @@ Page {
     font-family: YouSheBiaoTiHei;
     font-size: 30px;
     font-weight: bolder;
-    line-height: bolder;
+    line-height: normal;
     letter-spacing: 0em;
     color: rgba(56, 239, 125, 0.65);
 }

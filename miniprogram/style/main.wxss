@@ -1,0 +1,7 @@
+/* 1.全局引入colorui，而不是使用app.wxss中的默认形式 */
+@import './colorui/main.wxss';
+@import './colorui/icon.wxss';
+@import './colorui/animation.wxss';
+
+/* 2. 单独重置colorui中组件样式的reset.wxss引入 */
+@import './reset.wxss';

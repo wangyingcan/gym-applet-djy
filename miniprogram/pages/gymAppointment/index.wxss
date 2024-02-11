@@ -1,1 +1,59 @@
-/* pages/gymAppointment/index.wxss */
+/* 1.自定义导航栏标题 */
+.nav-title {
+  font-size: 36rpx;
+  color: #3D3D3D;
+  font-weight: bolder;
+}
+
+/* 2.1.年份展示外部view */
+.year-view {
+  width: 70rpx;
+  height: 50rpx;
+  opacity: 1;
+  border-radius: 10rpx;
+  background: #444444;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 2.2.年份展示内部文本 */
+.year-text {
+  font-size: 24rpx;
+  color: #FFFFFF;
+}
+
+/* 2.3.始终日期外部view */
+.date-view {
+  width: 300rpx;
+  height: 70rpx;
+  border-radius: 10rpx;
+  opacity: 1;
+  background: #F4F4F4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 2.4.始终日期内部文本 */
+.date-text {
+  font-size: 48rpx;
+  color: #444444;
+  font-weight: normal;
+}
+
+/* 2.5.可用按钮的样式 */
+.able_button {
+  color: #3D3D3D;
+  font-weight: bolder;
+}
+
+/* 2.6.可用按钮点击时样式 */
+.button-hover {
+  opacity: 0.9;
+  transform: scale(0.95, 0.95);
+  position: relative;
+  top: 3rpx;
+  left: 3rpx;
+  box-shadow: 0px 0px 8px rgba(94, 153, 187, 0.192) inset;
+}

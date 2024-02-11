@@ -1,5 +1,8 @@
-/**app.wxss**/
-.container {
+/* 1.引入colorui到app.wxss */
+@import 'style/main.wxss';
+
+/* 2.下面是云开发模版中的app.wxss，当前只会影响“quickstart”的样式，故注释 */
+/* .container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,4 +27,4 @@ page {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-}
+} */
