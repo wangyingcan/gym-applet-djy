@@ -17,7 +17,9 @@
     "pages/sumRecordResult/index",
     "pages/cloudBackend/index",
     "pages/singleTemplate/index",
-    "pages/web/index"
+    "pages/web/index",
+    "pages/administrator",
+    "pages/administrator/index"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
@@ -31,6 +33,7 @@
     "color": "#fff",
     "selectedColor": "#444",
     "backgroundColor": "#BFBFBF",
+    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/gymIndex/index",

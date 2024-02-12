@@ -1,0 +1,1 @@
+<button bind:tap="insertCourses">添加数据</button>

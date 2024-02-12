@@ -7,6 +7,13 @@
     "miniprogram": {
       "list": [
         {
+          "name": "我的卡包",
+          "pathName": "pages/gymMyCardPack/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "约课",
           "pathName": "pages/gymAppointment/index",
           "query": "",

@@ -1,4 +1,4 @@
-// pages/gymMyCardPack/index.js
+// pages/administrator.js
 Page({
 
   /**
@@ -7,13 +7,6 @@ Page({
   data: {
 
   },
-
-  redirectToAdministrator(){
-    wx.navigateTo({
-      url: '/pages/administrator/index',
-    })
-  },
-
 
   /**
    * 生命周期函数--监听页面加载

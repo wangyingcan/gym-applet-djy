@@ -109,6 +109,7 @@ Page {
 .shopping-area-btn {
     position: relative;
     width: 300rpx!important;
+    border-radius: 40rpx;
     height: 290rpx;
     background-color: transparent;
     padding: 0;
