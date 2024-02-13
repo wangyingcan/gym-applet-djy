@@ -1,4 +1,5 @@
 // app.js
+const {envList} =require('./envList')
 App({
   onLaunch: function () {
     if (!wx.cloud) {
@@ -10,6 +11,7 @@ App({
         //   此处请填入环境 ID, 环境 ID 可打开云控制台查看
         //   如不填则使用默认环境（第一个创建的环境）
         // env: 'my-env-id',
+        env:envList[0].envId,
         traceUser: true,
       });
     }

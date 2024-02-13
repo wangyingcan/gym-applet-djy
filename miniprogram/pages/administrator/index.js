@@ -17,8 +17,8 @@ Page({
   insertCourses(){
     courseTable.add({
       data:{
-        "date": "2024-2-12",
-        "index": 1,
+        "date": "2024.3.3",
+        "index": 7,
         "courses": [
           {
             "startHour": 9,
@@ -42,6 +42,16 @@ Page({
       console.log('插入成功',res)
     }).catch(err=>{
      console.log('插入失败',err)
+    })
+  },
+
+  callFunction(e){
+    wx.cloud.callFunction({
+      name:'setInterval'
+    }).then( res => {
+      console.log("调用了setInterval吗1？？？"+res)
+    }).catch( err => {
+      console.log("调用了setInterval吗2？？？"+err)
     })
   }
 

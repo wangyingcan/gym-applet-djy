@@ -1,1 +1,2 @@
 <button bind:tap="insertCourses">添加数据</button>
+<button bind:tap="callFunction">调用定时器修改</button>

@@ -1,3 +1,4 @@
+import Toast from '@vant/weapp/toast/toast';
 // 0.引入数据库
 const db=wx.cloud.database();
 // 1.获取集合
@@ -5,6 +6,9 @@ const courseTable =db.collection('CourseTable');
 // 2.设置本周课程缓存、下周课程缓存
 const thisWeekCourseCacheKey = 'thisWeekCourses';
 const nextWeekCourseCacheKey = 'nextWeekCourses';
+
+
+
 
 Page({
 
@@ -14,6 +18,8 @@ Page({
   data: {
     // 是否允许切换下一周(是否到了周五22点、是否到了周日22点)   
     showNextWeek: false, 
+    // 展示此周或是下周数据(true本周、false下周两个取值)
+    thisWeekOrNextWeek: false,
     // 今天的日期，可以通过Date获取
     // today的年份
     // startDay的月份
@@ -25,10 +31,16 @@ Page({
     weekIndexText: ['一', '二', '三', '四', '五', '六', '日'],// index和周数汉字映射
     monthIndexText: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二', ],// index和月份汉字映射
     weekDayCount: 7,// 一周的天数
-    // 这一周的日期数组
+    // 这一周的日期数组（12）
     thisWeekDates:[],
-    // 下一周的日期数组
+    // 下一周的日期数组（2024.2.19）
     nextWeekDates:[],
+    // 下一周的年份nextYear
+    // 下一周的月份nextMonth
+    // 下一周的起始日期nextStartDay
+    // 下一周的终止日期nextEndDay
+    // 下一周的日期数组（19）
+    nextWeekDates1:[],
     // 这一周的课程真实数据
     courseList:[],
     // 下一周的课程真实数据
@@ -45,7 +57,8 @@ Page({
     // 0.获取系统宽度，由于给课程块定位
     const {windowWidth} =wx.getSystemInfoSync()
     this.setData({
-      windowWidth
+      windowWidth,
+      thisWeekOrNextWeek:true,
     })
     this.refreshData().then(() => {
       // 1.更新完之后就可以设置firstEntry了
@@ -53,9 +66,6 @@ Page({
         firstEntry:false
       })
     });
-
-    // 2.设置每小时更新的定时器
-    setInterval(this.updateCourseStatus,60*60*1000)
   },
   
   onShow() {
@@ -64,11 +74,45 @@ Page({
 
   // 刷新按钮点击事件
   refresh(e){
+    const toast = Toast.loading({
+      duration: 0, // 持续展示 toast
+      forbidClick: true,
+      message: '倒计时 3 秒',
+      selector: '#custom-selector',
+    });
+    
+    let second = 3;
+    const timer = setInterval(() => {
+      second--;
+      if (second) {
+        toast.setData({
+          message: `倒计时 ${second} 秒`,
+        });
+      } else {
+        clearInterval(timer);
+        Toast.clear();
+      }
+    }, 1000); 
+
     this.refreshData()
   },
   
-  // 刷新：清缓存、加载数据库数据
+  // 刷新：清缓存、加载数据库数据、切换下一周的状态
   refreshData() {
+    // 0.周五22点到周日22点内showNextWeek为true,否则为false（numOfWeek有星期信息，new Date().getHours()有小时信息）
+    const numOfWeek = this.data.numOfWeek;
+    const nowHour = new Date().getHours();
+    // 0.1.周五22点之后，周六，周日22点之前
+    if((numOfWeek==5&&nowHour>=22)||(numOfWeek==6)||(numOfWeek==0&&nowHour<22)){
+      this.setData({
+        showNextWeek:true
+      })
+    }else{ 
+      this.setData({
+        showNextWeek:false
+      })
+    }
+
     // 1.获取今天的日期，同时会调用getTodayMoreInfo函数，获取更多信息
     this.getToday();
     // 2.去除本地缓存
@@ -159,7 +203,7 @@ Page({
   // 1.获取今天的日期
   getToday() {
     // 1.1获取此刻的Date对象
-    const date = new Date();
+    const date = new Date('2024-2-24 00:25:00');
     // 1.2转换为today格式
     const todayStr = date.getFullYear() + '.' + (date.getMonth() + 1) + '.' + date.getDate();
     console.log("today : "+todayStr);
@@ -176,7 +220,7 @@ Page({
 
   // 获取一周的日期
   getWeekDates(startDayOfWeek) {
-    let nowWeekDates = [];    // 初始化数组
+    let nowWeekDates = [];    // 初始化数组(12)
     let thisWeekDates = [];    // 初始化数组(2024.2.12)
     let nextWeekDates = [];    // 初始化数组(2024.2.19)
     for(let i = 0; i < 7; i++){   // 遍历获取一周日期
@@ -186,7 +230,24 @@ Page({
       const jDate = new Date(startDayOfWeek.getTime() + (i + 7) * 1000 * 60 * 60 * 24);
       nextWeekDates.push(jDate.getFullYear() + '.' + (jDate.getMonth() + 1) + '.' + jDate.getDate());
     }
-    return [nowWeekDates, thisWeekDates, nextWeekDates];
+    // 获取下一周的年份
+    let nextYear=nextWeekDates[0].split('.')[0];
+    console.log(nextYear);
+    // 获取下一周的月份
+    let nextMonth=nextWeekDates[0].split('.')[1];
+    console.log(nextMonth);
+    // 获取下一周的起始日期
+    let nextStartDay=nextWeekDates[0].split('.')[1]+'.'+nextWeekDates[0].split('.')[2];
+    console.log(nextStartDay);
+    // 获取下一周的终止日期
+    let nextEndDay=nextWeekDates[6].split('.')[1]+'.'+nextWeekDates[6].split('.')[2];
+    console.log(nextEndDay);
+    // 获取下一周的日期数组
+    let nextWeekDates1=[];
+    for(let i=0;i<7;i++){
+      nextWeekDates1.push(nextWeekDates[i].split('.')[2]);
+    }
+    return [nowWeekDates, thisWeekDates, nextWeekDates,nextYear,nextMonth,nextStartDay,nextEndDay,nextWeekDates1];
   },
 
   // 2.将今天的日期解析出更多信息（本周始终日期、本周日期数组、本周年月日数组、下周年月日数组）
@@ -225,12 +286,13 @@ Page({
     console.log(startDay);
     console.log(endDay);
 
-    let [nowWeekDates, thisWeekDates,nextWeekDates] = this.getWeekDates(startDayOfWeek);
+    let [nowWeekDates, thisWeekDates,nextWeekDates,nextYear,nextMonth,nextStartDay,nextEndDay,nextWeekDates1] = this.getWeekDates(startDayOfWeek);
 
     // 验证通过
     console.log(nowWeekDates);
     console.log(thisWeekDates);
     console.log(nextWeekDates);
+    console.log(nextWeekDates1);
 
     // 设置所有数据
     this.setData({
@@ -240,6 +302,11 @@ Page({
       nowWeekDates: nowWeekDates,
       thisWeekDates: thisWeekDates,
       nextWeekDates: nextWeekDates,
+      nextYear:nextYear,
+      nextMonth:nextMonth,
+      nextStartDay:nextStartDay,
+      nextEndDay:nextEndDay,
+      nextWeekDates1:nextWeekDates1
     })
   },
 
@@ -261,190 +328,10 @@ Page({
     });
   },
 
-  // 小时定时器
-  updateCourseStatus(){
-    // 1.获取当前的星期、小时
-    const now = new Date();
-    const numOfWeek = this.data.numOfWeek;
-    const nowHour = now.getHours();
-    // 默认最初始的时候，是周一，周二数据正常，周三之后数据status默认是3
-    // 2.每小时对当天课程的逻辑：同一天的课程（index+numOfWeek【注意周日】控制）当前小时（nowHour）如果超过 startHour+courseLength，将课程status改为3，写入数据库
-    // 2.1获取courseTable中当天数据
-    courseTable.where({
-      date:this.data.today
-    }).get().then(res=>{
-      // 2.2打印今天课程数据
-      console.log(res.data);
-      if(res.data.length>0){
-        // 2.3遍历课程数据
-        let courses = res.data[0].courses;
-        for(let i=0;i<courses.length;i++){
-          let course = courses[i];
-          // 2.4状态非3的可能就要进行状态更新
-          if(course.status !== 3){
-            // 2.5判断是否超时
-            if(course.startHour + course.courseLength <= nowHour){
-              course.status = 3;
-            }
-          }
-        }
-        // 2.6更新数据库
-        courseTable.doc(res.data[0]._id).update({
-          data:{
-            courses
-          }
-        }).then(res=>{
-          console.log('更新成功',res)
-        }).catch(err=>{
-          console.log('更新失败',err)
-        })
-      }
+  // 按钮切换事件响应
+  onSwitchWeekType(){
+    this.setData({
+      thisWeekOrNextWeek:!this.data.thisWeekOrNextWeek
     })
-
-    // 3.周一~周四 22点时的逻辑：将后天的课程status改为1，写入数据库
-    // 3.1判断是否是周一~周四
-    if(numOfWeek>=1&&numOfWeek<=4){
-      // 3.2判断是否已经到了22点
-      if(nowHour==22){
-        // 3.3获取后天的日期
-        const afterTomorrow = this.data.thisWeekDates[numOfWeek+1];
-        // 3.4获取后天的课程
-        courseTable.where({
-          date:afterTomorrow
-        }).get().then(res=>{
-          // 3.5打印后天课程数据
-          console.log(res.data);
-          if(res.data.length>0){
-            // 3.6遍历课程数据
-            let courses = res.data[0].courses;
-            for(let i=0;i<courses.length;i++){
-              let course = courses[i];
-              // 3.7所有课程状态设置为1
-              course.status = 1;
-            }
-            // 3.8更新数据库
-            courseTable.doc(res.data[0]._id).update({
-              data:{
-                courses
-              }
-            }).then(res=>{
-              console.log('更新成功',res)
-            }).catch(err=>{
-              console.log('更新失败',err)
-            })
-          }
-        
-        })
-      }
-    }
-
-    // 4.周五 22点时的逻辑：将周日、下周一、二的课程status改为1，写入数据库；开放”切换下一周“按钮
-    // 4.1判断是否是周五
-    if(numOfWeek==5){
-      // 4.2判断是否已经到了22点
-      if(nowHour==22){
-        // 4.3获取周日、下周一、二的日期
-        const sunday = this.data.thisWeekDates[6];
-        const nextMonday = this.data.nextWeekDates[0];
-        const nextTuesday = this.data.nextWeekDates[1];
-        // 4.4获取周日、下周一、二的课程
-        courseTable.where({
-          date:sunday
-        }).get().then(res=>{
-          // 4.5打印周日课程数据
-          console.log(res.data);
-          if(res.data.length>0){
-            // 4.6遍历课程数据
-            let courses = res.data[0].courses;
-            for(let i=0;i<courses.length;i++){
-              let course = courses[i];
-              // 4.7所有课程状态设置为1
-              course.status = 1;
-            }
-            // 4.8更新数据库
-            courseTable.doc(res.data[0]._id).update({
-              data:{
-                courses
-              }
-            }).then(res=>{
-              console.log('更新成功',res)
-            }).catch(err=>{
-              console.log('更新失败',err)
-            })
-          }
-        })
-        courseTable.where({
-          date:nextMonday
-        }).get().then(res=>{
-          // 4.9打印下周一课程数据
-          console.log(res.data);
-          if(res.data.length>0){
-            // 4.10遍历课程数据
-            let courses = res.data[0].courses;
-            for(let i=0;i<courses.length;i++){
-              let course = courses[i];
-              // 4.11所有课程状态设置为1
-              course.status = 1;
-            }
-            // 4.12更新数据库
-            courseTable.doc(res.data[0]._id).update({
-              data:{
-                courses
-              }
-            }).then(res=>{
-              console.log('更新成功',res)
-            }).catch(err=>{
-              console.log('更新失败',err)
-            })
-          }
-        })
-        courseTable.where({
-          date:nextTuesday
-        }).get().then(res=>{
-          // 4.13打印下周二课程数据
-          console.log(res.data);
-          if(res.data.length>0){
-            // 4.14遍历课程数据
-            let courses = res.data[0].courses;
-            for(let i=0;i<courses.length;i++){
-              let course = courses[i];
-              // 4.11所有课程状态设置为1
-              course.status = 1;
-            }
-            // 4.12更新数据库
-            courseTable.doc(res.data[0]._id).update({
-              data:{
-                courses
-              }
-            }).then(res=>{
-              console.log('更新成功',res)
-            }).catch(err=>{
-              console.log('更新失败',err)
-            })
-          }
-        })
-      }
-
-      // 4.15开放”切换下一周“按钮
-      this.setData({
-        showNextWeek:true
-      })
-    }
-
-    // 5.周六 22点时的逻辑：不更新
-
-    // 6.周日 22点时的逻辑: 关闭”切换下一周“按钮
-    if(numOfWeek==6){
-      if(nowHour==22){
-        this.setData({
-          showNextWeek:false
-        })
-      }
-    }
-
-    // 7.刷新页面
-    this.refreshData();
-  }
-
-  
+  },
 })

@@ -36,7 +36,7 @@
     "minifyWXSS": true
   },
   "appid": "wx56ef27b9604d3826",
-  "projectname": "quickstart-wx-cloud",
+  "projectname": "自在健身房",
   "libVersion": "2.20.1",
   "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
   "condition": {

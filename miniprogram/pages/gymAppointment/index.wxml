@@ -1,5 +1,6 @@
+<van-toast id="custom-selector" />
 <!-- 1.自定义导航栏（isBack控制左侧返回按钮） -->
-<cu-custom bgColor="bg-white" customBack="{{true}}" bind:back="update" bind:back="update">
+<cu-custom bgColor="bg-white" customBack="{{true}}" bind:back="update">
   <!-- 1.1.左侧返回样式 -->
   <view slot="backText">
   <view class="cuIcon-refresh" style="font-size: 40rpx;" bind:tap="refresh"></view>
@@ -18,18 +19,23 @@
 <view class="padding flex justify-around year-date-nextWeek-view">
   <!-- 2.1.左侧年份 -->
   <view class="year-view">
-    <text class="year-text">{{year}}</text>
+    <text class="year-text">{{showNextWeek ? (thisWeekOrNextWeek ? year : nextYear) : year}}</text>
   </view>
 
   <!-- 2.2.中部始终日期 -->
   <view class="date-view">
-    <text class="date-text">{{startDay}} - {{endDay}}</text>
+    <text class="date-text">{{showNextWeek ? (thisWeekOrNextWeek ? startDay : nextStartDay) : startDay}}</text>
+    <text class="date-text">-</text>
+    <text class="date-text"> {{ showNextWeek ? (thisWeekOrNextWeek ? endDay : nextEndDay) : endDay}}</text>
   </view>
 
   <!-- 2.3.右侧切换按钮 -->
   <view>
     <!-- 2.3.1.根据data中的showNextWeek属性判断展示按钮类型 -->
-    <button wx:if="{{showNextWeek}}" class="cu-btn line-gray round sm shadow able_button" hover-class="button-hover">切换下一周</button> <!-- 可用 -->
+    <button wx:if="{{showNextWeek}}" class="cu-btn line-gray round sm shadow able_button" hover-class="button-hover" bind:tap="onSwitchWeekType">
+      <text wx:if="{{thisWeekOrNextWeek}}">切换下周</text>
+      <text wx:else>切回本周</text>
+    </button> <!-- 可用 -->
     <button wx:else class="cu-btn line-gray round sm shadow" disabled>切换下一周</button> <!-- 不可用 -->
   </view>
 </view>
@@ -38,14 +44,14 @@
 <view class="week-list">
   <!-- 3.1.左侧固定月份 -->
   <view class="now-month">
-    <text>{{month<10?'0'+month:month}}</text>
+    <text>{{showNextWeek ? (thisWeekOrNextWeek ? (month < 10?'0'+month:month) : (nextMonth < 10?'0'+nextMonth:nextMonth)  ) : (month < 10?'0'+month:month)   }}</text>
     <text>月</text>
   </view>
 
   <!-- 3.2.右侧周数显示，列表渲染 -->
-  <view class="week-item {{day==nowWeekDates[index]?'active': ''}}" wx:for="{{weekDayCount}}">
-    <text class="week-name {{day==nowWeekDates[index]?'active': ''}}">周{{weekIndexText[index]}}</text>
-    <text class="week-date {{day==nowWeekDates[index]?'active': ''}}">{{nowWeekDates[index] == 1 ? ((month == 12 ?  monthIndexText[0]: monthIndexText[month]) + '月') :(nowWeekDates[index] < 9 ? '0' : '' ) + nowWeekDates[index] + '日' }}</text>
+  <view class="week-item {{(thisWeekOrNextWeek == true&&day==nowWeekDates[index])?'active': ''}}" wx:for="{{weekDayCount}}" wx:key>
+    <text class="week-name {{(thisWeekOrNextWeek == true&&day==nowWeekDates[index])?'active': ''}}">周{{weekIndexText[index]}}</text>
+    <text class="week-date {{(thisWeekOrNextWeek == true&&day==nowWeekDates[index])?'active': ''}}">{{showNextWeek? (thisWeekOrNextWeek?(nowWeekDates[index] == 1 ? ((month == 12 ?  monthIndexText[0]: monthIndexText[month]) + '月') :(nowWeekDates[index] < 9 ? '0' : '' ) + nowWeekDates[index] + '日' ):(nextWeekDates1[index] == 1 ? ((nextMonth == 12 ?  monthIndexText[0]: monthIndexText[nextMonth]) + '月') :(nextWeekDates1[index] < 9 ? '0' : '' ) + nextWeekDates1[index] + '日' )) :(nowWeekDates[index] == 1 ? ((month == 12 ?  monthIndexText[0]: monthIndexText[month]) + '月') :(nowWeekDates[index] < 9 ? '0' : '' ) + nowWeekDates[index] + '日' ) }}</text>
   </view>
 </view>
 
@@ -58,13 +64,15 @@
     </view>
   </view>
 
+  <van-toast id="custom-selector"/>
+
   <!-- 4.2.右侧课程块展示区 -->
   <!-- 4.2.1 遍历此周课程的list -->
   <view class="course-list">
     <!-- 4.2.2 外部的课程块（利用这里的padding设计间隔）  -->
     <!-- top、left解课程块定位问题，前者和startHour有关，后者和index（week）有关；height和课程时长有关 -->
-    <block wx:for="{{courseList}}" wx:for-item="day">     <!--第一层for循环，遍历每一天-->
-      <block wx:for="{{day.courses}}" wx:for-item="course">       <!--第二层for循环，遍历每节课-->
+    <block wx:for="{{showNextWeek?(thisWeekOrNextWeek?courseList:nextWeekCourseList):courseList}}" wx:for-item="day" wx:key>     <!--第一层for循环，遍历每一天-->
+      <block wx:for="{{day.courses}}" wx:for-item="course" wx:key>       <!--第二层for循环，遍历每节课-->
         <view class="course-item" style="top:{{(course.startHour-9)*120}}rpx;left:{{(day.index-1)*((windowWidth * 2 - 50)/7)}}rpx;height:{{course.courseLength*120}}rpx;">      
           <!-- 4.2.3 课程信息 -->
           <view class="course-item__content.status1" wx:if="{{course.status==1}}">

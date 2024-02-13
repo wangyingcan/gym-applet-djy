@@ -1,4 +1,6 @@
-// pages/gymMyCardPack/index.js
+import Toast from '@vant/weapp/toast/toast';
+
+
 Page({
 
   /**
@@ -6,6 +8,28 @@ Page({
    */
   data: {
 
+  },
+
+  getToast(){
+    const toast = Toast.loading({
+      duration: 0, // 持续展示 toast
+      forbidClick: true,  // 展示过程中不允许其余点击事件
+      message:"倒计时",
+      selector: '#custom-selector',
+    });
+    
+    let second = 3;
+    const timer = setInterval(() => {
+      second--;
+      if (second) {
+        toast.setData({
+          message: `倒计时 ${second} 秒`,
+        });
+      } else {
+        clearInterval(timer);
+        Toast.clear();
+      }
+    }, 1000);    
   },
 
   redirectToAdministrator(){

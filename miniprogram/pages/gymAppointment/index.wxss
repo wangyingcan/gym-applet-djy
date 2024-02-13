@@ -53,6 +53,7 @@
   font-size: 48rpx;
   color: #444444;
   font-weight: normal;
+  padding:4rpx;
 }
 
 /* 2.5.可用按钮的样式 */
