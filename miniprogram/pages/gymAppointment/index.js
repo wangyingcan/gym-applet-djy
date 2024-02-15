@@ -7,9 +7,6 @@ const courseTable =db.collection('CourseTable');
 const thisWeekCourseCacheKey = 'thisWeekCourses';
 const nextWeekCourseCacheKey = 'nextWeekCourses';
 
-
-
-
 Page({
 
   /**
@@ -53,7 +50,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    let that=this;
+    console.log("onLoad函数执行了");
+    // console.log("外部this："+JSON.stringify(this))
     // 0.获取系统宽度，由于给课程块定位
     const {windowWidth} =wx.getSystemInfoSync()
     this.setData({
@@ -62,18 +60,16 @@ Page({
     })
     this.refreshData().then(() => {
       // 1.更新完之后就可以设置firstEntry了
-      that.setData({
+      // console.log("内部this："+JSON.stringify(this))
+      this.setData({
         firstEntry:false
       })
     });
   },
-  
-  onShow() {
-    this.refreshData();
-  },
 
   // 刷新按钮点击事件
   refresh(e){
+    console.log("refresh函数执行了");
     const toast = Toast.loading({
       duration: 0, // 持续展示 toast
       forbidClick: true,
@@ -99,6 +95,7 @@ Page({
   
   // 刷新：清缓存、加载数据库数据、切换下一周的状态
   refreshData() {
+    console.log("refreshData函数执行了");
     // 0.周五22点到周日22点内showNextWeek为true,否则为false（numOfWeek有星期信息，new Date().getHours()有小时信息）
     const numOfWeek = this.data.numOfWeek;
     const nowHour = new Date().getHours();
@@ -124,6 +121,7 @@ Page({
 
   // 0.获取课程信息
   async getData(){
+    console.log("getData函数执行了");
     if(this.data.firstEntry){     //请注意写法
       // 显示加载提示
       wx.showLoading({
@@ -147,15 +145,15 @@ Page({
     let thisWeekDates = this.data.thisWeekDates;
     // 0.2.获取下一周的每一天的日期数组（2024.2.19形式）
     let nextWeekDates = this.data.nextWeekDates;
-    console.log(thisWeekDates);
-    console.log(nextWeekDates);
+    //console.log(thisWeekDates);
+    //console.log(nextWeekDates);
     // 0.3.获取这周的课程信息
     let courseList = [];    // 初始化数组
     for(let i=0;i<7;i++){
       await courseTable.where({
         date:thisWeekDates[i]
       }).get().then(res=>{
-        console.log(res.data);
+        // console.log(res.data);
         if(res.data.length>0){
           courseList.push(res.data[0]);
         }
@@ -173,7 +171,7 @@ Page({
       await courseTable.where({
         date:nextWeekDates[i]
       }).get().then(res=>{
-        console.log(res.data);
+        // console.log(res.data);
         if(res.data.length>0){
           nextWeekCourseList.push(res.data[0]);
         }
@@ -188,10 +186,12 @@ Page({
     // 隐藏加载提示
     wx.hideLoading();
     if(!this.data.firstEntry){
-      wx.showToast({
-        title: '更新成功',
-        icon: "success"
-      })
+      // wx.showToast({
+      //   title: '更新成功',
+      //   icon: "success"
+      // })
+
+      Toast.success('更新成功');
     }
     // 0.5.更新数据
     this.setData({
@@ -202,11 +202,12 @@ Page({
 
   // 1.获取今天的日期
   getToday() {
+    console.log("getToday函数执行了");
     // 1.1获取此刻的Date对象
-    const date = new Date('2024-2-24 00:25:00');
+    const date = new Date();
     // 1.2转换为today格式
     const todayStr = date.getFullYear() + '.' + (date.getMonth() + 1) + '.' + date.getDate();
-    console.log("today : "+todayStr);
+    // console.log("today : "+todayStr);
     // 1.3更新today
     this.setData({
       today:todayStr,
@@ -220,6 +221,7 @@ Page({
 
   // 获取一周的日期
   getWeekDates(startDayOfWeek) {
+    console.log("getWeekDates函数执行了");
     let nowWeekDates = [];    // 初始化数组(12)
     let thisWeekDates = [];    // 初始化数组(2024.2.12)
     let nextWeekDates = [];    // 初始化数组(2024.2.19)
@@ -232,16 +234,16 @@ Page({
     }
     // 获取下一周的年份
     let nextYear=nextWeekDates[0].split('.')[0];
-    console.log(nextYear);
+    // console.log(nextYear);
     // 获取下一周的月份
     let nextMonth=nextWeekDates[0].split('.')[1];
-    console.log(nextMonth);
+    // console.log(nextMonth);
     // 获取下一周的起始日期
     let nextStartDay=nextWeekDates[0].split('.')[1]+'.'+nextWeekDates[0].split('.')[2];
-    console.log(nextStartDay);
+    // console.log(nextStartDay);
     // 获取下一周的终止日期
     let nextEndDay=nextWeekDates[6].split('.')[1]+'.'+nextWeekDates[6].split('.')[2];
-    console.log(nextEndDay);
+    // console.log(nextEndDay);
     // 获取下一周的日期数组
     let nextWeekDates1=[];
     for(let i=0;i<7;i++){
@@ -252,6 +254,7 @@ Page({
 
   // 2.将今天的日期解析出更多信息（本周始终日期、本周日期数组、本周年月日数组、下周年月日数组）
   getTodayMoreInfo(year,month,day){
+    console.log("getTodayMoreInfo函数执行了");
     // 2.1获取今天信息
     const dayOfWeek=new Date(year,month,day).getDay();// 星期(1开头代表周一、0代表周日)
 
@@ -259,17 +262,17 @@ Page({
     let startDayOfWeekTime, endDayOfWeekTime, startDayOfWeek, endDayOfWeek, startDay, endDay;
     if(dayOfWeek == 1){
       // 今天周一时
-      console.log("周一");
+      // console.log("周一");
       startDayOfWeekTime = new Date(year, month, day).getTime();    // 起始日期（毫秒数）
       endDayOfWeekTime = startDayOfWeekTime + 1000 * 60 * 60 * 24 * 6;    // 终止日期（毫秒数）
     } else if(dayOfWeek == 0){
       // 今天周日时
-      console.log("周日");
+      // console.log("周日");
       endDayOfWeekTime = new Date(year, month, day).getTime();
       startDayOfWeekTime = endDayOfWeekTime - 1000 * 60 * 60 * 24 * 6; 
     } else {
       // 周中时
-      console.log("今天周" + dayOfWeek);
+      // console.log("今天周" + dayOfWeek);
       let todayOfWeekTime = new Date(year, month, day).getTime();
       let toStartGap = 1000 * 60 * 60 * 24 * (dayOfWeek - 1);
       let toEndGap = 1000 * 60 * 60 * 24 * (7 - dayOfWeek);
@@ -283,16 +286,16 @@ Page({
     endDay = (endDayOfWeek.getMonth() + 1) + '.' + endDayOfWeek.getDate();    // 终止日期（2.18形式）
 
     // 验证通过
-    console.log(startDay);
-    console.log(endDay);
+    // console.log(startDay);
+    // console.log(endDay);
 
     let [nowWeekDates, thisWeekDates,nextWeekDates,nextYear,nextMonth,nextStartDay,nextEndDay,nextWeekDates1] = this.getWeekDates(startDayOfWeek);
 
     // 验证通过
-    console.log(nowWeekDates);
-    console.log(thisWeekDates);
-    console.log(nextWeekDates);
-    console.log(nextWeekDates1);
+    // console.log(nowWeekDates);
+    // console.log(thisWeekDates);
+    // console.log(nextWeekDates);
+    // console.log(nextWeekDates1);
 
     // 设置所有数据
     this.setData({
@@ -312,6 +315,7 @@ Page({
 
   // 已预约提示
   showBookedAlter(){
+    console.log("showBookedAlter函数执行了");
     wx.showToast({
       title:"该课程已被预约，图中绿色边框课程可预约",
       icon:'none',
@@ -321,6 +325,7 @@ Page({
 
   // 未达开放时间提示
   showNotOpenAlert() {
+    console.log("showNotOpenAlert函数执行了");
     wx.showToast({
       title: '该课程不在开放时间，图中绿色边框课程可预约',
       icon: 'none',
@@ -330,6 +335,7 @@ Page({
 
   // 按钮切换事件响应
   onSwitchWeekType(){
+    console.log("onSwitchWeekType函数执行了");
     this.setData({
       thisWeekOrNextWeek:!this.data.thisWeekOrNextWeek
     })

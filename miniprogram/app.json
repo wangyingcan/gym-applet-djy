@@ -3,14 +3,14 @@
     "pages/gymIndex/index",
     "pages/gymAppointment/index",
     "pages/gymMyCardPack/index",
-    "pages/administrator/index"
+    "pages/administrator/index",
+    "pages/testAvatar/index"
   ],
   "window": {
-    "backgroundColor": "#F6F6F6",
+    "backgroundColor": "#fff",
     "backgroundTextStyle": "dark",
     "enablePullDownRefresh": true,
-    "navigationBarBackgroundColor": "#F6F6F6",
-    "navigationBarTextStyle": "black"
+    "navigationStyle": "custom"
   },
   "tabBar": {
     "color": "#fff",

@@ -1,6 +1,7 @@
 <van-toast id="custom-selector" />
+<van-toast id="van-toast" />
 <!-- 1.自定义导航栏（isBack控制左侧返回按钮） -->
-<cu-custom bgColor="bg-white" customBack="{{true}}" bind:back="update">
+<cu-custom bgColor=".bg-grey.light" customBack="{{true}}" bind:back="update">
   <!-- 1.1.左侧返回样式 -->
   <view slot="backText">
   <view class="cuIcon-refresh" style="font-size: 40rpx;" bind:tap="refresh"></view>

@@ -1,5 +1,8 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "cu-custom":"../../style/colorui/components/cu-custom",
+    "van-icon":"@vant/weapp/icon/index"
+  },
   "navigationBarBackgroundColor": "#fff",
   "navigationBarTextStyle": "black",
   "navigationBarTitleText": "自在女子健身房",

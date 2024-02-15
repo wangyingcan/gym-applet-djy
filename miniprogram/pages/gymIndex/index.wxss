@@ -1,6 +1,12 @@
 /* 0.页面全局样式 */
 Page {
-    background-image: #BDC3C7;
+    background-color: #fff;
+}
+
+.nav-title{
+  font-size: 30rpx;
+  color: #3D3D3D;
+  font-weight: bolder;
 }
 
 /* 1.最外层父容器的样式 */

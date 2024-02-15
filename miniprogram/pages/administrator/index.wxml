@@ -1,2 +1,35 @@
 <button bind:tap="insertCourses">添加数据</button>
 <button bind:tap="callFunction">调用定时器修改</button>
+<button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar1">
+    上传图片到云端
+</button>
+
+<view style="display: flex;flex-direction: column;align-items: center;">
+    <image src="{{userInfo.avatarUrl}}" style="width:160rpx;height:160rpx;" bind:tap="handleTap"></image>
+    <view bind:tap="handleTap">{{userInfo.nickName}}</view>
+    <view>{{userInfo.testField}}</view>
+</view>
+
+
+<view wx:if="{{status === 1}}" bind:tap="logout">退出登录</view>
+
+
+<!-- 2.注册时，提交头像、昵称的弹窗 -->
+<van-popup show="{{ show }}" bind:close="onClose" custom-style="height: 40%;width:70%" closeable close-icon="close" round>
+    <!-- 2.1头像选择、昵称输入区 -->
+    <view class="outter-view">
+        <view class="user-content">
+            <button class="avatar-wrapper avatar-button" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+                <image wx:if="{{avatarUrl}}" src="{{avatarUrl}}"></image>
+                <image wx:else src="{{defaultAvatarUrl}}"></image>
+            </button>
+            <input type="nickname" class="nickname-input" placeholder="请输入昵称" adjust-position="{{false}}" bindchange="changeNickNameInput" model:value="{{nickName}}" bindkeyboardheightchange="bindkeyboardheightchange" maxlength="10" />
+        </view>
+        <!-- 2.2提交按钮 -->
+        <view>
+            <button class="user-confirm-btn user-confirm-btn--{{canSaveUser?'enabled':'disabled'}}" catchtap="handleInputAvatarNameAfter">
+                授权头像和昵称
+            </button>
+        </view>
+    </view>
+</van-popup>

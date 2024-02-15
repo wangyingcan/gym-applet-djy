@@ -1,6 +1,11 @@
 {
   "usingComponents": {
     "van-button": "@vant/weapp/button/index",
-    "van-toast":"@vant/weapp/toast/index"
+    "van-toast":"@vant/weapp/toast/index",
+    "cu-custom":"../../style/colorui/components/cu-custom",
+    "van-popup":"@vant/weapp/popup/index",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-notice-bar": "@vant/weapp/notice-bar/index"
   }
 }

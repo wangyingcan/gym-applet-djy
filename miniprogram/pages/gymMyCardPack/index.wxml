@@ -1,3 +1,74 @@
-<van-button type="primary" bind:tap="redirectToAdministrator">跳转管理员界面</van-button>
-<van-button type="primary" bind:tap="getToast">加载框</van-button>
+<!-- <van-button type="primary" bind:tap="redirectToAdministrator">跳转管理员界面</van-button> -->
+<!-- 0.轻提示 -->
+<van-toast id="van-toast" />
+<!-- 1.自定义导航栏 -->
+<cu-custom bgColor=".bg-grey.light" isBack="{{false}}">
+  <!-- 1.2.中部标题 -->
+  <view slot="content">
+    <view class="nav-title">我的</view>
+  </view>
+</cu-custom>
+<!-- 2.开课提醒滚动通知栏 -->
+<van-notice-bar left-icon="volume-o" text="亲爱的学员，距离你2月5日9点的“瑜伽“课还有16小时。"/>
+<!-- 3.注册时，提交头像、昵称的弹窗 -->
+<van-popup show="{{ show }}" bind:close="onClose" custom-style="height: 40%;width:70%" closeable close-icon="close" round>
+  <!-- 2.1头像选择、昵称输入区 -->
+  <view class="outter-view">
+    <view class="user-content">
+      <button class="avatar-wrapper avatar-button" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+        <image wx:if="{{avatarUrl}}" src="{{avatarUrl}}"></image>
+        <image wx:else src="{{defaultAvatarUrl}}"></image>
+      </button>
+      <input type="nickname" class="nickname-input" placeholder="请输入昵称" adjust-position="{{false}}" bindchange="changeNickNameInput" model:value="{{nickName}}" bindkeyboardheightchange="bindkeyboardheightchange" maxlength="10" />
+    </view>
+    <!-- 2.2提交按钮 -->
+    <view>
+      <button class="user-confirm-btn user-confirm-btn--{{canSaveUser?'enabled':'disabled'}}" catchtap="handleInputAvatarNameAfter">
+        授权头像和昵称
+      </button>
+    </view>
+  </view>
+</van-popup>
+<view class="container">
+  <!-- 2.个人信息展示区 -->
+  <view class="userInfo-view">
+    <image src="{{userInfo.avatarUrl}}" class="avatar-image" bind:tap="handleTap"></image>
+    <view bind:tap="handleTap" class="nickname">{{userInfo.nickName}}</view>
+  </view>
 
+  <!-- 3.个人上课记录 -->
+  <view class="user-class__record">
+    <!-- 3.1左侧 -->
+    <view class="booked-class__num">
+      <text class="top-text">已约课程</text>
+      <text class="buttom-number">{{userInfo.bookedCourseNum}}</text>
+    </view>
+    <!-- 3.2中侧 -->
+    <view class="monthly-class__record">
+      <text class="top-text">本月上课记录</text>
+      <text class="buttom-number">{{userInfo.thisMonthCourseRecordNum}}</text>
+    </view>
+    <!-- 3.3右侧 -->
+    <view class="cancel-class__num">
+      <text class="top-text">已取消</text>
+      <text class="buttom-number">{{userInfo.canceledClassNum}}</text>
+    </view>
+  </view>
+
+  <!-- 4.个人课表展示 -->
+  <view class="personal-classTable">
+    已预约课表  2024.02.16
+  </view>
+  <!-- 5.卡包展示区 -->
+  <view class="card-pack__view">
+
+  </view>
+
+  <!-- 6.个人中心、退出登录 -->
+  <view class="other-settings"  wx:if="{{status === 1}}">
+    <van-cell-group inset>
+      <van-cell title="个人中心" icon="contact-o" size="large" is-link/>
+      <van-cell title="退出登录" icon="setting-o" size="large" is-link bind:tap="logout"/>
+    </van-cell-group>
+  </view>
+</view>
