@@ -72,11 +72,11 @@
   <view class="course-list">
     <!-- 4.2.2 外部的课程块（利用这里的padding设计间隔）  -->
     <!-- top、left解课程块定位问题，前者和startHour有关，后者和index（week）有关；height和课程时长有关 -->
-    <block wx:for="{{showNextWeek?(thisWeekOrNextWeek?courseList:nextWeekCourseList):courseList}}" wx:for-item="day" wx:key>     <!--第一层for循环，遍历每一天-->
-      <block wx:for="{{day.courses}}" wx:for-item="course" wx:key>       <!--第二层for循环，遍历每节课-->
+    <block wx:for="{{showNextWeek?(thisWeekOrNextWeek?courseList:nextWeekCourseList):courseList}}" wx:for-item="day" wx:key>     <!--第一层for循环，遍历每一天，courseList//nextCourseList-->
+      <block wx:for="{{day.courses}}" wx:for-item="course" wx:key>       <!--第二层for循环，遍历每节课,courses-->
         <view class="course-item" style="top:{{(course.startHour-9)*120}}rpx;left:{{(day.index-1)*((windowWidth * 2 - 50)/7)}}rpx;height:{{course.courseLength*120}}rpx;">      
           <!-- 4.2.3 课程信息 -->
-          <view class="course-item__content.status1" wx:if="{{course.status==1}}">
+          <view class="course-item__content.status1" wx:if="{{course.status==1}}" bind:tap="bookCourseTap" data-date="{{day.date}}" data-startHour="{{course.startHour}}">
             <view style="color: #3D3D3D;font-size: 26rpx;">{{course.courseName}}</view>
             <view style="color: #999999;font-size: 20rpx;">@{{course.coachName}}</view>
           </view>

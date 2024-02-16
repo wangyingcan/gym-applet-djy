@@ -4,7 +4,9 @@
     "pages/gymAppointment/index",
     "pages/gymMyCardPack/index",
     "pages/administrator/index",
-    "pages/testAvatar/index"
+    "pages/bookedCourseDetail/index",
+    "pages/monthlyCourseDetail/index",
+    "pages/canceledCourseDetail/index"
   ],
   "window": {
     "backgroundColor": "#fff",

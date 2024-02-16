@@ -6,6 +6,14 @@ const courseTable = db.collection('CourseTable');
 const loginCacheKey = "loginInfo"
 // 3.引入Toast库
 import Toast from '@vant/weapp/toast/toast';
+// 4.引入工具函数
+import {
+  getDate
+} from "../../utils/date"
+
+import {
+  findNearestCourse
+} from "../../utils/nearestCourseInfo"
 
 Page({
 
@@ -20,10 +28,10 @@ Page({
       monthlyCardIds: [],
       weeklyCardIds: [],
       expiredCardIds: [],
-      bookedCourseNum: 0,
       thisMonthCourseRecordNum: 0,
       canceledClassNum: 0
     },
+    bookedCourseNum: 0,
     status: 0,      // status中0代表登出、1代表登入
     isNewUser: false,   // 是否是新用户
     openid: '',         // 用户的openid，用于生成头像链接
@@ -33,6 +41,22 @@ Page({
     // canSaveUser是否达到保存用户的条件（头像、昵称均非空）
     // preInputBottom输入框键盘高度改变前的高度（弹出、收起键盘都算）
     // inputBottom输入框键盘高度改变后的高度
+    // bookedCourseList用户已预约课程列表
+    // today 今天年月日
+    // latelyMonth 最近的预约课程月份
+    latelyMonth: 0,
+    // latelyDate 最近的预约课程日期
+    latelyDate: 0,
+    // latelyHour 最近的预约课程小时
+    latelyHour: 0,
+    // latelyCourseName 最近的预约课程名称
+    latelyCourseName: '',
+    // latelyHourGap 最近的预约课程小时差
+    latelyHourGap: 0,
+    // latelyMinuteGap 最近的预约课程分钟差
+    latelyMinuteGap: 0,
+    // 有无最近预约课程
+    hasLatelyCourse: false,
   },
 
   /**
@@ -60,9 +84,14 @@ Page({
     }).catch(err => {
       console.log('isNewUser:', err)
     })
+    // 2.设置今天年月日
+    const today = getDate()
+    this.setData({
+      today
+    })
   },
 
-  onPullDownRefresh(){
+  onPullDownRefresh() {
     console.log('onPullDownRefresh');
     // 1.每次页面下拉刷新，在数据库中重新获取数据，保证数据的最新性
     this.getUserInfo()
@@ -194,12 +223,49 @@ Page({
     const data = wx.getStorageSync(loginCacheKey)
     if (data) {
       // 2.data存在代表已登录，此处获取最新的数据
+      // 2.1获取最新的预约课表、预约课程数
+      const { result: { bookedCourseList, bookedCourseNum } } = await wx.cloud.callFunction({
+        name: 'getBookedCourseList'
+      })
+      console.log('bookedCourseList:', bookedCourseList);
+      console.log('bookedCourseNum:', bookedCourseNum);
+      // 2.2获取最新用户信息
       const latelyUserInfo = await wx.cloud.database().collection('user').doc(data._id).get();
       console.log(latelyUserInfo);
-      // 3.设置最新的用户信息
-      await this.setData({
-        userInfo: latelyUserInfo.data
-      })
+      // 2.3在bookedCourseList中依据date、startHour找出最近的预约课程信息
+      if (bookedCourseList.length > 0) {
+        // 2.3.1有课的时候才进行最近课程的信息获取
+        const { year, month, date, hour, courseName } = findNearestCourse(bookedCourseList);    //工具函数解析进行list比较同时返回信息
+        const hourGap = Math.floor((new Date(year, month - 1, date, hour, 0, 0).getTime() - new Date().getTime()) / (1000 * 60 * 60));   //计算时差
+        const minuteGap = Math.ceil((new Date(year, month - 1, date, hour, 0, 0).getTime() - new Date().getTime() - hourGap * (1000 * 60 * 60)) / (1000 * 60));    //计算分差
+        console.log('hourGap:', hourGap);
+        console.log('minuteGap:', minuteGap);
+        console.log('month:', month);
+        console.log('date:', date);
+        console.log('hour:', hour);
+        console.log('courseName:', courseName);
+        // 3.设置最新的用户信息、预约课程数、预约课程列表、最近的预约课程信息
+        await this.setData({
+          userInfo: latelyUserInfo.data,
+          bookedCourseNum,
+          bookedCourseList,
+          latelyMonth: month,
+          latelyDate: date,
+          latelyHour: hour,
+          latelyCourseName: courseName,
+          latelyHourGap: hourGap,
+          latelyMinuteGap: minuteGap,
+          hasLatelyCourse: true
+        })
+      }else{
+        // 2.3.2没有课的时候，设置最新的用户信息、预约课程数
+        await this.setData({
+          userInfo: latelyUserInfo.data,
+          bookedCourseNum,
+          bookedCourseList,
+          hasLatelyCourse: false
+        })
+      }
     }
   },
 
@@ -230,7 +296,9 @@ Page({
       userInfo: data,
       status: 1
     })
-    // 5.加入”登录成功“轻提示
+    // 5.再次刷新一下用户数据
+    await this.getUserInfo()
+    // 6.加入”登录成功“轻提示
     Toast('登录成功');
   },
 
@@ -256,7 +324,8 @@ Page({
     // 3.设置登出状态+默认用户信息
     this.setData({
       status: 0,
-      userInfo: userDefaultInfo
+      userInfo: userDefaultInfo,
+      bookedCourseNum: 0
     })
   },
 
@@ -267,6 +336,57 @@ Page({
   redirectToAdministrator() {
     wx.navigateTo({
       url: '/pages/administrator/index',
+    })
+  },
+
+  // 重定向到约课详情
+  redirectToCourseDetail() {
+    // 1.检查是否登录
+    if (this.data.status === 0) {
+      // 2.未登录状态不允许跳转到约课详情页
+      wx.showToast({
+        title: '请先登录',
+        icon: 'none'
+      })
+      return;
+    }
+    // 2.登录状态允许跳转到约课详情页
+    wx.navigateTo({
+      url: '/pages/bookedCourseDetail/index',
+    })
+  },
+
+  // 重定向到本月上课记录详情
+  redirectToMonthCourseRecord() {
+    // 1.检查是否登录
+    if (this.data.status === 0) {
+      // 2.未登录状态不允许跳转到本月上课记录详情页
+      wx.showToast({
+        title: '请先登录',
+        icon: 'none'
+      })
+      return;
+    }
+    // 2.登录状态允许跳转到本月上课记录详情页
+    wx.navigateTo({
+      url: '/pages/monthlyCourseDetail/index',
+    })
+  },
+
+  // 重定向到已取消详情
+  redirectToCanceledDetail() {
+    // 1.检查是否登录
+    if (this.data.status === 0) {
+      // 2.未登录状态不允许跳转到已取消详情页
+      wx.showToast({
+        title: '请先登录',
+        icon: 'none'
+      })
+      return;
+    }
+    // 2.登录状态允许跳转到已取消详情页
+    wx.navigateTo({
+      url: '/pages/canceledCourseDetail/index',
     })
   },
 

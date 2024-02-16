@@ -233,25 +233,66 @@ Page({
   insertCourses() {
     courseTable.add({
       data: {
-        "date": "2024.3.3",
-        "index": 7,
+        "date": "2024.2.17",
+        "index": 6,
         "courses": [
           {
             "startHour": 9,
             "courseLength": 1,
-            "status": 3,
+            "status": 2,
             "courseName": "瑜伽",
             "coachName": "张三",
-            "students": []
+            "students": ["oS-PG64WoFk4zbqnPZQqrnLyms6U"]
           },
           {
             "startHour": 10,
             "courseLength": 2,
-            "status": 3,
+            "status": 2,
             "courseName": "瑜伽",
             "coachName": "张三",
-            "students": []
-          }
+            "students": ["oS-PG64WoFk4zbqnPZQqrnLyms6U"]
+          },
+          {
+            "startHour": 12,
+            "courseLength": 1,
+            "status": 2,
+            "courseName": "瑜伽",
+            "coachName": "张三",
+            "students": ["oS-PG64WoFk4zbqnPZQqrnLyms6U"]
+          },
+          {
+            "startHour": 14,
+            "courseLength": 1,
+            "status": 2,
+            "courseName": "瑜伽",
+            "coachName": "张三",
+            "students": ["oS-PG64WoFk4zbqnPZQqrnLyms6U"]
+          },
+          {
+            "startHour": 16,
+            "courseLength": 1,
+            "status": 2,
+            "courseName": "瑜伽",
+            "coachName": "张三",
+            "students": ["oS-PG64WoFk4zbqnPZQqrnLyms6U"]
+          },
+          {
+            "startHour": 17,
+            "courseLength": 1,
+            "status": 2,
+            "courseName": "瑜伽",
+            "coachName": "张三",
+            "students": ["oS-PG64WoFk4zbqnPZQqrnLyms6U"]
+          },
+          {
+            "startHour": 20,
+            "courseLength": 3,
+            "status": 2,
+            "courseName": "瑜伽",
+            "coachName": "张三",
+            "students": ["oS-PG64WoFk4zbqnPZQqrnLyms6U"]
+          },
+
         ],
       }
     }).then(res => {

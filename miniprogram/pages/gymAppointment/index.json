@@ -4,5 +4,6 @@
     "van-button":"@vant/weapp/button/index",
     "cu-custom":"../../style/colorui/components/cu-custom",
     "van-toast": "@vant/weapp/toast/index"
-  }
+  },
+  "enablePullDownRefresh": false
 }

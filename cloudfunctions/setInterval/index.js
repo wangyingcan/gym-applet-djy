@@ -4,6 +4,9 @@ cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV }) // 使用当前云环境
 // 1.获取数据库表
 const db = cloud.database();
 const courseTable = db.collection('CourseTable');
+const monthlyCourseRecords = db.collection('monthlyCourseRecords');
+const _ = db.command;
+const user=db.collection('user');
 
 // 云函数入口函数
 exports.main = async (event, context) => {
@@ -34,10 +37,95 @@ exports.main = async (event, context) => {
     let courses = res.data[0].courses;
     let needUpdate = false;
     for (let i = 0; i < courses.length; i++) {
+      // 2.1 每小时刷新过去的课程状态
       let course = courses[i];
       if (course.status !== 3 && course.startHour + course.courseLength <= nowHour) {
         courses[i].status = 3;
         needUpdate = true;
+      }
+      // 2.2 有效时间内，每小时写入monthlyCourseRecords
+      if(nowHour >= 10 && nowHour<=22){
+        // 2.2.1 获取查询结果中：刚刚上完的课程，遍历其中的students数组，取出openid，创建新的月度上课记录
+        if(course.startHour+course.courseLength == nowHour){
+          // 2.2.2 获取当前课程的学生列表
+          let students = course.students;
+          // 2.2.3 遍历学生列表，创建月度上课记录
+          for(let student of students){
+            // 2.2.4 查询monthlyCourseRecords表，判断是否存在该学生的月度上课记录(openid和month两个维度)
+            let res = await monthlyCourseRecords.where({
+              _openid:student,
+              month:today.split('.')[0]+'.'+today.split('.')[1]
+            }).get();
+
+            // 2.2.5 更新月度记录表
+            if(res.data.length>0){
+              // 2.2.6 更新月度表
+              await monthlyCourseRecords.where({
+                _openid:student,
+                month:today.split('.')[0]+'.'+today.split('.')[1]
+              }).update({
+                data:{
+                  courseRecords:_.push({
+                    date:today,
+                    courseName:course.courseName,
+                    coachName:course.coachName,
+                    startHour:course.startHour,
+                    courseLength:course.courseLength
+                  })
+                }
+              }).then(res=>{
+                console.log('更新成功',res)
+              }).catch(err=>{
+                console.log('更新失败',err)
+              })
+
+              // 2.2.7 更新user表
+              await user.where({
+                _openid:student
+              }).update({
+                data:{
+                  thisMonthCourseRecordNum:_.inc(1)
+                }
+              }).then(res=>{
+                console.log('更新成功',res)
+              }).catch(err=>{
+                console.log('更新失败',err)
+              })
+            }else{
+              // 2.2.8 不存在，插入
+              await monthlyCourseRecords.add({
+                data:{
+                  _openid:student,
+                  month:today.split('.')[0]+'.'+today.split('.')[1],
+                  courseRecords:[{
+                    date:today,
+                    courseName:course.courseName,
+                    coachName:course.coachName,
+                    startHour:course.startHour,
+                    courseLength:course.courseLength
+                  }]
+                }
+              }).then(res=>{
+                console.log('插入成功',res)
+              }).catch(err=>{
+                console.log('插入失败',err)
+              })
+
+              // 2.2.9 更新user表
+              await user.where({
+                _openid:student
+              }).update({
+                data:{
+                  thisMonthCourseRecordNum:0
+                }
+              }).then(res=>{
+                console.log('更新成功',res)
+              }).catch(err=>{
+                console.log('更新失败',err)
+              })
+            }
+          }
+        }
       }
     }
 

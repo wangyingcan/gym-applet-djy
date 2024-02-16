@@ -1,0 +1,67 @@
+<!-- 1.自定义导航栏 -->
+<cu-custom bgColor=".bg-grey.light" isBack="{{true}}">
+    <!-- 1.2.中部标题 -->
+    <view slot="content">
+        <view class="nav-title">取消课程详情</view>
+    </view>
+</cu-custom>
+<!-- 2.空状态显示（van组件的样式可以自定义，例如van-empty__image就可以修改图片样式） -->
+<van-empty wx:if="{{canceledCourseNum === 0}}" description="无取消记录" image="https://img01.yzcdn.cn/vant/empty-image-default.png"></van-empty>
+<!-- 3.有课状态展示 -->
+<view class="container">
+    <view class="power" wx:key wx:for="{{canceledCourseList}}" wx:for-item="power">
+        <!-- 3.1一级展示 -->
+        <view class="power_info" data-index="{{index}}" bind:tap="onClickPowerInfo">
+            <!-- 3.1.1一级菜单项的标题 -->
+            <view class="power_info_text">
+                <!-- 展示课程名 -->
+                <view class="power_info_text_title">{{power.courseName}}</view>
+                <!-- 展示时间 -->
+                <view class="power_info_text_tip">
+                    {{power.cancelTime}}  
+                </view>
+            </view>
+            <!-- 展示右侧箭头 -->
+            <image wx:if="{{!power.showItem}}" class="power_info_more" src="../../images/arrow.svg"></image>
+            <image wx:if="{{power.showItem}}" class="power_info_less" src="../../images/arrow.svg"></image>
+        </view>
+        <view class="line"></view>
+        <!-- 3.2二级展示 -->
+        <view wx:if="{{power.showItem}}" style="box-sizing: border-box; margin-left: 50rpx;">
+            <view class="power_item">
+                <view class="power_item_title">
+                    <text>教练：</text>
+                    <text>{{power.coachName}}</text>
+                </view>
+            </view>
+            <view class="line"></view>
+            <view class="power_item">
+                <view class="power_item_title">
+                    <text>日期：</text>
+                    <text>{{power.date}}</text>
+                </view>
+            </view>
+            <view class="line"></view>
+            <view class="power_item">
+                <view class="power_item_title">
+                    <text>时间：</text>
+                    <text>{{power.startHour+':00'}}</text>
+                </view>
+            </view>
+            <view class="line"></view>
+            <view class="power_item">
+                <view class="power_item_title">
+                    <text>时长：</text>
+                    <text>{{power.courseLength+'小时'}}</text>
+                </view>
+            </view>
+            <view class="line"></view>
+            <view class="power_item">
+                <view class="power_item_title">
+                    <text>取消时间：</text>
+                    <text>{{power.cancelTime}}</text>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>

@@ -7,15 +7,15 @@
     "miniprogram": {
       "list": [
         {
-          "name": "管理员",
-          "pathName": "pages/administrator/index",
+          "name": "已预约课程详情",
+          "pathName": "pages/bookedCourseDetail/index",
           "query": "",
           "launchMode": "default",
           "scene": null
         },
         {
-          "name": "测试头像昵称",
-          "pathName": "pages/testAvatar/index",
+          "name": "管理员",
+          "pathName": "pages/administrator/index",
           "query": "",
           "launchMode": "default",
           "scene": null

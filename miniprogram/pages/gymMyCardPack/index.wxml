@@ -1,4 +1,3 @@
-<!-- <van-button type="primary" bind:tap="redirectToAdministrator">跳转管理员界面</van-button> -->
 <!-- 0.轻提示 -->
 <van-toast id="van-toast" />
 <!-- 1.自定义导航栏 -->
@@ -9,7 +8,9 @@
   </view>
 </cu-custom>
 <!-- 2.开课提醒滚动通知栏 -->
-<van-notice-bar left-icon="volume-o" text="亲爱的学员，距离你2月5日9点的“瑜伽“课还有16小时。"/>
+<van-notice-bar left-icon="volume-o" text="亲爱的学员，距离你{{latelyMonth}}月{{latelyDate}}日{{latelyHour}}点的“{{latelyCourseName}}“课还有{{(latelyHourGap===0) ?'':latelyHourGap + '小时'}}{{latelyMinuteGap}}分钟。" wx:if="{{status === 1 && hasLatelyCourse }}" />
+<van-notice-bar left-icon="volume-o" text="亲爱的学员，你还没有预约课程哦，快去约课吧！" wx:if="{{status === 1 && !hasLatelyCourse }}" />
+<van-notice-bar left-icon="volume-o" text="点击头像、登录/注册进行用户登入" wx:if="{{status === 0}}" />
 <!-- 3.注册时，提交头像、昵称的弹窗 -->
 <van-popup show="{{ show }}" bind:close="onClose" custom-style="height: 40%;width:70%" closeable close-icon="close" round>
   <!-- 2.1头像选择、昵称输入区 -->
@@ -39,36 +40,66 @@
   <!-- 3.个人上课记录 -->
   <view class="user-class__record">
     <!-- 3.1左侧 -->
-    <view class="booked-class__num">
+    <view class="booked-class__num" hover-class="view-hover" bind:tap="redirectToCourseDetail">
       <text class="top-text">已约课程</text>
-      <text class="buttom-number">{{userInfo.bookedCourseNum}}</text>
+      <text class="buttom-number">{{bookedCourseNum}}</text>
     </view>
     <!-- 3.2中侧 -->
-    <view class="monthly-class__record">
+    <view class="monthly-class__record" hover-class="view-hover" bind:tap="redirectToMonthCourseRecord">
       <text class="top-text">本月上课记录</text>
       <text class="buttom-number">{{userInfo.thisMonthCourseRecordNum}}</text>
     </view>
     <!-- 3.3右侧 -->
-    <view class="cancel-class__num">
+    <view class="cancel-class__num" hover-class="view-hover" bind:tap="redirectToCanceledDetail">
       <text class="top-text">已取消</text>
       <text class="buttom-number">{{userInfo.canceledClassNum}}</text>
     </view>
   </view>
 
   <!-- 4.个人课表展示 -->
-  <view class="personal-classTable">
-    已预约课表  2024.02.16
+  <view class="personal-classTable" wx:if="{{status === 1}}">
+    <!-- 4.1顶部标题、时间 -->
+    <view class="top-title__view">
+      <view class="option-title">已预约课表</view>
+      <view class="option-time">{{today}}</view>
+    </view>
+
+    <!-- 4.2底部课程展示（控制台、有课状态） -->
+    <view class="course-box">
+      <!-- 4.2.1空状态 -->
+      <block wx:if="{{bookedCourseNum == 0}}">
+        <view class="empty-course">
+          <image class="empty-img" src="../../images/empty.png"></image>
+          <view class="empty-title">当前没课啦，快去约课吧！</view>
+        </view>
+      </block>
+
+      <!-- 4.2.2课程列表展示 -->
+      <block wx:else>
+        <view class="course-list">
+          <view class="course-item" wx:for="{{bookedCourseList}}" wx:key>
+            <view class="course-name">{{item.courseName}}</view>
+            <view class="course-address">
+              <text>{{item.date}}</text>
+              <text style="padding-left:40rpx;color:green">{{item.startHour+":00"}}</text>
+            </view>
+          </view>
+        </view>
+      </block>
+
+    </view>
+
   </view>
   <!-- 5.卡包展示区 -->
-  <view class="card-pack__view">
+  <view class="card-pack__view" wx:if="{{status === 1}}">
 
   </view>
 
   <!-- 6.个人中心、退出登录 -->
-  <view class="other-settings"  wx:if="{{status === 1}}">
-    <van-cell-group inset>
-      <van-cell title="个人中心" icon="contact-o" size="large" is-link/>
-      <van-cell title="退出登录" icon="setting-o" size="large" is-link bind:tap="logout"/>
+  <view class="other-settings" wx:if="{{status === 1}}">
+    <van-cell-group>
+      <van-cell title="个人中心" icon="contact-o" size="large" is-link />
+      <van-cell title="退出登录" icon="setting-o" size="large" is-link bind:tap="logout" />
     </van-cell-group>
   </view>
 </view>
