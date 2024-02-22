@@ -16,7 +16,10 @@ App({
       });
     }
 
-    this.globalData = {};
+    const { windowWidth } = wx.getSystemInfoSync()
+    const exchangeRate = 375/windowWidth;
+
+    this.globalData = {windowWidth,exchangeRate};
 
     wx.getSystemInfo({
       success: e => {

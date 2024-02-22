@@ -1,5 +1,6 @@
+<wxs module="tools" src="../../utils/transferValidDate.wxs"></wxs>
 <!-- 0.轻提示 -->
-<van-toast id="van-toast" />
+<van-toast id="van-toast-cardPack" />
 <!-- 1.自定义导航栏 -->
 <cu-custom bgColor=".bg-grey.light" isBack="{{false}}">
   <!-- 1.2.中部标题 -->
@@ -30,6 +31,7 @@
     </view>
   </view>
 </van-popup>
+
 <view class="container">
   <!-- 2.个人信息展示区 -->
   <view class="userInfo-view">
@@ -90,15 +92,74 @@
     </view>
 
   </view>
-  <!-- 5.卡包展示区 -->
-  <view class="card-pack__view" wx:if="{{status === 1}}">
 
+  <view class='cardPack-top' wx:if="{{status === 1}}">
+    <van-icon class='left-icon' name="vip-card" size="50rpx;"></van-icon> 
+    <view class='right-title'>我的卡包</view>
+  </view>
+
+  <view class="card-empty__view" wx:if="{{(status===1)&&(monthlyCardNum===0)&&(weeklyCardNum===0)}}">
+      <image class="empty-image" src="../../images/empty.png"></image>
+      <view class="empty-title">当前没有卡包，快去首页购买吧！</view>
+  </view>
+
+  <!-- 5.卡包展示区 -->
+  <view class="card-pack__view" wx:if="{{(status === 1)&&((monthlyCardNum!==0)||(weeklyCardNum!==0))}}">
+    <!-- 5.1月卡展示区 -->
+    <view class="card-view" wx:for="{{monthlyCardList}}" wx:key>
+      <view class="top-area">
+        <text class="top-left">{{item[0].cardName}}</text>
+        <view class="top-right">
+          <view wx:if="{{(item[0].status==='active')&&(item[0].pauseStart==='')}}" bind:tap="stopMonthlyCard" hover-class="view-hover" data-card-id="{{item[0].cardId}}"><text>停卡7天</text></view>
+          <view wx:if="{{item[0].status==='paused'}}" bind:tap="restartMonthlyCard" hover-class="view-hover" data-card-id="{{item[0].cardId}}"><text>重启</text></view>
+          <view wx:if="{{item[0].status==='inactive'}}" bind:tap="activateCard" hover-class="view-hover" data-card-id="{{item[0].cardId}}"><text>激活此卡</text></view>
+          <text wx:if="{{(item[0].status==='active')&&(item[0].pauseStart!=='')}}">使用中</text>
+        </view>
+      </view>
+      <view class="buttom-area">
+        <view class="buttom-left">
+          <text>剩余天数：</text>
+          <text>{{item[0].remainingDays}}天</text>
+        </view>
+        <view class="buttom-right">
+          <text wx:if="{{item[0].status==='active'}}">有效期至：</text>
+          <text wx:if="{{item[0].status==='active'}}">{{tools.transferValidDate(item[0],"月卡")}}</text>
+          <text wx:if="{{item[0].status==='paused'}}">停卡日期：</text>
+          <text wx:if="{{item[0].status==='paused'}}">{{item[0].pauseStart}}</text>
+          <text wx:if="{{item[0].status==='inactive'}}">未激活</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 5.2周卡展示区 -->
+    <view class="card-view" wx:for="{{weeklyCardList}}" wx:key>
+      <view class="top-area">
+        <text class="top-left">{{item[0].cardName}}</text>
+        <view class="top-right">
+          <view wx:if="{{item[0].status==='inactive'}}" bind:tap="activateCard"  hover-class="view-hover" data-card-id="{{item[0].cardId}}">激活此卡</view>
+        </view>
+        <text wx:if="{{item[0].status==='active'}}" class="top-right">使用中</text>
+      </view>
+      <view class="buttom-area">
+        <text class="buttom-left" wx:if="{{item[0].status==='active'}}">剩余次数：{{item[0].totalBookCount}}次</text>
+        <text class="buttom-right" wx:if="{{item[0].status==='active'}}">有效期至：{{tools.transferValidDate(item[0],"周卡")}}</text>
+        <text wx:if="{{item[0].status==='inactive'}}" class="buttom-left">{{item[0].type}}</text>
+        <text wx:if="{{item[0].status==='inactive'}}" class="buttom-right">未激活</text>
+      </view>
+    </view>
+
+  </view>
+
+  <view class='cardPack-top' wx:if="{{status === 1}}">
+    <van-icon class='left-icon' name="description" size="50rpx;"></van-icon> 
+    <view class='right-title'>其他</view>
   </view>
 
   <!-- 6.个人中心、退出登录 -->
   <view class="other-settings" wx:if="{{status === 1}}">
     <van-cell-group>
-      <van-cell title="个人中心" icon="contact-o" size="large" is-link />
+      <van-cell title="过期卡包" icon="coupon-o" size="large" is-link bind:click="onExpiredCardClick" />
+      <van-cell title="个人中心" icon="contact-o" size="large" is-link bind:click="onPersonalCenterClick" />
       <van-cell title="退出登录" icon="setting-o" size="large" is-link bind:tap="logout" />
     </van-cell-group>
   </view>

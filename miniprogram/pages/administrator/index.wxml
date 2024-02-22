@@ -1,4 +1,5 @@
-<button bind:tap="insertCourses">添加数据</button>
+<button bind:tap="insertCourses">添加课程表数据</button>
+<button bind:tap="insertCards">添加卡包数据</button>
 <button bind:tap="callFunction">调用定时器修改</button>
 <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar1">
     上传图片到云端

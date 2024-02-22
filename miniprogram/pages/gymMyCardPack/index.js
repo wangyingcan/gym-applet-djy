@@ -57,6 +57,20 @@ Page({
     latelyMinuteGap: 0,
     // 有无最近预约课程
     hasLatelyCourse: false,
+    // monthlyCardList个人月卡列表
+    monthlyCardList: [],
+    // monthlyCardNum个人月卡数量
+    monthlyCardNum: 0,
+    // weeklyCardList个人周卡列表
+    weeklyCardList: [],
+    // weeklyCardNum个人周卡数量
+    weeklyCardNum: 0,
+    // expiredCardList个人已过期卡列表
+    expiredCardList: [],
+    // expiredCardNum个人已过期卡数量
+    expiredCardNum: 0,
+    // 每分钟整秒的定时器
+    timer: null
   },
 
   /**
@@ -64,8 +78,51 @@ Page({
    */
   onShow() {
     console.log('onShow');
+    let that=this;
+    // 1. 计算当前和下一分钟整秒的时间差
+    that.checkTime();
+    const nowSeconds=new Date().getSeconds();
+    const delay=(60-nowSeconds)*1000;
+    // 2. 执行一次的setTimeout，设置timer保证之后定时器是每分钟整秒执行
+    setTimeout(()=>{
+      that.checkTime();
+      that.setData({
+        timer: setInterval(()=>{
+          that.checkTime();
+        }, 60*1000)
+      })
+    },delay)
     // 1.每次进入页面，在数据库中重新获取数据，保证数据的最新性
     this.getUserInfo()
+  },
+
+  onHide() {
+    // 清除定时器
+    clearInterval(this.data.timer);
+  },
+
+  // 检查是否到了更新时间
+  checkTime() {
+    let now = new Date();
+    let start1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 53, 0, 0);
+    let end1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 58, 0, 0);
+    let start2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+    let end2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 1, 0, 0);
+    if ((now >= start1 && now <= end1) || (now >= start2 && now <= end2)) {
+      this.reloadSystem();
+    }
+  },
+
+  reloadSystem() {
+    Toast.loading({
+      message: '系统更新中，请耐心等待2分钟...',
+      forbidClick: true,
+      loadingType: 'spinner',
+      mask: true,
+      duration: 90000,
+      zindex:9999,
+      selector: '#van-toast-cardPack'
+    });
   },
 
   onLoad(options) {
@@ -167,7 +224,7 @@ Page({
     // 1.将头像上传
     await wx.cloud.uploadFile({
       // 1.1云存储的图片路径
-      cloudPath: that.data.openid + '.png',
+      cloudPath: that.data.openid+new Date().getTime() + '.png',
       // 1.2上传文件的URL
       filePath: avatarUrl
     }).then(res => {
@@ -209,7 +266,11 @@ Page({
     if (this.data.isNewUser) {
       this.showPopup();
     } else {
-      this.login();
+      // 如果没有缓存，代表登入，调用login
+      const data = wx.getStorageSync(loginCacheKey)
+      if (!data) {
+        this.login();
+      }
     }
   },
 
@@ -266,6 +327,28 @@ Page({
           hasLatelyCourse: false
         })
       }
+
+      // 2.4获取个人月卡信息
+      const { result: { monthlyCardList,monthlyCardNum } } = await wx.cloud.callFunction({
+        name: 'getMonthlyCardList'
+      })
+      console.log('monthlyCardList:', monthlyCardList);
+      console.log('monthlyCardNum:', monthlyCardNum);
+      this.setData({
+        monthlyCardList,
+        monthlyCardNum
+      })
+
+      // 2.5获取个人周卡信息
+      const { result: { weeklyCardList,weeklyCardNum } } = await wx.cloud.callFunction({
+        name: 'getWeeklyCardList'
+      })
+      console.log('weeklyCardList:', weeklyCardList);
+      console.log('weeklyCardNum:', weeklyCardNum);
+      this.setData({
+        weeklyCardList,
+        weeklyCardNum
+      })
     }
   },
 
@@ -277,6 +360,7 @@ Page({
       message: '加载中...',
       forbidClick: true,
       loadingType: 'spinner',
+      selector: '#van-toast-cardPack'
     });
     // 1.用户授权获取信息
     const { avatarUrl, nickName } = this.data
@@ -299,7 +383,11 @@ Page({
     // 5.再次刷新一下用户数据
     await this.getUserInfo()
     // 6.加入”登录成功“轻提示
-    Toast('登录成功');
+    Toast({
+      message:'登录成功',
+      forbidClick:true,
+      selector: '#van-toast-cardPack'
+    });
   },
 
   /**
@@ -344,9 +432,10 @@ Page({
     // 1.检查是否登录
     if (this.data.status === 0) {
       // 2.未登录状态不允许跳转到约课详情页
-      wx.showToast({
-        title: '请先登录',
-        icon: 'none'
+      Toast({
+        message: '请先登录',
+        forbidClick:true,
+        selector: '#van-toast-cardPack'
       })
       return;
     }
@@ -361,9 +450,10 @@ Page({
     // 1.检查是否登录
     if (this.data.status === 0) {
       // 2.未登录状态不允许跳转到本月上课记录详情页
-      wx.showToast({
-        title: '请先登录',
-        icon: 'none'
+      Toast({
+        message: '请先登录',
+        forbidClick:true,
+        selector: '#van-toast-cardPack'
       })
       return;
     }
@@ -378,9 +468,10 @@ Page({
     // 1.检查是否登录
     if (this.data.status === 0) {
       // 2.未登录状态不允许跳转到已取消详情页
-      wx.showToast({
-        title: '请先登录',
-        icon: 'none'
+      Toast({
+        message: '请先登录',
+        forbidClick:true,
+        selector: '#van-toast-cardPack'
       })
       return;
     }
@@ -389,5 +480,109 @@ Page({
       url: '/pages/canceledCourseDetail/index',
     })
   },
+
+  // 跳转个人中心
+  onPersonalCenterClick(){
+    wx.navigateTo({
+      url: '/pages/personalCenter/index',
+    })
+  },
+
+  // 重定向到已过期卡片详情
+  onExpiredCardClick(){
+    wx.navigateTo({
+      url: '/pages/expiredCardDetail/index',
+    })
+  },
+
+  // 停卡
+  async stopMonthlyCard(e){
+    let {cardId} = e.currentTarget.dataset
+    console.log(e)
+    console.log('cardId:', cardId)
+
+    wx.showModal({
+      title: '您要停卡7天吗？',
+      content: '温馨提示：月卡停卡机会仅有1次，且不停卡的月卡有效期自动加2天',
+      success:(res) => {
+        if (res.confirm) {
+          wx.cloud.callFunction({
+            name: 'stopMonthlyCard',
+            data: {
+              cardId
+            }
+          }).then(res=>{
+            Toast.success({
+              title: '停卡成功',
+              duration: 2000,
+              forbidClick:true,
+              selector: '#van-toast-cardPack'
+            })
+            this.getUserInfo()
+          })
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
+  },
+
+  // 重启
+  restartMonthlyCard(e){
+    const cardId = e.currentTarget.dataset.cardId
+    console.log('cardId:', cardId)
+    wx.showModal({
+      title: '您要重启月卡吗？',
+      success:(res) => {
+        if (res.confirm) {
+          wx.cloud.callFunction({
+            name: 'restartMonthlyCards',
+            data: {
+              cardId
+            }
+          }).then(res=>{
+            Toast.success({
+              message: '重启成功',
+              duration: 2000,
+              forbidClick:true,
+              selector: '#van-toast-cardPack'
+            })
+            this.getUserInfo()
+          })
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
+  },
+
+  // 激活卡
+  activateCard(e){
+    const cardId = e.currentTarget.dataset.cardId
+    console.log('cardId:', cardId)
+    wx.showModal({
+      title: '您要激活卡吗？',
+      success:(res) => {
+        if (res.confirm) {
+          wx.cloud.callFunction({
+            name: 'activateCard',
+            data: {
+              cardId
+            }
+          }).then(res=>{
+            Toast.success({
+              message: '激活成功',
+              duration: 2000,
+              forbidClick:true,
+              selector: '#van-toast-cardPack'
+            })
+            this.getUserInfo()
+          })
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
+  }
 
 })

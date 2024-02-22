@@ -1,7 +1,8 @@
 {
   "usingComponents": {
     "cu-custom":"../../style/colorui/components/cu-custom",
-    "van-icon":"@vant/weapp/icon/index"
+    "van-icon":"@vant/weapp/icon/index",
+    "van-toast": "@vant/weapp/toast/index"
   },
   "navigationBarBackgroundColor": "#fff",
   "navigationBarTextStyle": "black",

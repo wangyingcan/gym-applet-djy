@@ -1,0 +1,9 @@
+<view class="container">
+  <view class="title">开业通知</view>
+  <view class="detail">
+    <text>尊敬的客户：</text>
+    <text>我们很高兴地通知您，我们的新店将于2024.2.25正式开业。地址位于湖南理工学院对面。</text>
+    <text>我们将提供一系列的开业优惠活动，包括......</text>
+    <text>期待您的光临！</text>
+  </view>
+</view>

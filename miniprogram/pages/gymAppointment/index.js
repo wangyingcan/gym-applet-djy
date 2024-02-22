@@ -45,6 +45,25 @@ Page({
     nextWeekCourseList: [],
     // 是否是第一次进入
     firstEntry: true,
+    // 可用月卡列表
+    usableMonthCards: [],
+    // 可用周卡列表
+    usableWeekCards: [],
+    // 可用卡列表
+    usableCards: [],
+    // 可用月卡数量
+    usableMonthCardNum: 0,
+    // 可用周卡数量
+    usableWeekCardNum: 0,
+    // 可用卡数量
+    usableCardNum: 0,
+    // picker名字数组
+    range: [],
+    // picker选择的index
+    pickerIndex: 0,
+    // 预约课程的date、startHour
+    // 每分钟整秒的定时器
+    timer: null
   },
 
   /**
@@ -55,9 +74,12 @@ Page({
     // console.log("外部this："+JSON.stringify(this))
     // 0.获取系统宽度，由于给课程块定位
     const { windowWidth } = wx.getSystemInfoSync()
+    let app = getApp();
+    let exchangeRate = app.globalData.exchangeRate;
     this.setData({
       windowWidth,
       thisWeekOrNextWeek: true,
+      exchangeRate
     })
     this.refreshData().then(() => {
       // 1.更新完之后就可以设置firstEntry了
@@ -68,22 +90,92 @@ Page({
     });
   },
 
+  onShow() {
+    console.log('onShow')
+    let that=this;
+    // 1. 计算当前和下一分钟整秒的时间差
+    that.checkTime();
+    const nowSeconds=new Date().getSeconds();
+    const delay=(60-nowSeconds)*1000;
+    // 2. 执行一次的setTimeout，设置timer保证之后定时器是每分钟整秒执行
+    setTimeout(()=>{
+      that.checkTime();
+      that.setData({
+        timer: setInterval(()=>{
+          that.checkTime();
+        }, 60*1000)
+      })
+    },delay)
+    // 1.判断是否登录
+    const data = wx.getStorageSync(loginCacheKey);
+    // 1.1没有登录
+    if (!data) {
+      // 1.1.1提示“请登录”（onShow中onLoad之后进行，setTimeout和onLoad同步进行，所以onLoad大约5秒、此处要大于5秒才会可见）
+      Toast({
+        message: '请先登录',
+        duration: 6000,
+        forbidClick:true,
+        selector: '#van-toast-appointment'
+      });
+      // 1.1.2设置一秒定时器
+      setTimeout(() => {
+        // 1.1.3跳转`我的卡包`页面
+        wx.switchTab({
+          url: '/pages/gymMyCardPack/index',
+        })
+      }, 7000)
+      return;
+    }else{
+      this.refreshData()
+    }
+  },
+
+  onHide() {
+    // 清除定时器
+    clearInterval(this.data.timer);
+  },
+
+  // 检查是否到了更新时间
+  checkTime() {
+    let now = new Date();
+    let start1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 53, 0, 0);
+    let end1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 58, 0, 0);
+    let start2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+    let end2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 1, 0, 0);
+    if ((now >= start1 && now <= end1) || (now >= start2 && now <= end2)) {
+      this.reloadSystem();
+    }
+  },
+
+  reloadSystem() {
+    Toast.loading({
+      message: '系统更新中，请耐心等待2分钟...',
+      forbidClick: true,
+      loadingType: 'spinner',
+      mask: true,
+      duration: 90000,
+      zindex:9999,
+      selector: '#van-toast-appointment'
+    });
+  },
+
   // 刷新按钮点击事件
   refresh(e) {
     console.log("refresh函数执行了");
     const toast = Toast.loading({
       duration: 0, // 持续展示 toast
       forbidClick: true,
-      message: '倒计时 3 秒',
+      message: '倒计时 6 秒',
       selector: '#custom-selector',
     });
 
-    let second = 3;
+    let second = 6;
     const timer = setInterval(() => {
       second--;
       if (second) {
         toast.setData({
           message: `倒计时 ${second} 秒`,
+          forbidClick:true
         });
       } else {
         clearInterval(timer);
@@ -187,20 +279,69 @@ Page({
     } catch (e) {
 
     }
+    // 0.5获取可用的月卡
+    let { result: { usableMonthCards, usableMonthCardNum } } = await wx.cloud.callFunction({
+      name: 'getUsableMonthCards'
+    })
+
+    console.log('usableMonthCards:', usableMonthCards);
+    console.log('usableMonthCardNum:', usableMonthCardNum);
+
+    // 0.6获取可用的周卡
+    let { result: { usableWeekCards, usableWeekCardNum } } = await wx.cloud.callFunction({
+      name: 'getUsableWeekCards'
+    })
+    console.log('usableWeekCards:', usableWeekCards);
+    console.log('usableWeekCardNum:', usableWeekCardNum);
+
+    // 0.7可用卡整合（为了对应picker，先月卡后周卡）
+    let usableCards = [];
+    for (let usableMonthCard of usableMonthCards) {
+      usableCards.push(usableMonthCard);
+    }
+    for (let usableWeekCard of usableWeekCards) {
+      usableCards.push(usableWeekCard);
+    }
+    console.log('usableCards:', usableCards);
+
+    // 0.8构造picker的range
+    let range = [];
+    for (let monthCard of usableMonthCards) {
+      if (monthCard.status === "inactive") {
+        range.push(monthCard.cardName + " (未激活)");
+      } else if (monthCard.status === "active") {
+        range.push(monthCard.cardName + " (已激活)");
+      }
+    }
+    for (let weekCard of usableWeekCards) {
+      if (weekCard.status === "inactive") {
+        range.push(weekCard.cardName + " (未激活)");
+      } else if (weekCard.status === "active") {
+        range.push(weekCard.cardName + " (已激活)");
+      }
+    }
+    console.log('range:', range);
+
     // 隐藏加载提示
     wx.hideLoading();
     if (!this.data.firstEntry) {
-      // wx.showToast({
-      //   title: '更新成功',
-      //   icon: "success"
-      // })
-
-      Toast.success('更新成功');
+      Toast.success({
+        message:'更新成功',
+        forbidClick:true,
+        selector: '#van-toast-appointment'
+      });
     }
-    // 0.5.更新数据
+    // 0.9.更新数据
     this.setData({
       courseList,
-      nextWeekCourseList
+      nextWeekCourseList,
+      usableMonthCards,
+      usableMonthCardNum,
+      usableWeekCards,
+      usableWeekCardNum,
+      usableCards,
+      usableCardNum: usableMonthCardNum + usableWeekCardNum,
+      range
     })
   },
 
@@ -340,69 +481,150 @@ Page({
   // 约课响应事件
   async bookCourseTap(e) {
     console.log('bookCourseTap')
-    // 1.点击约课按钮，判断是否登录
-    const data = wx.getStorageSync(loginCacheKey);
-    // 1.1没有登录
-    if (!data) {
-      // 1.1.1提示“请登录”
-      Toast('请登录');
-      // 1.1.2设置一秒定时器
-      setTimeout(() => {
-        // 1.1.3跳转`我的卡包`页面
-        wx.switchTab({
-          url: '/pages/gymMyCardPack/index',
-        })
-      }, 1000)
-      return;
-    }
-    // 1.2登录状态
+    const that=this;
+    // 1.2默认登录状态
     // 1.2.1获取点击的课程的日期、开始时间
-    let date = e.currentTarget.dataset.date;
-    let startHour = e.currentTarget.dataset.starthour;
+    let selectCard = this.data.usableCards[this.data.pickerIndex];
+    console.log('selectCard', selectCard);
+    let date = this.data.date;
+    let startHour = this.data.startHour;
     console.log('date', date);
     console.log('startHour', startHour);
-    // 1.2.2弹窗是否预约的弹窗（暂时不考虑卡片逻辑）
-    wx.showModal({
-      title: '确定要预约吗？',
-      content: '',
-      showCancel: true,
-      cancelText: '取消',
-      cancelColor: '#000000',
-      confirmText: '确定',
-      confirmColor: '#3CC51F',
-      success: (result) => {
-        // 点击确认之后放置加载框
-        if (result.confirm) {
-          Toast.loading({
-            message: '约课中...',
-            duration: 3000,
-          });
-          // 调用预约课程的云函数（还需获取结果）
-          wx.cloud.callFunction({
-            name: 'bookCourse',
-            data: {
-              date,
-              startHour
-            }
-          }).then(res => {
-            // 获取预约返回结果，判断是否预约成功
-            let { bookResult } = res.result;
-            if (bookResult) {
-              console.log("预约课程的云函数调用成功", res);
-              Toast.success('预约成功，刷新在左上方');
-            } else {
-              console.log("预约课程的云函数调用失败", res);
-              Toast.fail('预约失败');
-            }
-          }).catch(err => {
-            console.log("预约课程的云函数调用失败", err);
-            Toast.fail('预约失败');
-          })
-        }
-      },
-      fail: () => { },
-      complete: () => { }
-    });
+    // 1.2.2选中激活卡时，弹窗是否预约的弹窗
+    if (selectCard.status === "active") {
+      wx.showModal({
+        title: '确定要预约吗？',
+        content: '',
+        showCancel: true,
+        cancelText: '取消',
+        cancelColor: '#000000',
+        confirmText: '确定',
+        confirmColor: '#3CC51F',
+        success: (result) => {
+          // 点击确认之后放置加载框
+          if (result.confirm) {
+            Toast.loading({
+              message: '约课中...',
+              duration: 3000,
+              forbidClick:true,
+              selector: '#van-toast-appointment'
+            });
+            // 调用预约课程的云函数（还需获取结果）
+            wx.cloud.callFunction({
+              name: 'bookCourse',
+              data: {
+                date,
+                startHour,
+                selectCard
+              }
+            }).then(res => {
+              // 获取预约返回结果，判断是否预约成功
+              let { bookResult } = res.result;
+              if (bookResult) {
+                console.log("预约课程的云函数调用成功", res);
+                Toast.success({
+                  message:'预约成功',
+                  forbidClick:true,
+                  duration:5000,
+                  selector: '#van-toast-appointment'
+                });
+                that.refreshData();
+              } else {
+                console.log("预约课程的云函数调用失败", res);
+                Toast.fail({
+                  message:'预约失败，不在卡的有效期内',
+                  forbidClick:true,
+                  selector: '#van-toast-appointment'
+                });
+              }
+            }).catch(err => {
+              console.log("预约课程的云函数调用失败", err);
+              Toast.fail({
+                message:'预约失败',
+                forbidClick:true,
+                selector: '#van-toast-appointment'
+              });
+            })
+          }
+        },
+        fail: () => { },
+        complete: () => { }
+      });
+    } else {
+      console.log("selectCard.status", selectCard.status);
+      // 1.2.3选中未激活卡时，弹窗提示context激活
+      wx.showModal({
+        title: '确定要预约吗？',
+        content: '此卡还未激活，预约默认将此卡激活',
+        showCancel: true,
+        cancelText: '取消',
+        cancelColor: '#000000',
+        confirmText: '确定',
+        confirmColor: '#3CC51F',
+        success: (result) => {
+          // 点击确认之后放置加载框
+          if (result.confirm) {
+            Toast.loading({
+              message: '约课中...',
+              duration: 3000,
+              forbidClick:true,
+              selector: '#van-toast-appointment'
+            });
+            // 先通过cardId激活卡【周卡、月卡 处理不同，调用云函数】
+            wx.cloud.callFunction({
+              name: 'activateCard',
+              data: {
+                cardId: selectCard.cardId
+              }
+            }).then(res => {
+              console.log("激活卡的云函数调用成功", res);
+
+              // 再调用预约课程的云函数（还需获取结果）
+              wx.cloud.callFunction({
+                name: 'bookCourse',
+                data: {
+                  date,
+                  startHour,
+                  selectCard
+                }
+              }).then(res => {
+                // 获取预约返回结果，判断是否预约成功
+                let { bookResult } = res.result;
+                if (bookResult) {
+                  console.log("预约课程的云函数调用成功", res);
+                  Toast.success({
+                    message:'预约成功',
+                    forbidClick:true,
+                    duration:5000,
+                    selector: '#van-toast-appointment'
+                  });
+                  that.refreshData();
+                } else {
+                  console.log("预约课程的云函数调用失败", res);
+                  Toast.fail({
+                    message:'预约失败，不在卡的有效期内',
+                    forbidClick:true,
+                    selector: '#van-toast-appointment'
+                  });
+                }
+              }).catch(err => {
+                console.log("预约课程的云函数调用失败", err);
+                Toast.fail({
+                  message:'预约失败',
+                  forbidClick:true,
+                  selector: '#van-toast-appointment'
+                });
+              })
+              
+            }).catch(err => {
+              console.log("激活卡的云函数调用失败", err);
+            })
+          }
+        },
+        fail: () => { },
+        complete: () => { }
+      });
+    }
   },
 
   // 按钮切换事件响应
@@ -412,4 +634,35 @@ Page({
       thisWeekOrNextWeek: !this.data.thisWeekOrNextWeek
     })
   },
+
+  // picker的change事件响应(点击确认会执行)
+  onPickerChange(e) {
+    console.log("onPickerChange函数执行了");
+    console.log(e);
+    // 获取dataset
+    const { date, startHour } = e.currentTarget.dataset;
+    console.log('date', date);
+    console.log('startHour', startHour);
+    // 设置选择的index
+    this.setData({
+      pickerIndex: e.detail.value,
+      date,
+      startHour
+    })
+    // 预约逻辑
+    this.bookCourseTap();
+  },
+
+  // picker弹出的响应事件
+  onPickerShow(e){
+    console.log("onPickerShow");
+    // 判断是否有可用卡
+    console.log(this.data.usableCardNum);
+    if(this.data.usableCardNum === 0){
+      Toast.fail({
+        message:'没有可用卡',
+        selector: '#van-toast-appointment'
+      });
+    }
+  }
 })

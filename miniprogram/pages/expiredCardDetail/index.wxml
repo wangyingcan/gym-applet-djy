@@ -1,0 +1,83 @@
+<!-- 1.自定义导航栏 -->
+<cu-custom bgColor=".bg-grey.light" isBack="{{true}}">
+    <!-- 1.2.中部标题 -->
+    <view slot="content">
+        <view class="nav-title">过期卡详情</view>
+    </view>
+</cu-custom>
+
+<!-- 2.空状态显示（van组件的样式可以自定义，例如van-empty__image就可以修改图片样式） -->
+<van-empty wx:if="{{expiredCardNum === 0}}" description="暂无过期卡片" image="https://img01.yzcdn.cn/vant/empty-image-default.png"></van-empty>
+
+<!-- 3.有卡状态展示 -->
+<view class="container">
+    <view class="power" wx:key wx:for="{{expiredCardList}}" wx:for-item="power">
+        <!-- 3.1一级展示 -->
+        <view class="power_info" data-index="{{index}}" bind:tap="onClickPowerInfo">
+            <!-- 3.1.1一级菜单项的标题 -->
+            <view class="power_info_text">
+                <!-- 展示卡片类型名 -->
+                <view class="power_info_text_title">{{power[0].type}}</view>
+                <!-- 展示过期时间 -->
+                <view class="power_info_text_tip">
+                    {{power[0].expiredDate}}
+                </view>
+            </view>
+            <!-- 展示右侧箭头 -->
+            <image wx:if="{{!power[0].showItem}}" class="power_info_more" src="../../images/arrow.svg"></image>
+            <image wx:if="{{power[0].showItem}}" class="power_info_less" src="../../images/arrow.svg"></image>
+        </view>
+        <view class="line"></view>
+        <!-- 3.2二级展示 -->
+        <view wx:if="{{power[0].showItem}}" style="box-sizing: border-box; margin-left: 50rpx;">
+            <view class="power_item">
+                <view class="power_item_title">
+                    <text>卡片类型：</text>
+                    <text>{{power[0].type}}</text>
+                </view>
+            </view>
+            <view class="line"></view>
+            <view class="power_item">
+                <view class="power_item_title">
+                    <text>过期日期：</text>
+                    <text>{{power[0].expiredDate}}</text>
+                </view>
+            </view>
+            <view class="line"></view>
+            <view class="power_item">
+                <view class="power_item_title">
+                    <text>购卡日期：</text>
+                    <text>{{power[0].purchaseDate}}</text>
+                </view>
+            </view>
+            <view class="line"></view>
+            <view class="power_item">
+                <view class="power_item_title">
+                    <text>激活日期：</text>
+                    <text>{{power[0].activationDate}}</text>
+                </view>
+            </view>
+            <view class="line" wx:if="{{power[0].type==='月卡'}}"></view>
+            <view class="power_item" wx:if="{{power[0].type==='月卡'}}">
+                <view class="power_item_title">
+                    <text>期间是否停卡：</text>
+                    <text>{{(power[0].pauseStart==="")?"否":"是"}}</text>
+                </view>
+            </view>
+            <view class="line" wx:if="{{(power[0].type==='月卡')&&(power[0].pauseStart!=='')}}"></view>
+            <view class="power_item" wx:if="{{(power[0].type==='月卡')&&(power[0].pauseStart!=='')}}">
+                <view class="power_item_title">
+                    <text>停卡起始时间：</text>
+                    <text>{{power[0].pauseStart}}</text>
+                </view>
+            </view>
+            <view class="line" wx:if="{{(power[0].type==='月卡')&&(power[0].pauseStart!=='')}}"></view>
+            <view class="power_item" wx:if="{{(power[0].type==='月卡')&&(power[0].pauseStart!=='')}}">
+                <view class="power_item_title">
+                    <text>期间是否停卡：</text>
+                    <text>{{power[0].pauseEnd}}</text>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>

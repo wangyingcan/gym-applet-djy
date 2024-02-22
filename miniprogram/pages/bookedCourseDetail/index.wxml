@@ -37,14 +37,14 @@
     <view wx:if="{{power.showItem}}" style="box-sizing: border-box; margin-left: 50rpx;">
 
 
-      <view class="power_item">
+      <!-- <view class="power_item">
         <view class="power_item_title">
           <text>教练：</text>
           <text>{{power.coachName}}</text>
         </view>
-      </view>
+      </view> -->
 
-      <view class="line"></view>
+      <!-- <view class="line"></view> -->
       <view class="power_item">
         <view class="power_item_title">
           <text>日期：</text>

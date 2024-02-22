@@ -7,6 +7,8 @@ const _ = db.command;
 const courseTable = db.collection('CourseTable');
 const user = db.collection('user');
 const canceledCourses = db.collection('canceledCourses');
+const monthlyCards = db.collection('monthlyCards')
+const weeklyCards = db.collection('weeklyCards')
 
 // 云函数入口函数
 exports.main = async (event, context) => {
@@ -15,9 +17,27 @@ exports.main = async (event, context) => {
   let bookResult1 = false;
   let bookResult2 = false;
   let bookResult3 = false;
+  let bookResult4 = false;
   const date = event.date;
   const startHour = event.startHour;
   const openid = cloud.getWXContext().OPENID;
+  const { remainingDays } = event.selectCard;
+  const { cardId, cardType } = event.selectCard;
+  console.log("cardType", cardType)
+
+  // 0.检查预约课程是否超出了卡的有效期
+  const courseYear = date.split('.')[0];
+  const courseMonth = date.split('.')[1];
+  const courseDay = date.split('.')[2];
+  const courseTime = new Date(courseYear, courseMonth - 1, courseDay);   // 约课时间
+  const now = new Date();   // 当前时间
+  const todayTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);  // 今天零点的时间
+  if ((courseTime - todayTime) > remainingDays * 1000 * 60 * 60 * 24) {  // 约课时间已经超出了卡的有效时间
+    return {
+      bookResult: false
+    }
+  }
+
   // 1. 修改CourseTable
   // 1.1查询并更新status、students
   await courseTable.where({
@@ -34,6 +54,39 @@ exports.main = async (event, context) => {
   }).catch(err => {
     console.log("courseTable更新失败", err);
   });
+
+  // 4.将月卡的remainingBookCount-1，无脑进行的操作
+  if (cardType === "月卡") {
+    await monthlyCards.where({
+      cardId: cardId
+    }).update({
+      data: {
+        remainingBookCount: _.inc(-1)
+      }
+    }).then(res => {
+      console.log("monthlyCards更新成功", res);
+      bookResult4 = true;
+    }).catch(err => {
+      console.log("monthlyCards更新失败", err);
+    });
+  }
+
+  // 5.将周卡的remainingBookCount-1，无脑进行的操作
+  if (cardType === "周卡") {
+    await weeklyCards.where({
+      cardId: cardId
+    }).update({
+      data: {
+        remainingBookCount: _.inc(-1),
+        totalBookCount: _.inc(-1)
+      }
+    }).then(res => {
+      console.log("weeklyCards更新成功", res);
+      bookResult4 = true;
+    }).catch(err => {
+      console.log("weeklyCards更新失败", err);
+    })
+  }
 
   //2. 修改`canceledCourses`，如果存在已经取消过再预约的课程，就需要将对应记录删除
   //2.1 查询此人是否取消过这课程的预约记录
@@ -65,7 +118,7 @@ exports.main = async (event, context) => {
     });
   } else {
     // 2.3不存在，直接返回了
-    bookResult = bookResult1;
+    bookResult = bookResult1 && bookResult4;
     return {
       bookResult
     }
@@ -85,10 +138,9 @@ exports.main = async (event, context) => {
     console.log("user更新失败", err);
   });
 
-  // 4.返回数据
-  bookResult = bookResult1 && bookResult2 && bookResult3;
+  // 5.返回数据
+  bookResult = bookResult1 && bookResult2 && bookResult3 && bookResult4;
   return {
     bookResult
   }
-
 }

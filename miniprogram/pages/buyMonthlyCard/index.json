@@ -1,0 +1,13 @@
+{
+  "usingComponents": {
+    "van-card": "@vant/weapp/card/index",
+    "van-submit-bar": "@vant/weapp/submit-bar/index",
+    "van-toast": "@vant/weapp/toast/index"
+  },
+  "navigationStyle":"default",
+  "navigationBarBackgroundColor": "#e7ebed",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#f8f8f8",
+  "enablePullDownRefresh": false,
+  "navigationBarTitleText": "购买月卡"
+}

@@ -1,0 +1,5 @@
+<van-cell-group>
+      <van-cell title="一周三练（198元）" icon="coupon-o" size="large" is-link bind:click="onClick3" />
+      <van-cell title="一周四练（240元）" icon="coupon-o" size="large" is-link bind:click="onClick4" />
+      <van-cell title="一周五练（298元）" icon="coupon-o" size="large" is-link bind:tap="onClick5" />
+</van-cell-group>

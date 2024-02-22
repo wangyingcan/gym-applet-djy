@@ -7,6 +7,41 @@
     "miniprogram": {
       "list": [
         {
+          "name": "店主微信",
+          "pathName": "pages/bossWX/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "一周三练",
+          "pathName": "pages/buyWeeklyCard3/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "购买月卡",
+          "pathName": "pages/buyMonthlyCard/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "过期卡展示",
+          "pathName": "pages/expiredCardDetail/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "个人中心",
+          "pathName": "pages/personalCenter/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "已预约课程详情",
           "pathName": "pages/bookedCourseDetail/index",
           "query": "",
@@ -46,5 +81,5 @@
   },
   "description": "项目私有配置文件。此文件中的内容将覆盖 project.config.json 中的相同字段。项目的改动优先同步到此文件中。详见文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html",
   "projectname": "Gym-djy",
-  "libVersion": "2.21.4"
+  "libVersion": "3.3.4"
 }

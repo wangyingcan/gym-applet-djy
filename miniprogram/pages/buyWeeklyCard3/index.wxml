@@ -1,0 +1,17 @@
+<van-toast id="van-toast" />
+
+<van-card
+  title-class="title-class"
+  thumb-class="thumb-class"
+  num="1"
+  price="198.00"
+  desc=""
+  title="周卡"
+  thumb="https://6465-dev-3g5cl9ca65d64f4b-1324237307.tcb.qcloud.la/oS-PG64WoFk4zbqnPZQqrnLyms6U1708229118542.png?sign=3b93ca6759b00978a0fce25a0e2a0db8&t=1708422812"
+/>
+
+<van-submit-bar
+  price="{{ 19800 }}"
+  button-text="提交订单"
+  bind:submit="onSubmit"
+/>

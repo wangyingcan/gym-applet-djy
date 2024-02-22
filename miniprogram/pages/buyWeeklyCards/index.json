@@ -1,0 +1,12 @@
+{
+  "usingComponents": {    
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index"
+  },
+  "navigationStyle":"default",
+  "navigationBarBackgroundColor": "#e7ebed",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#f8f8f8",
+  "enablePullDownRefresh": false,
+  "navigationBarTitleText": "选择周卡类型"
+}

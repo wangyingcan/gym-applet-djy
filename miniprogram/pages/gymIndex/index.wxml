@@ -1,5 +1,6 @@
+<van-toast id="van-toast-index" />
 <!-- 0.自定义首页导航栏 -->
-<cu-custom bgColor=".bg-grey.light" isBack="{{false}}" >
+<cu-custom bgColor=".bg-grey.light" isBack="{{false}}" CustomBar="{{exchangeRate*60}}">
   <!-- 1.2.中部标题 -->
   <view slot="content">
     <view class="nav-title">自在女子健身房</view>
@@ -28,7 +29,7 @@
   <view class="shopping-area">
     <!-- 1.2.1购买区标题 -->
     <view class="index-tilte-view">
-      <van-icon name="shopping-cart" size="18px" color="grey" />
+      <van-icon name="shopping-cart" size="36rpx" color="grey" />
       <text class="index-title">购买区</text>
     </view>
     <!-- 1.2.2.购买区内容 -->
@@ -42,7 +43,7 @@
             <view class="week-card-rect"></view>
           </view>
           <!-- 1.2.2.1.2.下面“周卡价格”显示 -->
-          <view class="week-card-price">300元</view>
+          <view class="week-card-price">198起</view>
         </button>
       </view>
 
@@ -58,7 +59,7 @@
             <view class="month-card-rect"></view>
           </view>
           <!-- 1.2.2.2.2.下面“月卡价格”显示 -->
-          <view class="month-card-price">700元</view>
+          <view class="month-card-price">899起</view>
         </button>
       </view>
     </view>
@@ -134,6 +135,8 @@
       <text class="index-title">扩展功能区</text>
     </view>
     <!-- 1.5.2.扩展功能区内容 -->
-    <view></view>
+    <!-- <view>
+      <button bind:tap="redireactToAdministrator">点我跳转管理员</button>
+    </view> -->
   </view>
 </view>

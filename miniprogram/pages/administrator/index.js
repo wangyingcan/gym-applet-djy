@@ -2,6 +2,8 @@
 const db = wx.cloud.database();
 // 1.获取集合
 const courseTable = db.collection('CourseTable');
+const monthlyCards = db.collection('monthlyCards');
+const weeklyCards = db.collection('weeklyCards')
 // 2.登录用户信息缓存
 const loginCacheKey = "loginInfo"
 
@@ -242,7 +244,7 @@ Page({
             "status": 2,
             "courseName": "瑜伽",
             "coachName": "张三",
-            "students": ["oS-PG64WoFk4zbqnPZQqrnLyms6U"]
+            "students": []
           },
           {
             "startHour": 10,
@@ -309,6 +311,66 @@ Page({
       console.log("调用了setInterval吗1？？？" + res)
     }).catch(err => {
       console.log("调用了setInterval吗2？？？" + err)
+    })
+  },
+
+  async insertCards(e) {
+    await monthlyCards.add({
+      data: {
+        cardId: "oS-PG64WoFk4zbqnPZQqrnLyms6U999999991",
+        status: "active",
+        remainingDays: 1,
+        purchaseDate: "2024.2.19",
+        activationDate: "2024.2.19",
+        hasPaused: false,
+        pauseStart: "",
+        pauseEnd: "",
+      }
+    });
+    await monthlyCards.add({
+      data: {
+        cardId: "oS-PG64WoFk4zbqnPZQqrnLyms6U999999992",
+        status: "active",
+        remainingDays: 2,
+        purchaseDate: "2024.2.19",
+        activationDate: "2024.2.19",
+        hasPaused: false,
+        pauseStart: "",
+        pauseEnd: "",
+      }
+    });
+    await monthlyCards.add({
+      data: {
+        cardId: "oS-PG64WoFk4zbqnPZQqrnLyms6U999999993",
+        status: "paused",
+        remainingDays: 22,
+        purchaseDate: "2024.2.11",
+        activationDate: "2024.2.11",
+        hasPaused: true,
+        pauseStart: "2024.2.12",
+        pauseEnd: "",
+      }
+    });
+    await monthlyCards.add({
+      data: {
+        cardId: "oS-PG64WoFk4zbqnPZQqrnLyms6U999999994",
+        status: "paused",
+        remainingDays: 22,
+        purchaseDate: "2024.2.11",
+        activationDate: "2024.2.11",
+        hasPaused: true,
+        pauseStart: "2024.2.13",
+        pauseEnd: "",
+      }
+    });
+    await weeklyCards.add({
+      data: {
+        cardId: "oS-PG64WoFk4zbqnPZQqrnLyms6U999999995",
+        status: "active",
+        remainingDays: 1,
+        purchaseDate: "2024.2.18",
+        activationDate: "2024.2.18",
+      }
     })
   }
 

@@ -5,62 +5,62 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    //thisMonthRescordNum课程数，onload执行完再获取，为零显示空状态
+    // thisMonth月份字符串
+    thisMonthRescordList: [],//预约课程列表
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
+    console.log("onLoad");
+    this.refresh();
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh() {
-
+    console.log("onPullDownRefresh")
+    this.refresh();
   },
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
+  // 刷新页面函数
+  async refresh() {
+    console.log("refresh");
+    // 0.获取本月的时间
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+    const thisMonth = year + '.' + month;
+    this.setData({
+      thisMonth
+    })
+    // 1.获取最新本月课程数量、课程列表
+    wx.cloud.callFunction({
+      name: 'getMonthlyRecords'
+    }).then(res => {
+      console.log('查询成功:', res)
+      const { result: { thisMonthRescordList,thisMonthRescordNum } } = res
+      this.setData({
+        thisMonthRescordList,
+        thisMonthRescordNum
+      })
+    }).catch(err => {
+      console.log('查询失败:', err)
+    })
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
+  // 一级菜单项点击事件
+  onClickPowerInfo(e) {
+    console.log('onClickPowerInfo');
+    const index = e.currentTarget.dataset.index;
+    const thisMonthRescordList = this.data.thisMonthRescordList;
+    const selectedItem = thisMonthRescordList[index];
+    selectedItem.showItem = !selectedItem.showItem;
+    this.setData({
+      thisMonthRescordList
+    });
   }
 })

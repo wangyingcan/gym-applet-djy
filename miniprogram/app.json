@@ -6,7 +6,16 @@
     "pages/administrator/index",
     "pages/bookedCourseDetail/index",
     "pages/monthlyCourseDetail/index",
-    "pages/canceledCourseDetail/index"
+    "pages/canceledCourseDetail/index",
+    "pages/personalCenter/index",
+    "pages/expiredCardDetail/index",
+    "pages/notice/index",
+    "pages/buyWeeklyCards/index",
+    "pages/buyMonthlyCard/index",
+    "pages/buyWeeklyCard3/index",
+    "pages/buyWeeklyCard4/index",
+    "pages/buyWeeklyCard5/index",
+    "pages/bossWX/index"
   ],
   "window": {
     "backgroundColor": "#fff",

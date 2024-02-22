@@ -116,7 +116,7 @@ exports.main = async (event, context) => {
                 _openid:student
               }).update({
                 data:{
-                  thisMonthCourseRecordNum:0
+                  thisMonthCourseRecordNum:1
                 }
               }).then(res=>{
                 console.log('更新成功',res)

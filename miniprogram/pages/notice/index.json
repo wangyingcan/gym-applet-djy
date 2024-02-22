@@ -1,0 +1,9 @@
+{
+  "usingComponents": {},
+  "navigationStyle":"default",
+  "navigationBarBackgroundColor": "#e7ebed",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#f8f8f8",
+  "enablePullDownRefresh": false,
+  "navigationBarTitleText": "公告"
+}
