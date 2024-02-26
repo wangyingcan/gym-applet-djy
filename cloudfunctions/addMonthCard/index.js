@@ -32,7 +32,8 @@ exports.main = async (event, context) => {
         hasPaused: false,
         cardName:cardName,
         remainingBookCount:1,
-        cardType:"月卡"
+        cardType:"月卡",
+        firstBook:true
       }
     })
 

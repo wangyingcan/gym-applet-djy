@@ -21,9 +21,11 @@ exports.main = async (event, context) => {
   const date = event.date;
   const startHour = event.startHour;
   const openid = cloud.getWXContext().OPENID;
+  // 0.获取card相关属性并写入预约的course中
   const { remainingDays } = event.selectCard;
-  const { cardId, cardType } = event.selectCard;
+  const { cardId, cardType,firstBook } = event.selectCard;
   console.log("cardType", cardType)
+  console.log("firstBook",firstBook)
 
   // 0.检查预约课程是否超出了卡的有效期
   const courseYear = date.split('.')[0];
@@ -39,14 +41,17 @@ exports.main = async (event, context) => {
   }
 
   // 1. 修改CourseTable
-  // 1.1查询并更新status、students
+  // 1.1查询并更新status、students、cardId、cardType、firstBook
   await courseTable.where({
     date: date,
     'courses.startHour': startHour
   }).update({
     data: {
       'courses.$.status': 2,
-      'courses.$.students': _.push(openid)
+      'courses.$.students': _.push(openid),
+      'courses.$.cardId':cardId,
+      'courses.$.cardType':cardType,
+      'courses.$.firstBook':firstBook
     }
   }).then(res => {
     console.log("courseTable更新成功", res);

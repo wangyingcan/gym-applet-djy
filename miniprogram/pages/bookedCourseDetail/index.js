@@ -69,6 +69,12 @@ Page({
     const nowTime = new Date().getTime();     // 当前时间(毫秒形式)
     let date = e.currentTarget.dataset.date;    // 2024.2.12形式
     let startHour = e.currentTarget.dataset.starthour;    // 18形式
+    let cardId=e.currentTarget.dataset.cardId;
+    let cardType=e.currentTarget.dataset.cardType;
+    let firstBook=e.currentTarget.dataset.firstBook;
+    console.log("handleCancelCourseClick中所需课程的cardId",cardId);
+    console.log("handleCancelCourseClick中所需课程的cardType",cardType);
+    console.log("handleCancelCourseClick中所需课程的firstBook",firstBook);
     let startYear = date.split('.')[0];
     let startMonth = date.split('.')[1];
     let startDate = date.split('.')[2];
@@ -103,7 +109,10 @@ Page({
             name: "cancelBookedCourse",
             data: {
               date,
-              startHour
+              startHour,
+              cardId,
+              cardType,
+              firstBook
             },
           })
         }
