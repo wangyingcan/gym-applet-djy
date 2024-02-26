@@ -15,7 +15,9 @@
     "pages/buyWeeklyCard3/index",
     "pages/buyWeeklyCard4/index",
     "pages/buyWeeklyCard5/index",
-    "pages/bossWX/index"
+    "pages/bossWX/index",
+    "pages/newUserToken/index",
+    "pages/couponDetail/index"
   ],
   "window": {
     "backgroundColor": "#fff",

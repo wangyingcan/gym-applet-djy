@@ -37,9 +37,9 @@ exports.main = async (event, context) => {
     let courses = res.data[0].courses;
     let needUpdate = false;
     for (let i = 0; i < courses.length; i++) {
-      // 2.1 每小时刷新过去的课程状态
+      // 2.1 每小时刷新过去的课程状态（只要到了开始时间就应该变成失效状态）
       let course = courses[i];
-      if (course.status !== 3 && course.startHour + course.courseLength <= nowHour) {
+      if (course.status !== 3 && course.startHour <= nowHour) {
         courses[i].status = 3;
         needUpdate = true;
       }

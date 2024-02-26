@@ -119,12 +119,15 @@ page {
     background-color: transparent;
     padding: 0;
     outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* 2.2.4.1.1.1.周卡文本样式 */
 .week-card-title {
     font-weight: bolder;
-    font-size: 60rpx;
+    font-size: 80rpx;
     line-height: normal;
     letter-spacing: 0em;
     color: #FFFFFF;
@@ -133,10 +136,10 @@ page {
 /* 2.2.4.1.1.2.周卡文本下方矩形条样式 */
 .week-card-rect {
     position: absolute;
-    bottom: 10rpx;
-    right: 18rpx;
+    bottom: 33.5%;
+    right: 20rpx;
     width: 143.42rpx;
-    height: 23.9rpx;
+    height: 28rpx;
     border-radius: 10rpx;
     opacity: 1;
     background: rgba(56, 239, 125, 1);
@@ -190,7 +193,7 @@ page {
 
 /* 2.2.4.3.1.1.上部分月卡标题文本 */
 .month-card-title {
-    font-size: 60rpx;
+    font-size: 80rpx;
     font-weight: bolder;
     line-height: normal;
     letter-spacing: 0em;
@@ -200,10 +203,10 @@ page {
 /* 2.2.4.3.1.2.月卡文本下方矩形条样式 */
 .month-card-rect {
     position: absolute;
-    bottom: 10rpx;
-    right: 18rpx;
+    bottom: 33.5%;
+    right: 20rpx;
     width: 143.42rpx;
-    height: 23.9rpx;
+    height: 28rpx;
     border-radius: 10rpx;
     opacity: 1;
     background: rgba(253, 48, 48, 1);
@@ -380,3 +383,13 @@ page {
     height: 340.38rpx;
     opacity: 1;
 }
+
+/* 弹出层样式 */
+.outter-view{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }

@@ -222,6 +222,6 @@
 
 /* 未到达开放时间状态 */
 .course-item__content.status3 {
-  border: 4rpx solid #000000;
+  border: 4rpx solid #fff;
   background: rgba(153, 153, 153, 0.75);
 }

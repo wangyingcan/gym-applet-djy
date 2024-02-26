@@ -1,0 +1,27 @@
+<!-- 1.自定义导航栏 -->
+<cu-custom bgColor=".bg-grey.light" isBack="{{true}}">
+    <!-- 1.2.中部标题 -->
+    <view slot="content">
+        <view class="nav-title">我的优惠券</view>
+    </view>
+</cu-custom>
+
+<!-- 2.空状态显示（van组件的样式可以自定义，例如van-empty__image就可以修改图片样式） -->
+<van-empty wx:if="{{newUserCouponNum==0}}" description="暂无优惠券" image="https://img01.yzcdn.cn/vant/empty-image-default.png"></van-empty>
+
+<!-- 3.优惠券列表 -->
+<view wx:for="{{newUserCouponList}}" wx:key>
+    <view class="coupon-item">
+        <!-- 3.1.左侧优惠券信息 -->
+        <view class="coupon-left">
+            <view class="name">{{item.couponName}}</view>
+            <view class="desc">{{item.couponDesc}}</view>
+        </view>
+        <!-- 3.2.右侧优惠券状态 -->
+        <view class="coupon-right">
+            <van-button type="danger" bind:click="redirectToMonthlyCardCheeper" size="mini" wx:if="{{item.isUsed==false}}">去购买</van-button>
+            <van-button wx:if="{{item.isUsed===true}}" size="mini" disabled>已使用</van-button>
+            <view class="time" wx:if="{{item.isUsed===true}}">使用时间：{{item.couponUseTime}}</view>
+        </view>
+    </view>
+</view>

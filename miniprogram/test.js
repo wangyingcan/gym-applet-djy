@@ -2,7 +2,7 @@ Page({
     data: {
         // 用户表，用于我的卡包个人基本信息的展示
         userInfo: {
-            avatarUrl: 'cloud://dev-3g5cl9ca65d64f4b.6465-dev-3g5cl9ca65d64f4b-1324237307/1707967944569.png',//头像
+            avatarUrl: 'cloud://prod-5g2wkpjaadb1bf82.7072-prod-5g2wkpjaadb1bf82-1324237307/imagesdefaultBorderAvatar.png',//头像
             nickName: '登录 / 注册',//昵称
             monthlyCardIds: [],//个人月卡id集合
             weeklyCardIds: [],//个人周卡id集合

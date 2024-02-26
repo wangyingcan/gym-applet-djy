@@ -16,7 +16,7 @@ Page({
   data: {
     // 云存储文件id（默认头像已存储到云端）
     userInfo: {
-      avatarUrl: 'cloud://dev-3g5cl9ca65d64f4b.6465-dev-3g5cl9ca65d64f4b-1324237307/1707967944569.png',
+      avatarUrl: 'cloud://prod-5g2wkpjaadb1bf82.7072-prod-5g2wkpjaadb1bf82-1324237307/imagesdefaultBorderAvatar.png',
       nickName: '登录 / 注册',
       testField: 1,
     },
@@ -191,7 +191,7 @@ Page({
     wx.removeStorageSync(loginCacheKey)
     // 2.设置初始信息
     const userDefaultInfo = {
-      avatarUrl: 'cloud://dev-3g5cl9ca65d64f4b.6465-dev-3g5cl9ca65d64f4b-1324237307/1707967944569.png',
+      avatarUrl: 'cloud://prod-5g2wkpjaadb1bf82.7072-prod-5g2wkpjaadb1bf82-1324237307/imagesdefaultBorderAvatar.png',
       nickName: '登录 / 注册',
       testField: 1
     }
@@ -235,66 +235,113 @@ Page({
   insertCourses() {
     courseTable.add({
       data: {
-        "date": "2024.2.17",
-        "index": 6,
+        "date": "2024.3.15",
+        "index": 5,
         "courses": [
           {
             "startHour": 9,
             "courseLength": 1,
-            "status": 2,
-            "courseName": "瑜伽",
-            "coachName": "张三",
+            "status": 3,
+            "courseName": "",
+            "coachName": "",
             "students": []
           },
           {
             "startHour": 10,
-            "courseLength": 2,
-            "status": 2,
-            "courseName": "瑜伽",
-            "coachName": "张三",
-            "students": ["oS-PG64WoFk4zbqnPZQqrnLyms6U"]
+            "courseLength": 1,
+            "status": 3,
+            "courseName": "",
+            "coachName": "",
+            "students": []
+          },
+          {
+            "startHour": 11,
+            "courseLength": 1,
+            "status": 3,
+            "courseName": "",
+            "coachName": "",
+            "students": []
           },
           {
             "startHour": 12,
             "courseLength": 1,
-            "status": 2,
-            "courseName": "瑜伽",
-            "coachName": "张三",
-            "students": ["oS-PG64WoFk4zbqnPZQqrnLyms6U"]
+            "status": 3,
+            "courseName": "",
+            "coachName": "",
+            "students": []
+          },
+          {
+            "startHour": 13,
+            "courseLength": 1,
+            "status": 3,
+            "courseName": "",
+            "coachName": "",
+            "students": []
           },
           {
             "startHour": 14,
             "courseLength": 1,
-            "status": 2,
-            "courseName": "瑜伽",
-            "coachName": "张三",
-            "students": ["oS-PG64WoFk4zbqnPZQqrnLyms6U"]
+            "status": 3,
+            "courseName": "",
+            "coachName": "",
+            "students": []
+          },
+          {
+            "startHour": 15,
+            "courseLength": 1,
+            "status": 3,
+            "courseName": "",
+            "coachName": "",
+            "students": []
           },
           {
             "startHour": 16,
             "courseLength": 1,
-            "status": 2,
-            "courseName": "瑜伽",
-            "coachName": "张三",
-            "students": ["oS-PG64WoFk4zbqnPZQqrnLyms6U"]
+            "status": 3,
+            "courseName": "",
+            "coachName": "",
+            "students": []
           },
           {
             "startHour": 17,
             "courseLength": 1,
-            "status": 2,
-            "courseName": "瑜伽",
-            "coachName": "张三",
-            "students": ["oS-PG64WoFk4zbqnPZQqrnLyms6U"]
+            "status": 3,
+            "courseName": "",
+            "coachName": "",
+            "students": []
+          },
+          {
+            "startHour": 18,
+            "courseLength": 1,
+            "status": 3,
+            "courseName": "",
+            "coachName": "",
+            "students": []
+          },
+          {
+            "startHour": 19,
+            "courseLength": 1,
+            "status": 3,
+            "courseName": "",
+            "coachName": "",
+            "students": []
           },
           {
             "startHour": 20,
-            "courseLength": 3,
-            "status": 2,
-            "courseName": "瑜伽",
-            "coachName": "张三",
-            "students": ["oS-PG64WoFk4zbqnPZQqrnLyms6U"]
+            "courseLength": 1,
+            "status": 3,
+            "courseName": "",
+            "coachName": "",
+            "students": []
           },
-
+          {
+            "startHour": 21,
+            "courseLength": 1,
+            "status": 3,
+            "courseName": "",
+            "coachName": "",
+            "students": []
+          },
         ],
       }
     }).then(res => {

@@ -14,7 +14,7 @@
   <view slot="right"></view>
 </cu-custom>
 
-<van-notice-bar left-icon="volume-o" class="fix-notice__bar" text="此页面加载数据较多，如果操作没有变化，请手动点击左上角刷新按钮进行刷新" scrollable background="#e7ebed" color="#000"/>
+<van-notice-bar left-icon="volume-o" class="fix-notice__bar" text="操作没有变化时，请手动点击左上角刷新按钮进行刷新" scrollable background="#e7ebed" color="#000"/>
 <!-- 2.年份、起始日期、切换下一周  显示区域 -->
 <view class="padding flex justify-around year-date-nextWeek-view">
   <!-- 2.1.左侧年份 -->
@@ -76,14 +76,14 @@
         <view class="course-item" style="top:{{(course.startHour-9)*120}}rpx;left:{{(day.index-1)*((windowWidth * 2 - 50)/7)}}rpx;height:{{course.courseLength*120}}rpx;">
           <!-- 4.2.3 课程信息 -->
           <picker wx:if="{{course.status===1}}" mode="selector" class="course-item__content.status1" range="{{range}}" value="{{pickerIndex}}" bindchange="onPickerChange" data-date="{{day.date}}" data-start-Hour="{{course.startHour}}" bind:tap="onPickerShow">
-            <view style="color: #3D3D3D;font-size: 26rpx;">{{course.courseName}}</view>
+            <view style="color: #3D3D3D;font-size: 26rpx;">预约</view>
           </picker>
           <view class="course-item__content.status2" wx:if="{{course.status==2}}" bind:tap="showBookedAlter">
-            <view style="color: #3D3D3D;font-size: 26rpx;">{{course.courseName}}</view>
+            <view style="color: #3D3D3D;font-size: 26rpx;">已满</view>
             <!-- <view style="color: #999999;font-size: 20rpx;">@{{course.coachName}}</view> -->
           </view>
           <view class="course-item__content.status3" wx:if="{{course.status==3}}" bind:tap="showNotOpenAlert">
-            <view style="color: #fff;font-size: 26rpx;">{{course.courseName}}</view>
+            <view style="color: #fff;font-size: 26rpx;">失效</view>
             <!-- <view style="color: #444444;font-size: 20rpx;">@{{course.coachName}}</view> -->
           </view>
         </view>

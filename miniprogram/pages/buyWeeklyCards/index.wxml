@@ -1,3 +1,5 @@
+<van-notice-bar left-icon="volume-o" text="周卡周期统一从每周一开始计算，周日22:00清零。购卡不等于激活，第一次约课开始计次" scrollable/>
+
 <van-cell-group>
       <van-cell title="一周三练（198元）" icon="coupon-o" size="large" is-link bind:click="onClick3" />
       <van-cell title="一周四练（240元）" icon="coupon-o" size="large" is-link bind:click="onClick4" />

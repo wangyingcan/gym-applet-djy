@@ -138,8 +138,8 @@ Page({
   // 检查是否到了更新时间
   checkTime() {
     let now = new Date();
-    let start1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 53, 0, 0);
-    let end1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 58, 0, 0);
+    let start1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 0, 0, 0);
+    let end1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 1, 0, 0);
     let start2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
     let end2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 1, 0, 0);
     if ((now >= start1 && now <= end1) || (now >= start2 && now <= end2)) {
@@ -192,6 +192,7 @@ Page({
     // 0.周五22点到周日22点内showNextWeek为true,否则为false（numOfWeek有星期信息，new Date().getHours()有小时信息）
     this.getToday();
     const numOfWeek = this.data.numOfWeek;
+    //const nowHour = new Date("2024-2-23 22:00:01").getHours();
     const nowHour = new Date().getHours();
     console.log("numOfWeek", numOfWeek);
     console.log("nowHour", nowHour);
@@ -349,6 +350,7 @@ Page({
   getToday() {
     console.log("getToday函数执行了");
     // 1.1获取此刻的Date对象
+    //const date = new Date("2024-2-23 22:00:01");
     const date = new Date();
     // 1.2转换为today格式
     const todayStr = date.getFullYear() + '.' + (date.getMonth() + 1) + '.' + date.getDate();
@@ -494,7 +496,7 @@ Page({
     if (selectCard.status === "active") {
       wx.showModal({
         title: '确定要预约吗？',
-        content: '',
+        content: '注意：最晚2小时取消，临上课2小时内无取消权利',
         showCancel: true,
         cancelText: '取消',
         cancelColor: '#000000',
@@ -555,7 +557,7 @@ Page({
       // 1.2.3选中未激活卡时，弹窗提示context激活
       wx.showModal({
         title: '确定要预约吗？',
-        content: '此卡还未激活，预约默认将此卡激活',
+        content: '此卡还未激活，预约后即开始计时！',
         showCancel: true,
         cancelText: '取消',
         cancelColor: '#000000',

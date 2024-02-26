@@ -23,7 +23,7 @@ Page({
   data: {
     // 从数据库中读取的userInfo（默认情况的假数据）
     userInfo: {
-      avatarUrl: 'cloud://dev-3g5cl9ca65d64f4b.6465-dev-3g5cl9ca65d64f4b-1324237307/1707967944569.png',
+      avatarUrl: 'cloud://prod-5g2wkpjaadb1bf82.7072-prod-5g2wkpjaadb1bf82-1324237307/imagesdefaultBorderAvatar.png',
       nickName: '登录 / 注册',
       monthlyCardIds: [],
       weeklyCardIds: [],
@@ -101,11 +101,34 @@ Page({
     clearInterval(this.data.timer);
   },
 
+  // navigateBack、redireacTo、reLaunch、返回按钮时调用，tarbar不会调用
+  onUnload(){
+    console.log('onUnload')
+    wx.removeStorageSync(loginCacheKey)
+    // 2.设置初始信息
+    const userDefaultInfo = {
+      avatarUrl: 'cloud://prod-5g2wkpjaadb1bf82.7072-prod-5g2wkpjaadb1bf82-1324237307/imagesdefaultBorderAvatar.png',
+      nickName: '登录 / 注册',
+      monthlyCardIds: [],
+      weeklyCardIds: [],
+      expiredCardIds: [],
+      bookedCourseNum: 0,
+      thisMonthCourseRecordNum: 0,
+      canceledClassNum: 0
+    }
+    // 3.设置登出状态+默认用户信息
+    this.setData({
+      status: 0,
+      userInfo: userDefaultInfo,
+      bookedCourseNum: 0
+    })
+  },
+
   // 检查是否到了更新时间
   checkTime() {
     let now = new Date();
-    let start1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 53, 0, 0);
-    let end1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 58, 0, 0);
+    let start1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 0, 0, 0);
+    let end1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 1, 0, 0);
     let start2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
     let end2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 1, 0, 0);
     if ((now >= start1 && now <= end1) || (now >= start2 && now <= end2)) {
@@ -316,7 +339,8 @@ Page({
           latelyCourseName: courseName,
           latelyHourGap: hourGap,
           latelyMinuteGap: minuteGap,
-          hasLatelyCourse: true
+          hasLatelyCourse: true,
+          status:1
         })
       }else{
         // 2.3.2没有课的时候，设置最新的用户信息、预约课程数
@@ -324,7 +348,8 @@ Page({
           userInfo: latelyUserInfo.data,
           bookedCourseNum,
           bookedCourseList,
-          hasLatelyCourse: false
+          hasLatelyCourse: false,
+          status:1
         })
       }
 
@@ -400,7 +425,7 @@ Page({
     wx.removeStorageSync(loginCacheKey)
     // 2.设置初始信息
     const userDefaultInfo = {
-      avatarUrl: 'cloud://dev-3g5cl9ca65d64f4b.6465-dev-3g5cl9ca65d64f4b-1324237307/1707967944569.png',
+      avatarUrl: 'cloud://prod-5g2wkpjaadb1bf82.7072-prod-5g2wkpjaadb1bf82-1324237307/imagesdefaultBorderAvatar.png',
       nickName: '登录 / 注册',
       monthlyCardIds: [],
       weeklyCardIds: [],
@@ -495,6 +520,13 @@ Page({
     })
   },
 
+  // 重定向到我的优惠券
+  onCouponClick(){
+    wx.navigateTo({
+      url: '/pages/couponDetail/index',
+    })
+  },
+
   // 停卡
   async stopMonthlyCard(e){
     let {cardId} = e.currentTarget.dataset
@@ -560,6 +592,10 @@ Page({
   activateCard(e){
     const cardId = e.currentTarget.dataset.cardId
     console.log('cardId:', cardId)
+    wx.switchTab({
+      url: '/pages/gymAppointment/index',
+    })
+    /*
     wx.showModal({
       title: '您要激活卡吗？',
       success:(res) => {
@@ -583,6 +619,14 @@ Page({
         }
       }
     })
-  }
+  },
+
+  // 测试onUnload
+  relaunch() {
+    wx.reLaunch({
+      url: '/pages/gymIndex/index',
+    })
+    */
+  },
 
 })

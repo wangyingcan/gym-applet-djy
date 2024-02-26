@@ -1,6 +1,7 @@
 <wxs module="tools" src="../../utils/transferValidDate.wxs"></wxs>
 <!-- 0.轻提示 -->
 <van-toast id="van-toast-cardPack" />
+
 <!-- 1.自定义导航栏 -->
 <cu-custom bgColor=".bg-grey.light" isBack="{{false}}">
   <!-- 1.2.中部标题 -->
@@ -8,10 +9,12 @@
     <view class="nav-title">我的</view>
   </view>
 </cu-custom>
+
 <!-- 2.开课提醒滚动通知栏 -->
 <van-notice-bar left-icon="volume-o" text="亲爱的学员，距离你{{latelyMonth}}月{{latelyDate}}日{{latelyHour}}点的“{{latelyCourseName}}“课还有{{(latelyHourGap===0) ?'':latelyHourGap + '小时'}}{{latelyMinuteGap}}分钟。" wx:if="{{status === 1 && hasLatelyCourse }}" />
 <van-notice-bar left-icon="volume-o" text="亲爱的学员，你还没有预约课程哦，快去约课吧！" wx:if="{{status === 1 && !hasLatelyCourse }}" />
 <van-notice-bar left-icon="volume-o" text="点击头像、登录/注册进行用户登入" wx:if="{{status === 0}}" />
+
 <!-- 3.注册时，提交头像、昵称的弹窗 -->
 <van-popup show="{{ show }}" bind:close="onClose" custom-style="height: 40%;width:70%" closeable close-icon="close" round>
   <!-- 2.1头像选择、昵称输入区 -->
@@ -158,9 +161,12 @@
   <!-- 6.个人中心、退出登录 -->
   <view class="other-settings" wx:if="{{status === 1}}">
     <van-cell-group>
+      <van-cell title="我的优惠券" icon="vip-card-o" size="large" is-link bind:click="onCouponClick" />
       <van-cell title="过期卡包" icon="coupon-o" size="large" is-link bind:click="onExpiredCardClick" />
       <van-cell title="个人中心" icon="contact-o" size="large" is-link bind:click="onPersonalCenterClick" />
       <van-cell title="退出登录" icon="setting-o" size="large" is-link bind:tap="logout" />
     </van-cell-group>
   </view>
+
+  <!-- <view bindtap="relaunch">点击出发onUnload</view> -->
 </view>

@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "cu-custom":"../../style/colorui/components/cu-custom",
+    "van-empty": "@vant/weapp/empty/index",
+    "van-button": "@vant/weapp/button/index"
+  }
+}

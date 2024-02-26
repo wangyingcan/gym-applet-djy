@@ -1,0 +1,11 @@
+{
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index"
+  },
+  "navigationStyle":"default",
+  "navigationBarBackgroundColor": "#e7ebed",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#f8f8f8",
+  "enablePullDownRefresh": false,
+  "navigationBarTitleText": "新人领券"
+}

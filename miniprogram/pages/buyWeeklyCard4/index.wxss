@@ -1,11 +1,42 @@
 .title-class {
-    font-size: 40rpx;
-    font-weight: bolder;
-    padding-top: 30rpx;
+  font-size: 40rpx;
+  font-weight: bolder;
+  padding-top: 20rpx;
+  margin-left: 30rpx;
 }
 
 .thumb-class {
-    width: 150rpx;
-    height: 150rpx;
-    margin-top: 15rpx
+  width: 130rpx;
+  height: 130rpx;
+  margin-top: 10rpx;
+}
+
+.desc-class{
+  padding-top: 20rpx;
+  margin-left: 30rpx;
+  color:#999;
+  display: flex;
+  flex-direction: column;
+  font-size: 25rpx;
+}
+
+.price-class{
+  padding-top: 20rpx;
+  margin-left: 30rpx;
+}
+
+.checkbox-custom{
+  display: flex;
+  justify-content: center;
+}
+
+.num-class{
+padding-top: 20rpx;
+}
+
+.checkbox-buttom__view{
+  position: absolute;
+  bottom:16.8%;
+  width:100%;
+  left:calc(50% - 160)
 }

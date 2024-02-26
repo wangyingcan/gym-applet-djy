@@ -7,6 +7,20 @@
     "miniprogram": {
       "list": [
         {
+          "name": "我的优惠券",
+          "pathName": "pages/couponDetail/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "测试微信支付",
+          "pathName": "pages/testWXPay/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "店主微信",
           "pathName": "pages/bossWX/index",
           "query": "",

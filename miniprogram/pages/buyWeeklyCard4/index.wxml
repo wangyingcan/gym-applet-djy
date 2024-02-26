@@ -1,17 +1,33 @@
-<van-toast id="van-toast" />
+<van-toast id="van-toast-weeklyCard4" />
 
 <van-card
   title-class="title-class"
   thumb-class="thumb-class"
+  desc-class="desc-class"
+  price-class="price-class"
+  num-class="num-class"
   num="1"
-  price="240.00"
-  desc=""
-  title="周卡"
+  price="{{totalFeeStr}}"
+  title="一周四练"
   thumb="https://6465-dev-3g5cl9ca65d64f4b-1324237307.tcb.qcloud.la/oS-PG64WoFk4zbqnPZQqrnLyms6U1708229118542.png?sign=3b93ca6759b00978a0fce25a0e2a0db8&t=1708422812"
-/>
+>
+  <view slot="desc" class="desc-class">
+    <text>一周自由约课4次（1h/次）</text>
+    <text>本产品周期短，暂不开放停退换服务</text>
+  </view>
 
-<van-submit-bar
-  price="{{ 24000 }}"
-  button-text="提交订单"
-  bind:submit="onSubmit"
-/>
+</van-card>
+
+<view class="checkbox-buttom__view">
+  <van-checkbox value="{{ checked }}" bind:change="onChange" custom-class="checkbox-custom">确认接受《购卡协议》</van-checkbox>
+</view>
+
+<view wx:if="{{ checked }}" >
+  <van-submit-bar price="{{ totalFee }}" button-text="微信支付" bind:submit="onSubmit" tip="请先阅读并同意《购卡协议》"
+  tip-icon="info-o"/>
+</view>
+
+<view wx:if="{{ !checked }}" >
+  <van-submit-bar price="{{ totalFee }}" button-text="微信支付" disabled  tip="请先阅读并同意《购卡协议》"
+  tip-icon="info-o"/>
+</view>

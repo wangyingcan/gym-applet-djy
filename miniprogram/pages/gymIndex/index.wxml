@@ -15,13 +15,13 @@
     <swiper class="swiper" indicator-dots="true" previous-margin="20" next-margin="20" indicator-active-color="rgba(44, 62, 80, 0.5)" indicator-color="rgba(239, 239, 239, 1)" autoplay circular>
       <!-- 1.1.1.1.测试图片 -->
       <swiper-item class="swiper-item">
-        <image src="../../images/1.jpeg" />
+        <image src="cloud://prod-5g2wkpjaadb1bf82.7072-prod-5g2wkpjaadb1bf82-1324237307/1.jpeg" />
       </swiper-item>
       <swiper-item class="swiper-item">
-        <image src="../../images/2.jpg" />
+        <image src="cloud://prod-5g2wkpjaadb1bf82.7072-prod-5g2wkpjaadb1bf82-1324237307/2.jpg" />
       </swiper-item>
       <swiper-item class="swiper-item">
-        <image src="../../images/3.jpg" />
+        <image src="cloud://prod-5g2wkpjaadb1bf82.7072-prod-5g2wkpjaadb1bf82-1324237307/3.jpg" />
       </swiper-item>
     </swiper>
   </view>
@@ -38,34 +38,30 @@
       <view class="left-week-card-view" hover-class="view-hover">
         <button class="shopping-area-btn" bind:tap="onWeekCardClick">
           <!-- 1.2.2.1.1.上面“周卡文本”显示 -->
-          <view class="week-card-title-view">
+          <!-- <view class="week-card-title-view"> -->
             <text class="week-card-title">周卡</text>
             <view class="week-card-rect"></view>
-          </view>
+          <!-- </view> -->
           <!-- 1.2.2.1.2.下面“周卡价格”显示 -->
-          <view class="week-card-price">198起</view>
+          <!-- <view class="week-card-price">198起</view> -->
         </button>
       </view>
-
       <!-- 1.2.2.3.中间白色分界线 -->
       <!-- <view class="middle-line"></view> -->
-
       <!-- 1.2.2.2.右边“月卡”部分 -->
       <view class="right-month-card-view" hover-class="view-hover">
         <button class="shopping-area-btn" bind:tap="onMonthCardClick">
           <!-- 1.2.2.2.1.上面“月卡文本”显示 -->
-          <view class="month-card-title-view">
+          <!-- <view class="month-card-title-view"> -->
             <text class="month-card-title">月卡</text>
             <view class="month-card-rect"></view>
-          </view>
+          <!-- </view> -->
           <!-- 1.2.2.2.2.下面“月卡价格”显示 -->
-          <view class="month-card-price">899起</view>
+          <!-- <view class="month-card-price">899起</view> -->
         </button>
       </view>
     </view>
   </view>
-
-
   <!-- 1.3.公告区 -->
   <view class="notice-area">
     <!-- 1.3.1.公告区标题 -->
@@ -83,7 +79,7 @@
   <view class="surprise-area">
     <!-- 1.4.1.惊喜区标题 -->
     <view class="index-tilte-view">
-      <van-icon name="smile" color="grey" size="18"/>
+      <van-icon name="smile" color="grey" size="18" />
       <text class="index-title">惊喜区</text>
     </view>
     <!-- 1.4.2.惊喜区内容 -->
@@ -127,16 +123,30 @@
       </view>
     </view>
   </view>
+
   <!-- 1.5.扩展功能区（公众号推文） -->
-  <view class="extend-area">
+  <!-- <view class="extend-area"> -->
     <!-- 1.5.1.扩展功能区标题 -->
-    <view class="index-tilte-view">
-      <van-icon name="star" size="18" color="grey"/>
+    <!-- <view class="index-tilte-view">
+      <van-icon name="star" size="18" color="grey" />
       <text class="index-title">扩展功能区</text>
-    </view>
+    </view> -->
     <!-- 1.5.2.扩展功能区内容 -->
     <!-- <view>
       <button bind:tap="redireactToAdministrator">点我跳转管理员</button>
-    </view> -->
-  </view>
+    </view>
+  </view> -->
+  
 </view>
+
+<!-- 2.首页广告 -->
+<van-popup show="{{ show }}" bind:close="onClose" custom-style="height: 60%;width:100%;background-color:transparent" closeable round>
+  <view class="outter-view">
+    <view style="width:75%;margin-top:100rpx;">
+      <image src="../../images/2.jpg" style="border-radius:20rpx;"></image>
+    </view>
+    <view style="margin-top:40rpx;">
+      <van-button round type="info" bind:click="redireactToNewUserToken">前去领券</van-button>
+    </view>
+  </view>
+</van-popup>
