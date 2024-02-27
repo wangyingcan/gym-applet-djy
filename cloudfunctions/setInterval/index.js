@@ -7,6 +7,7 @@ const courseTable = db.collection('CourseTable');
 const monthlyCourseRecords = db.collection('monthlyCourseRecords');
 const _ = db.command;
 const user=db.collection('user');
+const monthlyCards=db.collection('monthlyCards');
 
 // 云函数入口函数
 exports.main = async (event, context) => {
@@ -23,7 +24,7 @@ exports.main = async (event, context) => {
   // 默认最初始的时候，是周一，周二数据正常，周三之后数据status默认是3
   // 2.每小时对当天课程的逻辑：同一天的课程（index+numOfWeek【注意周日】控制）当前小时（nowHour）如果超过 startHour+courseLength，将课程status改为3，写入数据库
   // 2.1获取courseTable中当天数据
-  // 1. 查询
+  // 1. 查询courses字段（内含新增cardId、cardType、firstBook）
   let res = await courseTable.where({
     date: today
   }).field({
@@ -43,7 +44,7 @@ exports.main = async (event, context) => {
         courses[i].status = 3;
         needUpdate = true;
       }
-      // 2.2 有效时间内，每小时写入monthlyCourseRecords
+      // 2.2 有效时间内，每小时写入monthlyCourseRecords、monthlyCards
       if(nowHour >= 10 && nowHour<=22){
         // 2.2.1 获取查询结果中：刚刚上完的课程，遍历其中的students数组，取出openid，创建新的月度上课记录
         if(course.startHour+course.courseLength == nowHour){
@@ -125,6 +126,27 @@ exports.main = async (event, context) => {
               })
             }
           }
+        }
+
+        // 2.2.2 对上完的课程，修改其中月卡的相关数据
+        // 2.2.2.0 获取课程的卡信息
+        const cardId=course.cardId;
+        const cardType=course.cardType;
+        // const firstBook=course.firstBook;
+        if((course.startHour+course.courseLength == nowHour)&&(cardType=="月卡")){
+          // 2.2.2.1 对于所用的月卡[无论firstBook]，需要将remainingBookCount重置为1、替换成firstBook:false
+          await monthlyCards.where({
+            cardId:cardId
+          }).update({
+            data: {
+              remainingBookCount: 1,
+              firstBook:false
+            }
+          }).then(res => {
+            console.log("上完课程的月卡remainingBookCount更新成功")
+          }).catch(err => {
+            console.log("上完课程的月卡remainingBookCount更新失败")
+          });
         }
       }
     }

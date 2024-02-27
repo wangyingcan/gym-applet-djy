@@ -10,17 +10,17 @@ const weeklyCards = db.collection('weeklyCards');
 // 云函数入口函数
 exports.main = async (event, context) => {
   // 更新所有active、paused状态的月卡
-  await monthlyCards.where({
-    status: "active"
-  }).update({
-    data: {
-      remainingBookCount: 1
-    }
-  }).then(res => {
-    console.log("22点active月卡更新成功")
-  }).catch(err => {
-    console.log("22点active月卡更新失败")
-  });
+  // await monthlyCards.where({
+  //   status: "active"
+  // }).update({
+  //   data: {
+  //     remainingBookCount: 1
+  //   }
+  // }).then(res => {
+  //   console.log("22点active月卡更新成功")
+  // }).catch(err => {
+  //   console.log("22点active月卡更新失败")
+  // });
 
   await monthlyCards.where({
     status: "paused"
