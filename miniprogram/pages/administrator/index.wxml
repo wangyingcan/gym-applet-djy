@@ -5,6 +5,8 @@
     上传图片到云端
 </button>
 
+<button bind:tap="updateCourseTable">修改课程表数据</button>
+
 <view style="display: flex;flex-direction: column;align-items: center;">
     <image src="{{userInfo.avatarUrl}}" style="width:160rpx;height:160rpx;" bind:tap="handleTap"></image>
     <view bind:tap="handleTap">{{userInfo.nickName}}</view>

@@ -419,7 +419,20 @@ Page({
         activationDate: "2024.2.18",
       }
     })
-  }
+  },
 
+  async updateCourseTable(){
+    console.log("updateCourseTable执行了");
+    await wx.cloud.callFunction({
+      name:"updateCourseTable",
+      data:{
+        date:"2024.3.19"
+      }
+    }).then(res=>{
+      console.log("更新课程表云函数调用成功");
+    }).catch(err=>{
+      console.log("更新课程表云函数调用失败");
+    })
+  }
 
 })

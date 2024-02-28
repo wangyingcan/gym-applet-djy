@@ -1,6 +1,7 @@
 // 云函数入口文件
 const cloud = require('wx-server-sdk');
 const { update } = require('XrFrame/kanata/lib/index');
+const { CREATE_INSTANCE } = require('XrFrame/kanata/lib/kanata');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV }) // 使用当前云环境
 
 // 1.获取数据库表
@@ -9,7 +10,8 @@ const _ = db.command;
 const courseTable = db.collection('CourseTable');
 const user = db.collection('user');
 const canceledCourses = db.collection('canceledCourses');
-const monthlyCards=db.collection('monthlyCards')
+const monthlyCards=db.collection('monthlyCards');
+const weeklyCards=db.collection('weeklyCards');
 
 // 云函数入口函数（传入参数是删除course的date、startHour）
 exports.main = async (event, context) => {
@@ -132,6 +134,41 @@ exports.main = async (event, context) => {
       console.log("非第一次取消预约时，月卡更新状态成功",JSON.stringify(res,null,2))
     }).catch(err=>{
       console.log("非第一次取消预约时，月卡更新状态失败",JSON.stringify(err,null,2))
+    })
+  }
+
+  // 5.修改weeklyCards信息（根据是否是第一次取消）
+  if(firstBook && cardType=="周卡"){
+    // 5.1 周卡第一次取消约课（变回add一张新卡的状态）
+    await weeklyCards.where({
+      cardId:cardId
+    }).update({
+      data:{
+        status:"inactive",
+        activateDate:"",
+        firstBook:true,
+        remainingBookCount:2,
+        totalBookCount:_.inc(1),
+        remainingDays:7
+      }
+    }).then(res=>{
+      console.log("第一次取消预约时，周卡更新状态成功",JSON.stringify(res,null,2))
+    }).catch(err=>{
+      console.log("第一次取消预约时，周卡更新状态失败",JSON.stringify(err,null,2))
+    })
+  }else if(!firstBook && cardType=="周卡"){
+    // 5.2 周卡非第一次取消约课，剩余次数自增
+    await weeklyCards.where({
+      cardId:cardId
+    }).update({
+      data:{
+        remainingBookCount:_.inc(1),
+        totalBookCount:_.inc(1),
+      }
+    }).then(res=>{
+      console.log("非第一次取消预约时，周卡更新状态成功",JSON.stringify(res,null,2))
+    }).catch(err=>{
+      console.log("非第一次取消预约时，周卡更新状态失败",JSON.stringify(err,null,2))
     })
   }
 }

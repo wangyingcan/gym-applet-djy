@@ -15,7 +15,8 @@
             <!-- 3.1.1一级菜单项的标题 -->
             <view class="power_info_text">
                 <!-- 展示课程名 -->
-                <view class="power_info_text_title">{{power.courseName}}</view>
+                <!-- <view class="power_info_text_title">{{power.courseName}}</view> -->
+                <view class="power_info_text_title">私教课</view>
                 <!-- 展示时间 -->
                 <view class="power_info_text_tip">
                     {{power.date+' '+power.startHour+':00'}}  

@@ -11,7 +11,8 @@
 </cu-custom>
 
 <!-- 2.开课提醒滚动通知栏 -->
-<van-notice-bar left-icon="volume-o" text="亲爱的学员，距离你{{latelyMonth}}月{{latelyDate}}日{{latelyHour}}点的“{{latelyCourseName}}“课还有{{(latelyHourGap===0) ?'':latelyHourGap + '小时'}}{{latelyMinuteGap}}分钟。" wx:if="{{status === 1 && hasLatelyCourse }}" />
+<!-- <van-notice-bar left-icon="volume-o" text="亲爱的学员，距离你{{latelyMonth}}月{{latelyDate}}日{{latelyHour}}点的“{{latelyCourseName}}“课还有{{(latelyHourGap===0) ?'':latelyHourGap + '小时'}}{{latelyMinuteGap}}分钟。" wx:if="{{status === 1 && hasLatelyCourse }}" /> -->
+<van-notice-bar left-icon="volume-o" text="亲爱的学员，距离你{{latelyMonth}}月{{latelyDate}}日{{latelyHour}}点的私教课还有{{(latelyHourGap===0) ?'':latelyHourGap + '小时'}}{{latelyMinuteGap}}分钟。" wx:if="{{status === 1 && hasLatelyCourse }}" />
 <van-notice-bar left-icon="volume-o" text="亲爱的学员，你还没有预约课程哦，快去约课吧！" wx:if="{{status === 1 && !hasLatelyCourse }}" />
 <van-notice-bar left-icon="volume-o" text="点击头像、登录/注册进行用户登入" wx:if="{{status === 0}}" />
 
@@ -83,7 +84,8 @@
       <block wx:else>
         <view class="course-list">
           <view class="course-item" wx:for="{{bookedCourseList}}" wx:key>
-            <view class="course-name">{{item.courseName}}</view>
+            <!-- <view class="course-name">{{item.courseName}}</view> -->
+            <view class="course-name">私教课</view>
             <view class="course-address">
               <text>{{item.date}}</text>
               <text style="padding-left:40rpx;color:green">{{item.startHour+":00"}}</text>

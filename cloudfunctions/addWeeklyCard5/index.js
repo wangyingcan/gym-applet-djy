@@ -30,7 +30,8 @@ exports.main = async (event, context) => {
         cardType:"周卡",
         type:"一周五练",
         remainingBookCount:2,
-        totalBookCount:5
+        totalBookCount:5,
+        firstBook:true
       }
     })
 
