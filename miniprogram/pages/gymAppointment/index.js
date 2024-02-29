@@ -69,7 +69,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) {
+  async onLoad(options) {
     console.log("onLoad函数执行了");
     // console.log("外部this："+JSON.stringify(this))
     // 0.获取系统宽度，由于给课程块定位
@@ -81,13 +81,13 @@ Page({
       thisWeekOrNextWeek: true,
       exchangeRate
     })
-    this.refreshData().then(() => {
-      // 1.更新完之后就可以设置firstEntry了
-      // console.log("内部this："+JSON.stringify(this))
-      this.setData({
-        firstEntry: false
-      })
-    });
+    await this.refreshData();
+
+    // 1.更新完之后就可以设置firstEntry了
+    // console.log("内部this："+JSON.stringify(this))
+    await this.setData({
+      firstEntry: false
+    })
   },
 
   onShow() {
@@ -213,7 +213,7 @@ Page({
     wx.removeStorageSync(thisWeekCourseCacheKey);
     wx.removeStorageSync(nextWeekCourseCacheKey);
     // 3.获取这两周的课程信息
-    return this.getData();
+    this.getData();
   },
 
   // 0.获取课程信息
@@ -224,6 +224,27 @@ Page({
       wx.showLoading({
         title: '努力加载课程...',
       });
+    }else{
+      const toast = Toast.loading({
+        duration: 0, // 持续展示 toast
+        forbidClick: true,
+        message: '倒计时 6 秒',
+        selector: '#custom-selector',
+      });
+  
+      let second = 6;
+      const timer = setInterval(() => {
+        second--;
+        if (second) {
+          toast.setData({
+            message: `倒计时 ${second} 秒`,
+            forbidClick:true
+          });
+        } else {
+          clearInterval(timer);
+          Toast.clear();
+        }
+      }, 1000);
     }
     // 0.0.获取缓存
     const thisWeekCourses = wx.getStorageSync(thisWeekCourseCacheKey);

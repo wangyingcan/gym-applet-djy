@@ -4,13 +4,23 @@ function transferValidDate(item,type) {
     // console.log('item:', JSON.stringify(item));
     // 2.处理周卡
     if (type === '周卡') {
-        var activationDate = item.activationDate;
-        var activationYear = activationDate.split('.')[0];
-        var activationMonth = activationDate.split('.')[1];
-        var activationDay = activationDate.split('.')[2];
-        var activationTime = getDate(activationYear+'-'+activationMonth+'-'+activationDay).getTime();
+        // var activationDate = item.activationDate;
+        // var activationYear = activationDate.split('.')[0];
+        // var activationMonth = activationDate.split('.')[1];
+        // var activationDay = activationDate.split('.')[2];
+        // var activationTime = getDate(activationYear+'-'+activationMonth+'-'+activationDay).getTime();
+        // var remainingDays = item.remainingDays;
+        // var validTime = activationTime + (remainingDays-1) * 24 * 60 * 60 * 1000;
+        var todayDateObj=getDate();  // 返回当前时间对象
+        var todayYear=todayDateObj.getFullYear();
+        var todayMonth=todayDateObj.getMonth()+1;
+        var todayDate=todayDateObj.getDate();
+        console.log("todayYear",todayYear)
+        console.log("todayMonth",todayMonth)
+        console.log("todayDate",todayDate)
+        var todayTime=getDate(todayYear+'-'+todayMonth+'-'+todayDate).getTime();
         var remainingDays = item.remainingDays;
-        var validTime = activationTime + (remainingDays-1) * 24 * 60 * 60 * 1000;
+        var validTime = todayTime + (remainingDays-1) * 24 * 60 * 60 * 1000;
         var validDate = getDate(validTime);
         var validYear = validDate.getFullYear();
         var validMonth = validDate.getMonth() + 1;
@@ -19,17 +29,26 @@ function transferValidDate(item,type) {
         return validYear + '.' + validMonth + '.' + validDay;
     } else {
         // 3.处理月卡
-        var activationDate = item.activationDate;
-        var activationYear = activationDate.split('.')[0];
-        var activationMonth = activationDate.split('.')[1];
-        var activationDay = activationDate.split('.')[2];
-        var activationTime = getDate(activationYear+'-'+activationMonth+'-'+activationDay).getTime();
+        // var activationDate = item.activationDate;
+        // var activationYear = activationDate.split('.')[0];
+        // var activationMonth = activationDate.split('.')[1];
+        // var activationDay = activationDate.split('.')[2];
+        // var activationTime = getDate(activationYear+'-'+activationMonth+'-'+activationDay).getTime();
+        var todayDateObj=getDate();  // 返回当前时间对象
+        var todayYear=todayDateObj.getFullYear();
+        var todayMonth=todayDateObj.getMonth()+1;
+        var todayDate=todayDateObj.getDate();
+        console.log("todayYear",todayYear)
+        console.log("todayMonth",todayMonth)
+        console.log("todayDate",todayDate)
+        var todayTime=getDate(todayYear+'-'+todayMonth+'-'+todayDate).getTime();
         var pauseStart = item.pauseStart;
         var pauseEnd = item.pauseEnd;
         var remainingDays = item.remainingDays;
         if (pauseStart === "") {
             // 3.1没有暂停
-            var validTime = activationTime + (remainingDays-2) * 24 * 60 * 60 * 1000;
+            // var validTime = activationTime + (remainingDays-2) * 24 * 60 * 60 * 1000;
+            var validTime = todayTime + (remainingDays-1) * 24 * 60 * 60 * 1000;
             var validDate = getDate(validTime);
             var validYear = validDate.getFullYear();
             var validMonth = validDate.getMonth() + 1;
@@ -57,7 +76,8 @@ function transferValidDate(item,type) {
             var addDays = ((pauseEndTime - pauseStartTime) / (1000 * 60 * 60 * 24));
             // console.log(pauseEndTime - pauseStartTime);
             // console.log('addDays:', addDays);
-            var validTime = activationTime + ((remainingDays -1 + addDays) * (24 * 60 * 60 * 1000));
+            //var validTime = activationTime + ((remainingDays -1 + addDays) * (24 * 60 * 60 * 1000));
+            var validTime = todayTime + ((remainingDays -1 + addDays) * (24 * 60 * 60 * 1000));
             // console.log('validTime:', validTime);
             var validDate = getDate(validTime);
             var validYear = validDate.getFullYear();

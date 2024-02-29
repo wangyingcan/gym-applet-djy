@@ -1,7 +1,5 @@
 // 云函数入口文件
 const cloud = require('wx-server-sdk');
-const { update } = require('XrFrame/kanata/lib/index');
-const { CREATE_INSTANCE } = require('XrFrame/kanata/lib/kanata');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV }) // 使用当前云环境
 
 // 1.获取数据库表
@@ -112,7 +110,7 @@ exports.main = async (event, context) => {
     }).update({
       data:{
         status:"inactive",
-        activateDate:"",
+        activationDate:"",
         firstBook:true,
         remainingBookCount:1,
         remainingDays:30
@@ -145,7 +143,7 @@ exports.main = async (event, context) => {
     }).update({
       data:{
         status:"inactive",
-        activateDate:"",
+        activationDate:"",
         firstBook:true,
         remainingBookCount:2,
         totalBookCount:_.inc(1),

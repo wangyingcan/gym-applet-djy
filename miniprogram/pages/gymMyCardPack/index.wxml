@@ -115,7 +115,7 @@
       <view class="top-area">
         <text class="top-left">{{item[0].cardName}}</text>
         <view class="top-right">
-          <view wx:if="{{(item[0].status==='active')&&(item[0].pauseStart==='')}}" bind:tap="stopMonthlyCard" hover-class="view-hover" data-card-id="{{item[0].cardId}}"><text>停卡7天</text></view>
+          <view wx:if="{{(item[0].status==='active')&&(item[0].pauseStart==='')}}" bind:tap="stopMonthlyCard" hover-class="view-hover" data-card-id="{{item[0].cardId}}" data-remaining-book-count="{{item[0].remainingBookCount}}"><text>停卡7天</text></view>
           <view wx:if="{{item[0].status==='paused'}}" bind:tap="restartMonthlyCard" hover-class="view-hover" data-card-id="{{item[0].cardId}}"><text>重启</text></view>
           <view wx:if="{{item[0].status==='inactive'}}" bind:tap="activateCard" hover-class="view-hover" data-card-id="{{item[0].cardId}}"><text>激活此卡</text></view>
           <text wx:if="{{(item[0].status==='active')&&(item[0].pauseStart!=='')}}">使用中</text>

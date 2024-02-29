@@ -23,9 +23,11 @@ exports.main = async (event, context) => {
   const openid = cloud.getWXContext().OPENID;
   // 0.获取card相关属性并写入预约的course中
   const { remainingDays } = event.selectCard;
-  const { cardId, cardType,firstBook } = event.selectCard;
+  const { cardId, cardType,firstBook,status } = event.selectCard;
   console.log("cardType", cardType)
   console.log("firstBook",firstBook)
+  console.log("status",status)
+
 
   // 0.检查预约课程是否超出了卡的有效期
   const courseYear = date.split('.')[0];
@@ -34,9 +36,16 @@ exports.main = async (event, context) => {
   const courseTime = new Date(courseYear, courseMonth - 1, courseDay);   // 约课时间
   const now = new Date();   // 当前时间
   const todayTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);  // 今天零点的时间
-  if ((courseTime - todayTime) > remainingDays * 1000 * 60 * 60 * 24) {  // 约课时间已经超出了卡的有效时间
+  if ((courseTime - todayTime) >= remainingDays * 1000 * 60 * 60 * 24) {  // 约课时间已经超出了卡的有效时间
     return {
       bookResult: false
+    }
+  }
+
+  // 0.检查卡是否是paused状态
+  if(status=='paused'){
+    return {
+      bookResult:false
     }
   }
 

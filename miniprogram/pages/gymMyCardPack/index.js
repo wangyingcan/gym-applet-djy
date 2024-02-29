@@ -529,10 +529,22 @@ Page({
 
   // 停卡
   async stopMonthlyCard(e){
-    let {cardId} = e.currentTarget.dataset
+    let {cardId,remainingBookCount} = e.currentTarget.dataset
     console.log(e)
     console.log('cardId:', cardId)
+    console.log('remainingBookCount:',remainingBookCount);
+    // 1.如果有课，不可停卡
+    if(remainingBookCount==0){
+      Toast.fail({
+        message: '此时还有课未上完，不允许停卡',
+        duration: 2000,
+        forbidClick:true,
+        selector: '#van-toast-cardPack'
+      });
+      return;
+    }
 
+    // 2.没课进行提示
     wx.showModal({
       title: '您要停卡7天吗？',
       content: '温馨提示：月卡停卡机会仅有1次，且不停卡的月卡有效期自动加2天',
@@ -545,7 +557,7 @@ Page({
             }
           }).then(res=>{
             Toast.success({
-              title: '停卡成功',
+              message: '停卡成功',
               duration: 2000,
               forbidClick:true,
               selector: '#van-toast-cardPack'

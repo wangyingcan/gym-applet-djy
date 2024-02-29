@@ -6,9 +6,12 @@ Page({
    */
   data: {
     checked: false,
-    totalFee: 19800,          // 实付金额（提交框、付款金额）
-    totalFeeStr: '198.00',      // 实付金额（字符串、商品卡片实付金额）
-    originalTotalFeeStr: '198.00',   // 月卡原价（字符串、商品卡片原价）
+    //totalFee: 19800,          // 实付金额（提交框、付款金额）
+    //totalFeeStr: '198.00',      // 实付金额（字符串、商品卡片实付金额）
+    //originalTotalFeeStr: '198.00',   // 月卡原价（字符串、商品卡片原价）
+    totalFee: 1,          // 实付金额（提交框、付款金额）
+    totalFeeStr: '0.01',      // 实付金额（字符串、商品卡片实付金额）
+    originalTotalFeeStr: '0.01',   // 月卡原价（字符串、商品卡片原价）
   },
 
   /**
