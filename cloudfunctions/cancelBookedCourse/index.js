@@ -20,9 +20,35 @@ exports.main = async (event, context) => {
   const cardId = event.cardId;    // 查询monthlyCards表 或 weeklyCards表
   const cardType = event.cardType;    // 查询monthlyCards表 或 weeklyCards表
   const firstBook = event.firstBook;    // 查询monthlyCards表 或 weeklyCards表
+  let weeklyCardTotalBookCount=0; //获取每种周卡的总约课数量
+  let type="";
+  let totalBookCount=0;
   console.log("云函数canceledBookedCourse的cardId",cardId);
   console.log("云函数canceledBookedCourse的cardType",cardType);
   console.log("云函数canceledBookedCourse的firstBook",firstBook);
+  // 0 周卡有、月卡没有的数据
+  if(cardType=="周卡"){
+    // 这里的type等信息需要通过cardId进行查询
+    await weeklyCards.where({
+      cardId:cardId
+    }).get().then(res=>{
+      console.log("查询周卡表的res",JSON.stringify(res))
+      type=res.data[0].type;
+      totalBookCount=res.data[0].totalBookCount;
+    })
+    console.log("云函数canceledBookedCourse的type",type);
+    console.log("云函数canceledBookedCourse的totalBookCount",totalBookCount);
+    // 0.1设置好每种卡的原始总约课数量
+    if(type=="一周三练"){
+      weeklyCardTotalBookCount=3;
+    }else if(type=="一周四练"){
+      weeklyCardTotalBookCount=4;
+    }else{
+      weeklyCardTotalBookCount=5;
+    }
+  }
+
+  console.log("云函数canceledBookedCourse的weeklyCardTotalBookCount",weeklyCardTotalBookCount);
 
   // 1 修改courseTable中的数据（students删除openid、修改status）
   // 1.1 查询courseTable中的数据（两个查询条件），同时局部修改字段（多个局部修改）
@@ -135,25 +161,42 @@ exports.main = async (event, context) => {
     })
   }
 
-  // 5.修改weeklyCards信息（根据是否是第一次取消）
+  // 5.修改weeklyCards信息（根据是否是第一次取消【还有课、没有课】）
   if(firstBook && cardType=="周卡"){
-    // 5.1 周卡第一次取消约课（变回add一张新卡的状态）
-    await weeklyCards.where({
-      cardId:cardId
-    }).update({
-      data:{
-        status:"inactive",
-        activationDate:"",
-        firstBook:true,
-        remainingBookCount:2,
-        totalBookCount:_.inc(1),
-        remainingDays:7
-      }
-    }).then(res=>{
-      console.log("第一次取消预约时，周卡更新状态成功",JSON.stringify(res,null,2))
-    }).catch(err=>{
-      console.log("第一次取消预约时，周卡更新状态失败",JSON.stringify(err,null,2))
-    })
+    // 5.1 周卡第一次取消约课【没有课】（变回add一张新卡的状态）
+    if(weeklyCardTotalBookCount == totalBookCount+1){
+      await weeklyCards.where({
+        cardId:cardId
+      }).update({
+        data:{
+          status:"inactive",
+          activationDate:"",
+          firstBook:true,
+          remainingBookCount:2,
+          totalBookCount:_.inc(1),
+          remainingDays:7
+        }
+      }).then(res=>{
+        console.log("第一次取消预约时【没有课】，周卡更新状态成功",JSON.stringify(res,null,2))
+      }).catch(err=>{
+        console.log("第一次取消预约时【没有课】，周卡更新状态失败",JSON.stringify(err,null,2))
+      })
+    }else{
+      // 5.2 周卡第一次取消约课【还有课】（依然保持active）
+      await weeklyCards.where({
+        cardId:cardId
+      }).update({
+        data:{
+          firstBook:true,
+          remainingBookCount:_.inc(1),
+          totalBookCount:_.inc(1),
+        }
+      }).then(res=>{
+        console.log("第一次取消预约时【还有课】，周卡更新状态成功",JSON.stringify(res,null,2))
+      }).catch(err=>{
+        console.log("第一次取消预约时【还有课】，周卡更新状态失败",JSON.stringify(err,null,2))
+      })
+    }
   }else if(!firstBook && cardType=="周卡"){
     // 5.2 周卡非第一次取消约课，剩余次数自增
     await weeklyCards.where({

@@ -6,7 +6,8 @@ page {
 .nav-title{
   font-size: 30rpx;
   color: #3D3D3D;
-  font-weight: bolder;
+  font-weight: normal;
+  font-family: YouSheBiaoTiHei;
 }
 
 /* 1.最外层父容器的样式 */
@@ -83,6 +84,14 @@ page {
     padding-top: 20rpx
 }
 
+.shopping-view__v1{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-top: 20rpx;
+  height: 370rpx;
+}
+
 /* 2.2.4.1.左边周卡最外层view */
 .left-week-card-view {
     border: 0rpx solid #000000;
@@ -94,6 +103,30 @@ page {
     background: rgba(53, 51, 51, 0.65);
 }
 
+.left-week-card-view__v1{
+  display: flex;
+  flex-direction: column;
+  width: 48%;
+  /* background-color: #fff; */
+  background-color: #fff;
+  border: #D8D8D8 solid 1rpx;
+  border-radius: 20rpx 0rpx 0 20rpx;
+  padding-left: 16rpx;
+}
+
+/* 周卡左上角文字区域 */
+.left-top-view__v1{
+  height: 118rpx;
+  width: 100%;
+}
+
+.static-text__v1{
+  color: #DEDEDF;
+  font-size: 80rpx;
+  font-weight: normal;
+  font-family: YouSheBiaoTiHei;
+}
+
 .view-hover {
     opacity: 0.9;
     transform: scale(0.95, 0.95);
@@ -103,6 +136,8 @@ page {
     box-shadow: 0rpx 0rpx 16rpx rgba(94, 153, 187, 0.192) inset;
 }
 
+
+
 /* 2.2.4.1.1.上部分周卡文本显示最外层view */
 .week-card-title-view {
     position: relative;
@@ -111,17 +146,73 @@ page {
     padding-top: 20rpx
 }
 
+.left-buttom-week-card-view__v1{
+  width:90%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 40rpx;
+  background: #295575;
+  padding-left: 34rpx;
+}
+
+.week-card-top-view__v1{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+  height:160rpx;
+  padding-right:30rpx;
+}
+
+.card-type-title__v1{
+  font-size: 80rpx;
+  color: #B0E073;
+  font-weight: normal;
+  font-family: YouSheBiaoTiHei;
+}
+
+.card-tip__v1{
+  font-size: 28rpx;
+  color: #fff;
+  font-weight: normal;
+  font-family: YouSheBiaoTiHei;
+  margin-top: -10rpx;
+}
+
+.week-card-buttom-view__v1{
+  width:100%;
+  display: flex;
+}
+
+.left-dots{
+  font-size: 40rpx;
+  color: #D8D8D8;
+  padding-left: 20rpx;
+  padding-bottom: 10rpx;
+}
+
+.right-dots{
+  font-size: 40rpx;
+  color: #D8D8D8;
+  line-height: 13rpx;
+}
+
+.top-right-view__v1{
+  display: flex;
+  flex-direction: column;
+}
+
 .shopping-area-btn {
-    position: relative;
-    width: 300rpx!important;
-    border-radius: 40rpx;
-    height: 290rpx;
-    background-color: transparent;
-    padding: 0;
-    outline: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: relative;
+  width: 300rpx!important;
+  border-radius: 40rpx;
+  height: 290rpx;
+  background-color: transparent;
+  padding: 0;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* 2.2.4.1.1.1.周卡文本样式 */
@@ -183,6 +274,38 @@ page {
     background: rgba(53, 51, 51, 0.65);
 }
 
+.right-month-card-view__v1{
+  display: flex;
+  flex-direction: column;
+  width: 48%;
+  /* background-color: #fff; */
+  background-color: #fff;
+  border-radius:  0 20rpx 20rpx 0;
+  padding-right: 16rpx;
+  border: #D8D8D8 solid 1rpx;
+}
+
+.right-top-month-card-view__v1{
+  display: flex;
+  border-radius: 40rpx;
+  background: #295575;
+  width: 90%;
+  height: 206rpx;
+}
+
+.right-buttom-view__v1{
+  height: 118rpx;
+  width: 100%;
+}
+
+.top-left-view__v1{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-left: 22rpx;
+  padding-bottom: 19rpx;
+}
+
 /* 2.2.4.3.1.上部分月卡文本显示最外层view */
 .month-card-title-view {
     position: relative;
@@ -228,7 +351,7 @@ page {
 
 /* 2.3.公告区 */
 .notice-area {
-    margin-top: 50rpx;
+    margin-top: 68rpx;
     width: 100%;
     height: 114rpx;
     opacity: 1;

@@ -8,6 +8,7 @@ const monthlyCourseRecords = db.collection('monthlyCourseRecords');
 const _ = db.command;
 const user=db.collection('user');
 const monthlyCards=db.collection('monthlyCards');
+const weeklyCards=db.collection('weeklyCards');
 
 // 云函数入口函数
 exports.main = async (event, context) => {
@@ -148,6 +149,23 @@ exports.main = async (event, context) => {
             console.log("上完课程的月卡remainingBookCount更新失败")
           });
         }
+
+        // 2.2.3 对上完的课程，修改其中周卡相关数据
+        if((course.startHour+course.courseLength== nowHour)&&(cardType=="周卡")){
+          // 2.2.3.1找到周卡并将firstBook修改成false
+          await weeklyCards.where({
+            cardId:cardId
+          }).update({
+            data:{
+              firstBook:false
+            }
+          }).then(res=>{
+            console.log("上完课程的周卡将firstBook修改成false成功");
+          }).catch(err=>{
+            console.log("上完课程的周卡将firstBook修改成false失败");
+          })
+        }
+
       }
     }
 

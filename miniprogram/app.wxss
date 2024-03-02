@@ -1,6 +1,16 @@
 /* 1.引入colorui到app.wxss */
 @import 'style/main.wxss';
 
+@font-face {
+  font-family: "YouSheBiaoTiHei";
+  src: url("https://7072-prod-5g2wkpjaadb1bf82-1324237307.tcb.qcloud.la/%E4%BC%98%E8%AE%BE%E6%A0%87%E9%A2%98%E9%BB%91.ttf?sign=3b187dbd831b0a164d7d5c4a4250db1a&t=1709379447");
+}
+
+@font-face{
+  font-family: "DIGITALNUMBER";
+  src:url("https://7072-prod-5g2wkpjaadb1bf82-1324237307.tcb.qcloud.la/sa-digital-number.ttf?sign=cbf8b6894af453319e4ca0c11b7be663&t=1709382232")
+}
+
 /* 2.下面是云开发模版中的app.wxss，当前只会影响“quickstart”的样式，故注释 */
 /* .container {
   display: flex;

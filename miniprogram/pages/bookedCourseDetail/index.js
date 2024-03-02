@@ -72,9 +72,14 @@ Page({
     let cardId=e.currentTarget.dataset.cardId;
     let cardType=e.currentTarget.dataset.cardType;
     let firstBook=e.currentTarget.dataset.firstBook;
+    // let type=e.currentTarget.dataset.type;
+    // let totalBookCount=e.currentTarget.dataset.totalBookCount;
     console.log("handleCancelCourseClick中所需课程的cardId",cardId);
     console.log("handleCancelCourseClick中所需课程的cardType",cardType);
     console.log("handleCancelCourseClick中所需课程的firstBook",firstBook);
+    // 此处获取的是course信息
+    // console.log("handleCancelCourseClick中所需课程的type",type);
+    // console.log("handleCancelCourseClick中所需课程的totalBookCount",totalBookCount);
     let startYear = date.split('.')[0];
     let startMonth = date.split('.')[1];
     let startDate = date.split('.')[2];

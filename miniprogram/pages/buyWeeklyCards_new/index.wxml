@@ -1,0 +1,11 @@
+<!-- 1.顶部的提示公告栏 -->
+<van-notice-bar left-icon="volume-o" text="周卡周期统一从每周一开始计算，周日22:00清零。购卡不等于激活，第一次约课开始计次" scrollable color="#C8494E" background="#F5F6F7" left-icon="bell"/>
+
+<!-- 2.主体部分的列flex布局 -->
+<view class="container">
+<!-- 2.1 3种周卡的购买条 -->
+  <view class="buy-weekcard__view"></view>
+
+<!-- 2.2 底部的店长微信显示  -->
+  <view class="boss-WX__view"></view>
+</view>

@@ -25,43 +25,94 @@
       </swiper-item>
     </swiper>
   </view>
+
   <!-- 1.2.购买区 -->
   <view class="shopping-area">
+
     <!-- 1.2.1购买区标题 -->
     <view class="index-tilte-view">
       <van-icon name="shopping-cart" size="36rpx" color="grey" />
       <text class="index-title">购买区</text>
     </view>
-    <!-- 1.2.2.购买区内容 -->
-    <view class="shopping-view">
+
+    <!-- 1.2.2.购买区内容 v1 -->
+    <view class="shopping-view__v1">
+      <!-- 1.2.2.1. 左侧周卡区域 v1 -->
+      <view class="left-week-card-view__v1">
+        <!-- 1.2.2.1.1. 顶部的文字区域 v1 -->
+        <view class="left-top-view__v1">
+          <text class="static-text__v1" style="padding-right: 20rpx;">仅售私教</text>
+        </view>
+        <!-- 1.2.2.1.2. 底部的周卡区域 v1 -->
+        <view style="display: flex; justify-content: flex-end;"  bind:tap="onWeekCardClick">
+          <view class="left-buttom-week-card-view__v1" hover-class="view-hover">
+            <!-- 1.2.2.1.2.1. 顶部的周卡文字区域 -->
+            <view class="week-card-top-view__v1">
+              <text class="card-type-title__v1">周卡</text>
+              <text class="card-tip__v1">周期更短更自由</text>
+            </view>
+            <!-- 1.2.2.1.2.2. 底部的三点区域 -->
+            <view class="week-card-buttom-view__v1">
+              <text class="left-dots">...</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 1.2.2.2. 右侧月卡区域 v1 -->
+      <view class="right-month-card-view__v1">
+        <view class="right-top-month-card-view__v1" hover-class="view-hover" bind:tap="onMonthCardClick">
+          <!-- 1.2.2.2.1 顶部左侧列 -->
+          <view class="top-left-view__v1">
+            <text class="card-type-title__v1">月卡</text>
+            <text class="card-tip__v1" style="font-size:27rpx;">开启自律的一个月吧</text>
+          </view>
+          <!-- 1.2.2.2.2 顶部右侧列 -->
+          <view class="top-right-view__v1">
+            <text class="right-dots">.</text>
+            <text class="right-dots">.</text>
+            <text class="right-dots">.</text>
+          </view>
+        </view>
+        <!-- 1.2.2.1.1. 底部的文字区域 v1 -->
+        <view class="right-buttom-view__v1">
+          <text class="static-text__v1">有氧免费</text>
+        </view>
+      </view>
+
+
+    <!-- 1.2.2.购买区内容 v0 -->
+    <!-- <view class="shopping-view"> -->
       <!-- 1.2.2.1.左边“周卡”部分 -->
-      <view class="left-week-card-view" hover-class="view-hover">
-        <button class="shopping-area-btn" bind:tap="onWeekCardClick">
+      <!-- <view class="left-week-card-view" hover-class="view-hover">
+        <button class="shopping-area-btn" bind:tap="onWeekCardClick"> -->
           <!-- 1.2.2.1.1.上面“周卡文本”显示 -->
           <!-- <view class="week-card-title-view"> -->
-            <text class="week-card-title">周卡</text>
-            <view class="week-card-rect"></view>
+            <!-- <text class="week-card-title">周卡</text>
+            <view class="week-card-rect"></view> -->
           <!-- </view> -->
           <!-- 1.2.2.1.2.下面“周卡价格”显示 -->
           <!-- <view class="week-card-price">198起</view> -->
-        </button>
-      </view>
+        <!-- </button>
+      </view> -->
       <!-- 1.2.2.3.中间白色分界线 -->
       <!-- <view class="middle-line"></view> -->
       <!-- 1.2.2.2.右边“月卡”部分 -->
-      <view class="right-month-card-view" hover-class="view-hover">
-        <button class="shopping-area-btn" bind:tap="onMonthCardClick">
+      <!-- <view class="right-month-card-view" hover-class="view-hover">
+        <button class="shopping-area-btn" bind:tap="onMonthCardClick"> -->
           <!-- 1.2.2.2.1.上面“月卡文本”显示 -->
           <!-- <view class="month-card-title-view"> -->
-            <text class="month-card-title">月卡</text>
-            <view class="month-card-rect"></view>
+            <!-- <text class="month-card-title">月卡</text>
+            <view class="month-card-rect"></view> -->
           <!-- </view> -->
           <!-- 1.2.2.2.2.下面“月卡价格”显示 -->
           <!-- <view class="month-card-price">899起</view> -->
-        </button>
+        <!-- </button>
       </view>
+    </view> -->
     </view>
   </view>
+
   <!-- 1.3.公告区 -->
   <view class="notice-area">
     <!-- 1.3.1.公告区标题 -->
@@ -143,7 +194,7 @@
 <van-popup show="{{ show }}" bind:close="onClose" custom-style="height: 60%;width:100%;background-color:transparent" closeable round>
   <view class="outter-view">
     <view style="width:75%;margin-top:100rpx;">
-      <image src="../../images/2.jpg" style="border-radius:20rpx;"></image>
+      <image src="cloud://prod-5g2wkpjaadb1bf82.7072-prod-5g2wkpjaadb1bf82-1324237307/2.jpg" style="border-radius:20rpx;"></image>
     </view>
     <view style="margin-top:40rpx;">
       <van-button round type="info" bind:click="redireactToNewUserToken">前去领券</van-button>

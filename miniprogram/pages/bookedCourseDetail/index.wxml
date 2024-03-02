@@ -71,7 +71,14 @@
 
       <!-- 事件处理的传参需要使用dataset语法 -->
       <view class="power-item" style="display: flex;justify-content: flex-end;">
-        <van-button color="linear-gradient(to right, #4bb0ff, #6149f6)" size="small" bind:click="handleCancelCourseClick" data-date="{{power.date}}" data-starthour="{{power.startHour}}" data-card-id="{{power.cardId}}" data-card-type="{{power.cardType}}" data-first-book="{{power.firstBook}}">取消预约</van-button>
+        <van-button color="linear-gradient(to right, #4bb0ff, #6149f6)"
+        size="small" bind:click="handleCancelCourseClick" 
+        data-date="{{power.date}}" 
+        data-starthour="{{power.startHour}}" 
+        data-card-id="{{power.cardId}}" 
+        data-card-type="{{power.cardType}}" 
+        data-first-book="{{power.firstBook}}" 
+        >取消预约</van-button>
       </view>
     </view>
     

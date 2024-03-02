@@ -1,3 +1,9 @@
 page{
   background-color: var(--white)!important;
+  --cublue:#285577
+}
+
+.bg-cu__blue{
+  background-color: var(--cublue);
+	color: var(--white);
 }

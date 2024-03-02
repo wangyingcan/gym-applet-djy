@@ -7,6 +7,13 @@
     "miniprogram": {
       "list": [
         {
+          "name": "新周卡页面",
+          "pathName": "pages/buyWeeklyCards_new/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "我的优惠券",
           "pathName": "pages/couponDetail/index",
           "query": "",

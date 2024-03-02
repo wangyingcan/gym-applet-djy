@@ -1,0 +1,11 @@
+{
+  "usingComponents": {
+    "van-notice-bar":"@vant/weapp/notice-bar/index"
+  },
+  "navigationStyle": "default",
+  "navigationBarBackgroundColor": "#e7ebed",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#f8f8f8",
+  "enablePullDownRefresh": false,
+  "navigationBarTitleText": "周卡"
+}

@@ -30,12 +30,12 @@
   <!-- 2.3.右侧切换按钮 -->
   <view>
     <!-- 2.3.1.根据data中的showNextWeek属性判断展示按钮类型 -->
-    <button wx:if="{{showNextWeek}}" class="cu-btn line-gray round sm shadow able_button" hover-class="button-hover" bind:tap="onSwitchWeekType">
+    <button wx:if="{{showNextWeek}}" class="cu-btn round sm shadow able_button bg-cu__blue" hover-class="button-hover" bind:tap="onSwitchWeekType">
       <text wx:if="{{thisWeekOrNextWeek}}">切换下周</text>
       <text wx:else>切回本周</text>
     </button>
     <!-- 可用 -->
-    <button wx:else class="cu-btn line-gray round sm shadow" disabled>切换下一周</button>
+    <button wx:else class="cu-btn line-gray round sm shadow" disabled>切换下周</button>
     <!-- 不可用 -->
   </view>
 </view>
@@ -76,14 +76,14 @@
         <view class="course-item" style="top:{{(course.startHour-9)*120}}rpx;left:{{(day.index-1)*((windowWidth * 2 - 50)/7)}}rpx;height:{{course.courseLength*120}}rpx;">
           <!-- 4.2.3 课程信息 -->
           <picker wx:if="{{course.status===1}}" mode="selector" class="course-item__content.status1" range="{{range}}" value="{{pickerIndex}}" bindchange="onPickerChange" data-date="{{day.date}}" data-start-Hour="{{course.startHour}}" bind:tap="onPickerShow">
-            <view style="color: #3D3D3D;font-size: 26rpx;">预约</view>
+            <view style="color: #fff;" class="appoint-status__font">预约</view>
           </picker>
           <view class="course-item__content.status2" wx:if="{{course.status==2}}" bind:tap="showBookedAlter">
-            <view style="color: #3D3D3D;font-size: 26rpx;">已满</view>
+            <view style="color: #3E83B7;" class="appoint-status__font">已满</view>
             <!-- <view style="color: #999999;font-size: 20rpx;">@{{course.coachName}}</view> -->
           </view>
           <view class="course-item__content.status3" wx:if="{{course.status==3}}" bind:tap="showNotOpenAlert">
-            <view style="color: #fff;font-size: 26rpx;">失效</view>
+            <view style="color: #DEDEDF;" class="appoint-status__font">失效</view>
             <!-- <view style="color: #444444;font-size: 20rpx;">@{{course.coachName}}</view> -->
           </view>
         </view>
