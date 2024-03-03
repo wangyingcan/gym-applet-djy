@@ -11,12 +11,21 @@
   font-weight: normal;
 }
 
-.fix-notice__bar{
-  position: fixed;
+/*.fix-notice__bar{
+   position: fixed;
   top: 120rpx;
+  left: 0; 
+  width: 100%;
+  box-sizing: border-box;
+  overflow: visible;
+  z-index: 1;
+} */
+
+.top-fixed-area{
+  position: fixed;
+  top: 0;
   left: 0;
   width: 100%;
-  height: 80rpx;
   box-sizing: border-box;
   overflow: visible;
   z-index: 1;
@@ -27,9 +36,10 @@
   display: flex;
   justify-content: space-around;
   width: 100%;
+  height: 65px;
   align-items: center;
   position: fixed;
-  top:200rpx;
+  top:100px;
   z-index: 1;
   background-color: #F5F7F8;
 }
@@ -95,13 +105,13 @@
 .week-list {
   position: fixed;
   left: 0;
-  top: 325rpx;
+  top: 165px;
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   width: 100%;
-  height: 100rpx;
+  height: 50px;
   z-index: 1;
 }
 
@@ -161,14 +171,14 @@
 /* 4.1左侧固定时间轴 */
 .course-content {
   width: 100%;
-  padding-top: 306rpx;
+  padding-top: 215px;
   display: flex;
   box-sizing: border-box;
   z-index: -1;
 }
 
 .course-nums {
-  width: 50rpx;
+  width: 25px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -227,6 +237,8 @@
 .course-item__content.status2 {
   border: 4rpx solid #3E83B7;
   background: #fff;
+  width:calc(100% - 8rpx);
+  height: calc(100% - 8rpx);
 }
 
 /* 未到达开放时间状态 */

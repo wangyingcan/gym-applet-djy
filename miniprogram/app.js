@@ -30,7 +30,9 @@ App({
         this.globalData.StatusBar = e.statusBarHeight;
         let custom = wx.getMenuButtonBoundingClientRect();
         this.globalData.Custom = custom;  
-        this.globalData.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
+        // this.globalData.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
+        // this.globalData.CustomBar = 60*this.globalData.exchangeRate;
+        this.globalData.CustomBar = 60;
       }
     })
   },

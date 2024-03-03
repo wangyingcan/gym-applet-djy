@@ -76,10 +76,15 @@ Page({
     const { windowWidth } = wx.getSystemInfoSync()
     let app = getApp();
     let exchangeRate = app.globalData.exchangeRate;
+    // van-config-provider中提供的themeVars变量
+    let themeVars={
+      noticeBarHeight:'40px'
+    };
     this.setData({
       windowWidth,
       thisWeekOrNextWeek: true,
-      exchangeRate
+      exchangeRate,
+      themeVars
     })
     await this.refreshData();
 

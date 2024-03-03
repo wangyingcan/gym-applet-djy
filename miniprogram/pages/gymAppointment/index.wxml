@@ -1,93 +1,109 @@
 <van-toast id="custom-selector" />
 <van-toast id="van-toast-appointment" />
-<!-- 1.自定义导航栏（isBack控制左侧返回按钮） -->
-<cu-custom bgColor=".bg-grey.light" customBack="{{true}}" bind:back="update" style="height:{{exchangeRate * 120}}rpx;">
-  <!-- 1.1.左侧返回样式 -->
-  <view slot="backText">
-    <view class="cuIcon-refresh" style="font-size: 40rpx;" bind:tap="refresh"></view>
-  </view>
-  <!-- 1.2.中部标题 -->
-  <view slot="content">
-    <view class="nav-title">约课</view>
-  </view>
-  <!-- 1.3.右侧样式 -->
-  <view slot="right"></view>
-</cu-custom>
 
-<van-notice-bar left-icon="volume-o" class="fix-notice__bar" text="操作没有变化时，请手动点击左上角刷新按钮进行刷新" scrollable background="#e7ebed" color="#000"/>
-<!-- 2.年份、起始日期、切换下一周  显示区域 -->
-<view class="padding flex justify-around year-date-nextWeek-view">
-  <!-- 2.1.左侧年份 -->
-  <view class="year-view">
-    <text class="year-text">{{showNextWeek ? (thisWeekOrNextWeek ? year : nextYear) : year}}</text>
-  </view>
-  <!-- 2.2.中部始终日期 -->
-  <view class="date-view">
-    <text class="date-text">{{showNextWeek ? (thisWeekOrNextWeek ? startDay : nextStartDay) : startDay}}</text>
-    <text class="date-text">-</text>
-    <text class="date-text">{{ showNextWeek ? (thisWeekOrNextWeek ? endDay : nextEndDay) : endDay}}</text>
-  </view>
-  <!-- 2.3.右侧切换按钮 -->
-  <view>
-    <!-- 2.3.1.根据data中的showNextWeek属性判断展示按钮类型 -->
-    <button wx:if="{{showNextWeek}}" class="cu-btn round sm shadow able_button bg-cu__blue" hover-class="button-hover" bind:tap="onSwitchWeekType">
-      <text wx:if="{{thisWeekOrNextWeek}}">切换下周</text>
-      <text wx:else>切回本周</text>
-    </button>
-    <!-- 可用 -->
-    <button wx:else class="cu-btn line-gray round sm shadow" disabled>切换下周</button>
-    <!-- 不可用 -->
-  </view>
+<view class="top-fixed-area">
+  <!-- 1.自定义导航栏（isBack控制左侧返回按钮） -->
+  <cu-custom bgColor=".bg-grey.light" customBack="{{true}}" bind:back="update" >
+    <!-- 1.1.左侧返回样式 -->
+    <view slot="backText">
+      <view class="cuIcon-refresh" style="font-size: 40rpx;" bind:tap="refresh"></view>
+    </view>
+    <!-- 1.2.中部标题 -->
+    <view slot="content">
+      <view class="nav-title">约课</view>
+    </view>
+    <!-- 1.3.右侧样式 -->
+    <view slot="right"></view>
+  </cu-custom>
+
+  <van-config-provider theme-vars="{{ themeVars }}">
+    <van-notice-bar left-icon="volume-o" class="fix-notice__bar" text="操作没有变化时，请手动点击左上角刷新按钮进行刷新" scrollable background="#e7ebed" color="#000"/>
+  </van-config-provider>
+
 </view>
 
-<!-- 3.顶部固定周数时间轴区域 -->
-<view class="week-list">
-  <!-- 3.1.左侧固定月份 -->
-  <view class="now-month">
-    <text>{{showNextWeek ? (thisWeekOrNextWeek ? (month < 10?'0'+month:month) : (nextMonth < 10?'0'+nextMonth:nextMonth)  ) : (month < 10?'0'+month:month)   }}</text>
-    <text>月</text>
-  </view>
-  <!-- 3.2.右侧周数显示，列表渲染 -->
-  <view class="week-item {{(thisWeekOrNextWeek == true&&day==nowWeekDates[index])?'active': ''}}" wx:for="{{weekDayCount}}" wx:key>
-    <text class="week-name {{(thisWeekOrNextWeek == true&&day==nowWeekDates[index])?'active': ''}}">周{{weekIndexText[index]}}</text>
-    <text class="week-date {{(thisWeekOrNextWeek == true&&day==nowWeekDates[index])?'active': ''}}">{{showNextWeek? (thisWeekOrNextWeek?(nowWeekDates[index] == 1 ? ((month == 12 ?  monthIndexText[0]: monthIndexText[month]) + '月') :(nowWeekDates[index] < 9 ? '0' : '' ) + nowWeekDates[index] + '日' ):(nextWeekDates1[index] == 1 ? ((nextMonth == 12 ?  monthIndexText[0]: monthIndexText[nextMonth]) + '月') :(nextWeekDates1[index] < 9 ? '0' : '' ) + nextWeekDates1[index] + '日' )) :(nowWeekDates[index] == 1 ? ((month == 12 ?  monthIndexText[0]: monthIndexText[month]) + '月') :(nowWeekDates[index] < 9 ? '0' : '' ) + nowWeekDates[index] + '日' ) }}</text>
-  </view>
-</view>
-
-<!-- 4.课程表内容区 -->
-<view class="course-content" style="padding-top: {{309/exchangeRate}}rpx;">
-  <!-- 4.1.左侧时间轴 -->
-  <view class="course-nums">
-    <view class="course-num" wx:for="{{14}}" wx:key>
-      {{index+9}}
-      <!-- 健身房开放时间：9：00 ~ 22：00 -->
+<view>
+  <!-- 2.年份、起始日期、切换下一周  显示区域 -->
+  <view class="padding flex justify-around year-date-nextWeek-view">
+    <!-- 2.1.左侧年份 -->
+    <view class="year-view">
+      <text class="year-text">{{showNextWeek ? (thisWeekOrNextWeek ? year : nextYear) : year}}</text>
+    </view>
+    <!-- 2.2.中部始终日期 -->
+    <view class="date-view">
+      <text class="date-text">{{showNextWeek ? (thisWeekOrNextWeek ? startDay : nextStartDay) : startDay}}</text>
+      <text class="date-text">-</text>
+      <text class="date-text">{{ showNextWeek ? (thisWeekOrNextWeek ? endDay : nextEndDay) : endDay}}</text>
+    </view>
+    <!-- 2.3.右侧切换按钮 -->
+    <view>
+      <!-- 2.3.1.根据data中的showNextWeek属性判断展示按钮类型 -->
+      <button wx:if="{{showNextWeek}}" class="cu-btn round sm shadow able_button bg-cu__blue" hover-class="button-hover" bind:tap="onSwitchWeekType">
+        <text wx:if="{{thisWeekOrNextWeek}}">切换下周</text>
+        <text wx:else>切回本周</text>
+      </button>
+      <!-- 可用 -->
+      <button wx:else class="cu-btn line-gray round sm shadow" disabled>切换下周</button>
+      <!-- 不可用 -->
     </view>
   </view>
-  <van-toast id="custom-selector" />
-  <!-- 4.2.右侧课程块展示区 -->
-  <!-- 4.2.1 遍历此周课程的list -->
-  <view class="course-list">
-    <!-- 4.2.2 外部的课程块（利用这里的padding设计间隔） -->
-    <!-- top、left解课程块定位问题，前者和startHour有关，后者和index（week）有关；height和课程时长有关 -->
-    <block wx:for="{{showNextWeek?(thisWeekOrNextWeek?courseList:nextWeekCourseList):courseList}}" wx:for-item="day" wx:key>
-      <!-- 第一层for循环，遍历每一天，courseList//nextCourseList -->
-      <block wx:for="{{day.courses}}" wx:for-item="course" wx:key>
-        <!-- 第二层for循环，遍历每节课,courses -->
-        <view class="course-item" style="top:{{(course.startHour-9)*120}}rpx;left:{{(day.index-1)*((windowWidth * 2 - 50)/7)}}rpx;height:{{course.courseLength*120}}rpx;">
-          <!-- 4.2.3 课程信息 -->
-          <picker wx:if="{{course.status===1}}" mode="selector" class="course-item__content.status1" range="{{range}}" value="{{pickerIndex}}" bindchange="onPickerChange" data-date="{{day.date}}" data-start-Hour="{{course.startHour}}" bind:tap="onPickerShow">
-            <view style="color: #fff;" class="appoint-status__font">预约</view>
-          </picker>
-          <view class="course-item__content.status2" wx:if="{{course.status==2}}" bind:tap="showBookedAlter">
-            <view style="color: #3E83B7;" class="appoint-status__font">已满</view>
-            <!-- <view style="color: #999999;font-size: 20rpx;">@{{course.coachName}}</view> -->
+
+  <!-- 3.顶部固定周数时间轴区域 -->
+  <view class="week-list">
+    <!-- 3.1.左侧固定月份 -->
+    <view class="now-month">
+      <text>{{showNextWeek ? (thisWeekOrNextWeek ? (month < 10?'0'+month:month) : (nextMonth < 10?'0'+nextMonth:nextMonth)  ) : (month < 10?'0'+month:month)   }}</text>
+      <text>月</text>
+    </view>
+    <!-- 3.2.右侧周数显示，列表渲染 -->
+    <view class="week-item {{(thisWeekOrNextWeek == true&&day==nowWeekDates[index])?'active': ''}}" wx:for="{{weekDayCount}}" wx:key>
+      <text class="week-name {{(thisWeekOrNextWeek == true&&day==nowWeekDates[index])?'active': ''}}">周{{weekIndexText[index]}}</text>
+      <text class="week-date {{(thisWeekOrNextWeek == true&&day==nowWeekDates[index])?'active': ''}}">{{showNextWeek? (thisWeekOrNextWeek?(nowWeekDates[index] == 1 ? ((month == 12 ?  monthIndexText[0]: monthIndexText[month]) + '月') :(nowWeekDates[index] < 9 ? '0' : '' ) + nowWeekDates[index] + '日' ):(nextWeekDates1[index] == 1 ? ((nextMonth == 12 ?  monthIndexText[0]: monthIndexText[nextMonth]) + '月') :(nextWeekDates1[index] < 9 ? '0' : '' ) + nextWeekDates1[index] + '日' )) :(nowWeekDates[index] == 1 ? ((month == 12 ?  monthIndexText[0]: monthIndexText[month]) + '月') :(nowWeekDates[index] < 9 ? '0' : '' ) + nowWeekDates[index] + '日' ) }}</text>
+    </view>
+  </view>
+
+  <!-- 4.课程表内容区 -->
+  <view class="course-content">
+    <!-- 4.1.左侧时间轴 -->
+    <view class="course-nums">
+      <view class="course-num" wx:for="{{14}}" wx:key>
+        {{index+9}}
+        <!-- 健身房开放时间：9：00 ~ 22：00 -->
+      </view>
+    </view>
+    <van-toast id="custom-selector" />
+
+    <!-- 4.2.右侧课程块展示区 -->
+    <!-- 4.2.1 遍历此周课程的list -->
+    <view class="course-list">
+      <!-- 4.2.2 外部的课程块（利用这里的padding设计间隔） -->
+      <!-- top、left解课程块定位问题，前者和startHour有关，后者和index（week）有关；height和课程时长有关 -->
+      <block wx:for="{{showNextWeek?(thisWeekOrNextWeek?courseList:nextWeekCourseList):courseList}}" wx:for-item="day" wx:key>
+        <!-- 第一层for循环，遍历每一天，courseList//nextCourseList -->
+        <block wx:for="{{day.courses}}" wx:for-item="course" wx:key>
+
+          <!-- 第二层for循环，遍历每节课,courses -->
+          <view class="course-item" style="top:{{(course.startHour-9)*120}}rpx;left:{{(day.index-1)*((windowWidth * exchangeRate * 2 - 50)/7)}}rpx;height:{{course.courseLength*120}}rpx;">
+            <!-- 4.2.3 课程信息 -->
+            <picker wx:if="{{course.status===1}}" mode="selector" class="course-item__content.status1" range="{{range}}" value="{{pickerIndex}}" bindchange="onPickerChange" data-date="{{day.date}}" data-start-Hour="{{course.startHour}}" bind:tap="onPickerShow">
+              <view style="color: #fff;" class="appoint-status__font">预约</view>
+            </picker>
+
+            <view class="course-item__content.status2" wx:if="{{course.status==2}}" bind:tap="showBookedAlter">
+              <view style="color: #3E83B7;" class="appoint-status__font">已满</view>
+              <!-- <view style="color: #999999;font-size: 20rpx;">@{{course.coachName}}</view> -->
+            </view>
+
+            <view class="course-item__content.status3" wx:if="{{course.status==3}}" bind:tap="showNotOpenAlert">
+              <view style="color: #DEDEDF;" class="appoint-status__font">失效</view>
+              <!-- <view style="color: #444444;font-size: 20rpx;">@{{course.coachName}}</view> -->
+            </view>
+
           </view>
-          <view class="course-item__content.status3" wx:if="{{course.status==3}}" bind:tap="showNotOpenAlert">
-            <view style="color: #DEDEDF;" class="appoint-status__font">失效</view>
-            <!-- <view style="color: #444444;font-size: 20rpx;">@{{course.coachName}}</view> -->
-          </view>
-        </view>
+          
+        </block>
       </block>
-    </block>
+    </view>
+
   </view>
 </view>

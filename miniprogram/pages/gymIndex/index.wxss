@@ -122,7 +122,7 @@ page {
 
 .static-text__v1{
   color: #DEDEDF;
-  font-size: 80rpx;
+  font-size: 85rpx;
   font-weight: normal;
   font-family: YouSheBiaoTiHei;
 }

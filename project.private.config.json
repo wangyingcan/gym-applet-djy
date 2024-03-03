@@ -7,6 +7,13 @@
     "miniprogram": {
       "list": [
         {
+          "name": "新约课界面",
+          "pathName": "pages/gymAppointment_new/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "新周卡页面",
           "pathName": "pages/buyWeeklyCards_new/index",
           "query": "",

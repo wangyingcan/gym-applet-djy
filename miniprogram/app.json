@@ -53,5 +53,8 @@
     ]
   },
   "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "usingComponents": {
+    "van-config-provider": "miniprogram_npm/@vant/weapp/config-provider/index"
+  }
 }
