@@ -17,7 +17,7 @@
             <!-- 3.1.1一级菜单项的标题 -->
             <view class="power_info_text">
                 <!-- 展示卡片类型名 -->
-                <view class="power_info_text_title">{{power[0].type}}</view>
+                <view class="power_info_text_title">{{power[0].cardName}}</view>
                 <!-- 展示过期时间 -->
                 <view class="power_info_text_tip">
                     {{power[0].expiredDate}}

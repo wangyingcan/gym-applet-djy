@@ -211,6 +211,16 @@
   padding: 2rpx;
 }
 
+.left-area__text{
+  color: #295575;
+  font-family: YouSheBiaoTiHei;
+  font-size: 35rpx;
+}
+
+.grey-area__block{
+  width: calc((100% - 50rpx) / 7);
+}
+
 .course-item__content {
   display: flex;
   flex-direction: column;

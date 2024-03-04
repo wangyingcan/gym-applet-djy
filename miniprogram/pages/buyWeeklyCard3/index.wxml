@@ -9,7 +9,7 @@
   num="1"
   price="{{totalFeeStr}}"
   title="一周三练"
-  thumb="https://6465-dev-3g5cl9ca65d64f4b-1324237307.tcb.qcloud.la/oS-PG64WoFk4zbqnPZQqrnLyms6U1708229118542.png?sign=3b93ca6759b00978a0fce25a0e2a0db8&t=1708422812"
+  thumb="https://7072-prod-5g2wkpjaadb1bf82-1324237307.tcb.qcloud.la/oS-PG64WoFk4zbqnPZQqrnLyms6U1708745961140.png?sign=d138d4bfd1f65de2676f9ba0e26b5c1d&t=1709533189"
 >
   <view slot="desc" class="desc-class">
     <text>一周自由约课3次（1h/次）</text>

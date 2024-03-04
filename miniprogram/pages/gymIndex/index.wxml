@@ -41,7 +41,7 @@
       <view class="left-week-card-view__v1">
         <!-- 1.2.2.1.1. 顶部的文字区域 v1 -->
         <view class="left-top-view__v1">
-          <text class="static-text__v1" style="padding-right: 20rpx;">仅售私教</text>
+          <text class="static-text__v1" style="padding-right: 20rpx;">全员女生</text>
         </view>
         <!-- 1.2.2.1.2. 底部的周卡区域 v1 -->
         <view style="display: flex; justify-content: flex-end;"  bind:tap="onWeekCardClick">
@@ -76,7 +76,7 @@
         </view>
         <!-- 1.2.2.1.1. 底部的文字区域 v1 -->
         <view class="right-buttom-view__v1">
-          <text class="static-text__v1">有氧免费</text>
+          <text class="static-text__v1">穿衣自由</text>
         </view>
       </view>
 

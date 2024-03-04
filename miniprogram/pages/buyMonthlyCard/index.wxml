@@ -1,9 +1,9 @@
 <van-toast id="van-toast-monthlyCard" />
 <!-- 显示原价 -->
-<van-card wx:if="{{!usedNewUserToken}}" title-class="title-class" thumb-class="thumb-class" desc-class="desc-class" price-class="price-class" num="1" price="{{totalFeeStr}}" desc="" title="月卡" thumb="https://6465-dev-3g5cl9ca65d64f4b-1324237307.tcb.qcloud.la/oS-PG64WoFk4zbqnPZQqrnLyms6U1708229118542.png?sign=3b93ca6759b00978a0fce25a0e2a0db8&t=1708422812" />
+<van-card wx:if="{{!usedNewUserToken}}" title-class="title-class" thumb-class="thumb-class" desc-class="desc-class" price-class="price-class" num="1" price="{{totalFeeStr}}" desc="" title="月卡" thumb="https://7072-prod-5g2wkpjaadb1bf82-1324237307.tcb.qcloud.la/oS-PG64WoFk4zbqnPZQqrnLyms6U1708745961140.png?sign=d138d4bfd1f65de2676f9ba0e26b5c1d&t=1709533189" />
 
 <!-- 显示折扣价 -->
-<van-card wx:if="{{usedNewUserToken}}" title-class="title-class" thumb-class="thumb-class" desc-class="desc-class" price-class="price-class" num="1" origin-price="{{originalTotalFeeStr}}"  price="{{totalFeeStr}}" desc="" title="月卡" thumb="https://6465-dev-3g5cl9ca65d64f4b-1324237307.tcb.qcloud.la/oS-PG64WoFk4zbqnPZQqrnLyms6U1708229118542.png?sign=3b93ca6759b00978a0fce25a0e2a0db8&t=1708422812" />
+<van-card wx:if="{{usedNewUserToken}}" title-class="title-class" thumb-class="thumb-class" desc-class="desc-class" price-class="price-class" num="1" origin-price="{{originalTotalFeeStr}}"  price="{{totalFeeStr}}" desc="" title="月卡" thumb="https://7072-prod-5g2wkpjaadb1bf82-1324237307.tcb.qcloud.la/oS-PG64WoFk4zbqnPZQqrnLyms6U1708745961140.png?sign=d138d4bfd1f65de2676f9ba0e26b5c1d&t=1709533189" />
 
 <view class="checkbox-buttom__view">
   <van-checkbox value="{{ checked }}" bind:change="onChange" custom-class="checkbox-custom">确认接受《购卡协议》</van-checkbox>

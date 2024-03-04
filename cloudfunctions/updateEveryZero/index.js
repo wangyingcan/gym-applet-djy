@@ -98,10 +98,21 @@ exports.main = async (event, context) => {
     let res = await monthlyCards.where({
       status: "expired"
     }).get();
-    console.log("2.1查询expired月卡成功");
+    console.log("2.1查询expired月卡成功",JSON.stringify(res,null,2));
 
-    // 2.2对查到的expired卡进行处理
+    // 2.2对查到的expired卡进行处理【如果已经加入了expiredCards就不应该再add了】
     for (let card of res.data) {
+      // 2.2.0 检查expiredCards中是否已有card.cardName，有则代表已处理过的，无则需要添加
+      let res_expiredCards= await expiredCards.where({
+        cardName: card.cardName
+      }).get();
+
+      if(res_expiredCards.data.length > 0){
+        console.log("是否进入了周卡的过期检查区域")
+        // 已处理过的
+        continue;
+      }
+      // 未处理过的
       // 2.2.1删除用户表中的monthlyCardIds
       await user.where({
         _openid: openid
@@ -122,7 +133,8 @@ exports.main = async (event, context) => {
         data: {
           _openid: openid,
           cardId: expiresCardId,
-          type: "月卡",
+          cardName:card.cardName,
+          type: card.cardType,
           expiredDate: new Date().getFullYear() + '.' + (new Date().getMonth() + 1) + '.' + new Date().getDate(),
           purchaseDate: card.purchaseDate,
           activationDate: card.activationDate,
@@ -150,7 +162,7 @@ exports.main = async (event, context) => {
       });
     }
   } catch (err) {
-    console.log("2.1查询expired月卡失败");
+    console.log("2.1查询expired月卡失败",JSON.stringify(err,null,2));
   }
 
   // 2.3查询expired的周卡
@@ -158,10 +170,22 @@ exports.main = async (event, context) => {
     let res = await weeklyCards.where({
       status: "expired"
     }).get();
-    console.log("2.3查询expired周卡成功");
+    console.log("2.3查询expired周卡成功",JSON.stringify(res,null,2));
 
     // 2.4对查到的expired卡进行处理
     for (let card of res.data) {
+      // 2.4.0 检查expiredCards中是否已有card.cardName，有则代表已处理过的，无则需要添加
+      let res_expiredCards= await expiredCards.where({
+        cardName: card.cardName
+      }).get();
+
+      if(res_expiredCards.data.length > 0){
+        console.log("是否进入了周卡的过期检查区域")
+        // 已处理过的
+        continue;
+      }
+
+      // 未处理过的
       // 2.4.1删除用户表中的weeklyCardIds
       await user.where({
         _openid: openid
@@ -181,8 +205,9 @@ exports.main = async (event, context) => {
       await expiredCards.add({
         data: {
           _openid: openid,
+          cardName:card.cardName,
           cardId: expiredCardId,
-          type: "周卡",
+          type: card.type,
           expiredDate: new Date().getFullYear() + '.' + (new Date().getMonth() + 1) + '.' + new Date().getDate(),
           purchaseDate: card.purchaseDate,
           activationDate: card.activationDate
@@ -207,7 +232,7 @@ exports.main = async (event, context) => {
       });
     }
   } catch (err) {
-    console.log("2.3查询expired周卡失败");
+    console.log("2.3查询expired周卡失败",JSON.stringify(err,null,2));
   }
 
   // 3.1查询paused状态的月卡

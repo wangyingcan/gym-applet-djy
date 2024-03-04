@@ -16,6 +16,7 @@ Page({
   data: {
     // 是否允许切换下一周(是否到了周五22点、是否到了周日22点)   
     showNextWeek: false,
+    // showLeftTextArea是否显示左侧文本区域
     // 展示此周或是下周数据(true本周、false下周两个取值)
     thisWeekOrNextWeek: false,
     // 今天的日期，可以通过Date获取
@@ -201,7 +202,7 @@ Page({
     const nowHour = new Date().getHours();
     console.log("numOfWeek", numOfWeek);
     console.log("nowHour", nowHour);
-    // 0.1.周五22点之后，周六，周日22点之前
+    // 0.1.1 周五22点之后，周六，周日22点之前
     if ((numOfWeek == 5 && nowHour >= 22) || (numOfWeek == 6) || (numOfWeek == 0 && nowHour < 22)) {
       this.setData({
         showNextWeek: true
@@ -209,6 +210,17 @@ Page({
     } else {
       this.setData({
         showNextWeek: false
+      })
+    }
+
+    // 0.1.2 周一~周三不显示左侧文字，周四~周日显示左侧文字
+    if(numOfWeek>=1&&numOfWeek<=3){
+      this.setData({
+        showLeftTextArea:false
+      })
+    }else{
+      this.setData({
+        showLeftTextArea:true
       })
     }
 
@@ -381,12 +393,16 @@ Page({
     // 1.2转换为today格式
     const todayStr = date.getFullYear() + '.' + (date.getMonth() + 1) + '.' + date.getDate();
     // console.log("today : "+todayStr);
+    const numOfWeek=date.getDay();
+    // const numOfWeek=4;
+    let leftTextAreaWidth=(((this.data.windowWidth*2)-(50/this.data.exchangeRate))/7) *(numOfWeek-1);
     // 1.3更新today
     this.setData({
       today: todayStr,
       year: date.getFullYear(),
       day: date.getDate(),
-      numOfWeek: date.getDay()
+      numOfWeek,
+      leftTextAreaWidth
     })
     // 1.4解析今天信息获取更多数据
     this.getTodayMoreInfo(date.getFullYear(), date.getMonth(), date.getDate())
