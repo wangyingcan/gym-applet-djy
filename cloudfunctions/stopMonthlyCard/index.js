@@ -19,6 +19,7 @@ exports.main = async (event, context) => {
       hasPaused: true,
       status: "paused",
       pauseStart: new Date().getFullYear() + '.' + (new Date().getMonth() + 1) + '.' + new Date().getDate()
+
     }
   }).then(res => {
     console.log("暂停月卡成功", JSON.stringify(res, null, 2))

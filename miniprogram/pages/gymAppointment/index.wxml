@@ -138,19 +138,11 @@
       <!-- 4.2.2.3 外部的课程块【有左侧文字版、且是这周课表】  -->
       <view wx:if="{{showLeftTextArea&&((!showNextWeek)||(showNextWeek && thisWeekOrNextWeek))}}">
         <view style="position:absolute;top:0; left:0;height: {{120 * 13}}rpx; background-color: #F5F6F7;width:{{leftTextAreaWidth}}rpx; display: flex; flex-direction: column; justify-content: center;align-items: center;"> 
-
-        <text class="left-area__text" style="padding-bottom: 120rpx;">本周过去{{(numOfWeek==0)?6:(numOfWeek-1)}}天</text>
-        <text class="left-area__text" style="padding-top:120rpx;">你已经运动几次啦？</text>
-        <!-- <view wx:for="{{courseList}}" wx:for-item="day" wx:key style="position:absolute;top:0; left:0;height: {{120 * 13}}rpx; background-color: greenyellow;width:100px">  -->
-          <!-- 1.第一层for循环，遍历courseList每一天的元素，其中index(1~7)代表星期几， -->
-          <!-- 1.1 当index小于numOfWeek的时候，就应该展示左侧灰框（numOfWeek：0代表周日）-->
-          <!-- <block wx:if="{{((numOfWeek>=1 && numOfWeek<=6) && (day.index < numOfWeek))||((numOfWeek==0)&&(day.index > numOfWeek))}}">
-            <view class="grey-area__block" style=" background-color: greenyellow;">
-            </view>
-          </block> -->
+          <text class="left-area__text" style="padding-bottom: 120rpx;">本周过去{{(numOfWeek==0)?6:(numOfWeek-1)}}天</text>
+          <text class="left-area__text" style="padding-top:120rpx;">你已经运动几次啦？</text>
         </view>
 
-          <!-- 1.2 当index大于numOfWeek的时候，就应该正常展示课程块 -->
+        <!-- 1.2 当index大于numOfWeek的时候，就应该正常展示课程块 -->
         <block wx:for="{{courseList}}" wx:for-item="day" wx:key>
           <view wx:if="{{!(((numOfWeek>=1 && numOfWeek<=6) && (day.index < numOfWeek))||((numOfWeek==0)&&(day.index > numOfWeek)))}}">
             <block wx:for="{{day.courses}}" wx:for-item="course" wx:key>

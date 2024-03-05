@@ -395,7 +395,7 @@ Page({
     // console.log("today : "+todayStr);
     const numOfWeek=date.getDay();
     // const numOfWeek=4;
-    let leftTextAreaWidth=(((this.data.windowWidth*2)-(50/this.data.exchangeRate))/7) *(numOfWeek-1);
+    let leftTextAreaWidth=(((this.data.windowWidth*2 - 50)*this.data.exchangeRate)/7) *(numOfWeek-1);
     // 1.3更新today
     this.setData({
       today: todayStr,

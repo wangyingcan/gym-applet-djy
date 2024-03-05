@@ -20,12 +20,14 @@ exports.main = async (event, context) => {
   const cardId = event.cardId;    // 查询monthlyCards表 或 weeklyCards表
   const cardType = event.cardType;    // 查询monthlyCards表 或 weeklyCards表
   const firstBook = event.firstBook;    // 查询monthlyCards表 或 weeklyCards表
+  const isWithinTwoHours = event.isWithinTwoHours;    //月卡的判断
   let weeklyCardTotalBookCount=0; //获取每种周卡的总约课数量
   let type="";
   let totalBookCount=0;
   console.log("云函数canceledBookedCourse的cardId",cardId);
   console.log("云函数canceledBookedCourse的cardType",cardType);
   console.log("云函数canceledBookedCourse的firstBook",firstBook);
+
   // 0 周卡有、月卡没有的数据
   if(cardType=="周卡"){
     // 这里的type等信息需要通过cardId进行查询
@@ -128,37 +130,74 @@ exports.main = async (event, context) => {
     })
   }
 
-  // 4.修改monthlyCards信息（根据是否是第一次取消）
+  // 4.修改monthlyCards信息（根据是否是第一次取消、是否在2小时内取消）
   if(firstBook && cardType=="月卡"){
-    // 4.1 月卡第一次取消约课（变回add一张新卡的状态）
-    await monthlyCards.where({
-      cardId:cardId
-    }).update({
-      data:{
-        status:"inactive",
-        activationDate:"",
-        firstBook:true,
-        remainingBookCount:1,
-        remainingDays:30
-      }
-    }).then(res=>{
-      console.log("第一次取消预约时，月卡更新状态成功",JSON.stringify(res,null,2))
-    }).catch(err=>{
-      console.log("第一次取消预约时，月卡更新状态失败",JSON.stringify(err,null,2))
-    })
+    // 4.1 月卡第一次取消约课（变回add一张新卡的状态，2小时外）
+    if(!isWithinTwoHours){
+      await monthlyCards.where({
+        cardId:cardId
+      }).update({
+        data:{
+          status:"inactive",
+          activationDate:"",
+          firstBook:true,
+          remainingBookCount:1,
+          remainingDays:30
+        }
+      }).then(res=>{
+        console.log("第一次取消预约时(2小时外)，月卡更新状态成功",JSON.stringify(res,null,2))
+      }).catch(err=>{
+        console.log("第一次取消预约时(2小时外)，月卡更新状态失败",JSON.stringify(err,null,2))
+      })
+    }else{
+      // 2小时内取消，扣次但是变成未激活，并需要给此卡添加一个今日2小时内取消过的字段
+      await monthlyCards.where({
+        cardId:cardId
+      }).update({
+        data:{
+          status:"inactive",
+          activationDate:"",
+          firstBook:true,
+          remainingBookCount:0,
+          remainingDays:30,
+          canceledWithinTwoHours:true
+        }
+      }).then(res=>{
+        console.log("第一次取消预约时(2小时内)，月卡更新状态成功",JSON.stringify(res,null,2))
+      }).catch(err=>{
+        console.log("第一次取消预约时(2小时内)，月卡更新状态失败",JSON.stringify(err,null,2))
+      })
+    }
   }else if(!firstBook && cardType=="月卡"){
-    // 4.2 月卡非第一次取消约课
-    await monthlyCards.where({
-      cardId:cardId
-    }).update({
-      data:{
-        remainingBookCount:1
-      }
-    }).then(res=>{
-      console.log("非第一次取消预约时，月卡更新状态成功",JSON.stringify(res,null,2))
-    }).catch(err=>{
-      console.log("非第一次取消预约时，月卡更新状态失败",JSON.stringify(err,null,2))
-    })
+    // 4.2 月卡非第一次取消约课(2小时外)
+    if(!isWithinTwoHours){
+      await monthlyCards.where({
+        cardId:cardId
+      }).update({
+        data:{
+          remainingBookCount:1
+        }
+      }).then(res=>{
+        console.log("非第一次取消预约时(2小时外)，月卡更新状态成功",JSON.stringify(res,null,2))
+      }).catch(err=>{
+        console.log("非第一次取消预约时(2小时外)，月卡更新状态失败",JSON.stringify(err,null,2))
+      })
+    }else{
+      // 2小时内取消
+      await monthlyCards.where({
+        cardId:cardId
+      }).update({
+        data:{
+          remainingBookCount:0,
+          canceledWithinTwoHours:true
+        }
+      }).then(res=>{
+        console.log("非第一次取消预约时(2小时内)，月卡更新状态成功",JSON.stringify(res,null,2))
+      }).catch(err=>{
+        console.log("非第一次取消预约时(2小时内)，月卡更新状态失败",JSON.stringify(err,null,2))
+      })
+    }
+
   }
 
   // 5.修改weeklyCards信息（根据是否是第一次取消【还有课、没有课】）
