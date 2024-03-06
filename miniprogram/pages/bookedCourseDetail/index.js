@@ -148,7 +148,11 @@ Page({
               Toast.loading({
                 message:"取消约课中...",
                 duration:3000,
+<<<<<<< HEAD
                 forbidClick:true  
+=======
+                forbidClick:true
+>>>>>>> test2
               });
 
               wx.cloud.callFunction({

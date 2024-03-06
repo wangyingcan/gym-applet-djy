@@ -1,5 +1,7 @@
 <van-toast id="custom-selector" />
 <van-toast id="van-toast-appointment" />
+<van-toast id="van-toast-appointment-reload-system" />
+<van-toast id="van-toast-appointment-success" />
 
 <view class="top-fixed-area">
   <!-- 1.自定义导航栏（isBack控制左侧返回按钮） -->
