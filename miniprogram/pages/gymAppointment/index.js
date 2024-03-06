@@ -74,12 +74,6 @@ Page({
   async onLoad(options) {
     console.log("onLoad函数执行了");
     this.checkTime()
-    // console.log("外部this："+JSON.stringify(this))
-<<<<<<< HEAD
-    let that=this;
-    // 1. 计算当前和下一分钟整秒的时间差
-    that.checkTime();
-
     if(!this.data.isReloadSystem){
       // 0.获取系统宽度，由于给课程块定位
       const { windowWidth } = wx.getSystemInfoSync()
@@ -103,29 +97,6 @@ Page({
         firstEntry: false
       })
     }
-=======
-    // 0.获取系统宽度，由于给课程块定位
-    const { windowWidth } = wx.getSystemInfoSync()
-    let app = getApp();
-    let exchangeRate = app.globalData.exchangeRate;
-    // van-config-provider中提供的themeVars变量
-    let themeVars={
-      noticeBarHeight:'40px'
-    };
-    this.setData({
-      windowWidth,
-      thisWeekOrNextWeek: true,
-      exchangeRate,
-      themeVars
-    })
-    this.refreshData();
-
-    // 1.更新完之后就可以设置firstEntry了
-    // console.log("内部this："+JSON.stringify(this))
-    this.setData({
-      firstEntry: false
-    })
->>>>>>> test2
   },
 
   onShow() {
@@ -200,13 +171,8 @@ Page({
   checkTime() {
     console.log("checkTime");
     let now = new Date();
-<<<<<<< HEAD
-    let start1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 11, 11, 0, 0);
-    let end1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 11, 12, 0, 0);
-=======
-    let start1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 13, 59, 0, 0);
-    let end1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 14, 5, 0, 0);
->>>>>>> test2
+    let start1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 0, 0, 0);
+    let end1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 0, 0, 0);
     let start2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
     let end2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 1, 0, 0);
     if ((now >= start1 && now <= end1) || (now >= start2 && now <= end2)) {
@@ -219,11 +185,7 @@ Page({
   },
 
   reloadSystem() {
-<<<<<<< HEAD
     // 1.表示此时正在进行系统更新
-=======
-    console.log("reloadSystem");
->>>>>>> test2
     this.setData({
       isReloadSystem:true
     })
@@ -233,29 +195,16 @@ Page({
       forbidClick: true,
       loadingType: 'spinner',
       mask: true,
-<<<<<<< HEAD
-      duration: 9000,
-      zindex:9999,
-      selector: '#van-toast-appointment'
-    });
-
-    // 2.表示已经更新结束
-=======
       duration: 90000,
       zindex:9998,
       selector: '#van-toast-appointment-reload-system'
     });
 
->>>>>>> test2
     setTimeout(()=>{
       this.setData({
         isReloadSystem:false
       })
-<<<<<<< HEAD
-    },9000);
-=======
     },90000)
->>>>>>> test2
   },
 
   // 刷新按钮点击事件
