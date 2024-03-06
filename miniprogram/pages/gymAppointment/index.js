@@ -77,19 +77,8 @@ Page({
     let that=this;
     // 1. 计算当前和下一分钟整秒的时间差
     that.checkTime();
-    const nowSeconds=new Date().getSeconds();
-    const delay=(60-nowSeconds)*1000;
-    // 2. 执行一次的setTimeout，设置timer保证之后定时器是每分钟整秒执行
-    setTimeout(()=>{
-      that.checkTime();
-      that.setData({
-        timer: setInterval(()=>{
-          that.checkTime();
-        }, 60*1000)
-      })
-    },delay)
 
-    if(this.data.isReloadSystem == null || !this.data.isReloadSystem){
+    if(!this.data.isReloadSystem){
       // 0.获取系统宽度，由于给课程块定位
       const { windowWidth } = wx.getSystemInfoSync()
       let app = getApp();
@@ -132,7 +121,7 @@ Page({
     },delay)
     
     // 0.判断是否进入了系统更新时期，未进入就显示后面的提示
-    if(this.data.isReloadSystem == null || !this.data.isReloadSystem){
+    if(!this.data.isReloadSystem){
       // 0.获取系统宽度，由于给课程块定位
       const { windowWidth } = wx.getSystemInfoSync()
       let app = getApp();
@@ -184,13 +173,18 @@ Page({
 
   // 检查是否到了更新时间
   checkTime() {
+    console.log("checkTime");
     let now = new Date();
-    let start1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 43, 0, 0);
-    let end1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 44, 0, 0);
+    let start1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 11, 11, 0, 0);
+    let end1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 11, 12, 0, 0);
     let start2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
     let end2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 1, 0, 0);
     if ((now >= start1 && now <= end1) || (now >= start2 && now <= end2)) {
       this.reloadSystem();
+    }else{
+      this.setData({
+        isReloadSystem:false
+      })
     }
   },
 
@@ -205,7 +199,7 @@ Page({
       forbidClick: true,
       loadingType: 'spinner',
       mask: true,
-      duration: 90000,
+      duration: 9000,
       zindex:9999,
       selector: '#van-toast-appointment'
     });
@@ -215,7 +209,7 @@ Page({
       this.setData({
         isReloadSystem:false
       })
-    },90000);
+    },9000);
   },
 
   // 刷新按钮点击事件
