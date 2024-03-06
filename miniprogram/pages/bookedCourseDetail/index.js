@@ -111,6 +111,7 @@ Page({
             Toast.loading({
               message: '取消约课中...',
               duration: 3000,
+              forbidClick:true
             });
             // 1.1调用取消预约的云函数（传入取消预约课程的date、startHour、2小时外）
             wx.cloud.callFunction({
@@ -146,7 +147,8 @@ Page({
             if(result.confirm){
               Toast.loading({
                 message:"取消约课中...",
-                duration:3000
+                duration:3000,
+                forbidClick:true  
               });
 
               wx.cloud.callFunction({
@@ -181,7 +183,8 @@ Page({
             if(result.confirm){
               Toast.loading({
                 message:"取消约课中...",
-                duration:3000
+                duration:3000,
+                forbidClick:true
               });
 
               wx.cloud.callFunction({
